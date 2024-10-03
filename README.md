@@ -395,3 +395,4 @@ Lexical is [MIT licensed](https://github.com/facebook/lexical/blob/main/LICENSE)
 <!-- ---------------- -->
  -npm run release
  -lexical /dist# packageeditor
+# packageeditor
