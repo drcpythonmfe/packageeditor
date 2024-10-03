@@ -146,8 +146,6 @@ const moduleResolution = [
   'LexicalOnChangePlugin',
   'LexicalNodeEventPlugin',
   'LexicalTabIndentationPlugin',
-  'ExcalidrawPlugin',
-
 ].forEach((module) => {
   let resolvedPath = path.resolve(`../lexical-react/src/${module}.ts`);
 

@@ -85,7 +85,6 @@ module.name_mapper='^@lexical/react/LexicalAutoEmbedPlugin' -> '<PROJECT_ROOT>/p
 module.name_mapper='^@lexical/react/LexicalNodeEventPlugin' -> '<PROJECT_ROOT>/packages/lexical-react/flow/LexicalNodeEventPlugin.js.flow'
 module.name_mapper='^@lexical/react/LexicalTabIndentationPlugin' -> '<PROJECT_ROOT>/packages/lexical-react/flow/LexicalTabIndentationPlugin.js.flow'
 
-module.name_mapper='^@lexical/react/ExcalidrawPlugin' -> '<PROJECT_ROOT>/packages/lexical-react/flow/ExcalidrawPlugin.js.flow'
 
 
 
