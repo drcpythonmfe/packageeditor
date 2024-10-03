@@ -197,12 +197,6 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
           }),
       ),
 
-      new ComponentPickerOption('Excalidraw', {
-        icon: <i className="icon diagram-2" />,
-        keywords: ['excalidraw', 'diagram', 'drawing'],
-        onSelect: () =>
-          editor.dispatchCommand(INSERT_EXCALIDRAW_COMMAND, undefined),
-      }),
       new ComponentPickerOption('Table', {
         icon: <i className="icon table" />,
         keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
@@ -274,12 +268,7 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
         onSelect: () =>
           editor.dispatchCommand(INSERT_HORIZONTAL_RULE_COMMAND, undefined),
       }),
-      new ComponentPickerOption('Excalidraw', {
-        icon: <i className="icon diagram-2" />,
-        keywords: ['excalidraw', 'diagram', 'drawing'],
-        onSelect: () =>
-          editor.dispatchCommand(INSERT_EXCALIDRAW_COMMAND, undefined),
-      }),
+
       new ComponentPickerOption('Poll', {
         icon: <i className="icon poll" />,
         keywords: ['poll', 'vote'],

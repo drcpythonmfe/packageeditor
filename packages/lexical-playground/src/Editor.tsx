@@ -72,7 +72,6 @@ import YouTubePlugin from './plugins/YouTubePlugin';
 import ContentEditable from './ui/ContentEditable';
 import Placeholder from './ui/Placeholder';
 import joinClasses from './utils/joinClasses';
-import ExcalidrawPlugin from './plugins/ExcalidrawPlugin';
 
 const skipCollaborationInit =
   // @ts-ignore
@@ -252,7 +251,6 @@ export default function Editor({
             <HorizontalRulePlugin />
             <TabFocusPlugin />
             <TabIndentationPlugin />
-            <ExcalidrawPlugin />
             <CollapsiblePlugin />
             {floatingAnchorElem && !isSmallWidthViewport && (
               <>

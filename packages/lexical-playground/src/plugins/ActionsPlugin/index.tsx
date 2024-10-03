@@ -159,7 +159,7 @@ export default function ActionsPlugin({
 
   return (
     <div className="actions">
-      {SUPPORT_SPEECH_RECOGNITION && (
+      {/* {SUPPORT_SPEECH_RECOGNITION && (
         <button
           onClick={() => {
             editor.dispatchCommand(SPEECH_TO_TEXT_COMMAND, !isSpeechToText);
@@ -175,7 +175,7 @@ export default function ActionsPlugin({
           } speech to text`}>
           <i className="mic" />
         </button>
-      )}
+      )} */}
       {/* <button
         className="action-button import"
         onClick={() => importFile(editor)}
