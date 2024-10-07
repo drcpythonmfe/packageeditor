@@ -259,6 +259,7 @@ function BlockFormatDropDown({
         className={'item ' + dropDownActiveClass(blockType === 'h1')}
         onClick={() => formatHeading('h1')}>
         <i className="icon h1" />
+
         <span className="text">Heading 1</span>
       </DropDownItem>
       <DropDownItem
