@@ -52,7 +52,7 @@ function App({
       onChange={setHtml}
       onUpload={uploadImg}
       onChangeMode="html"
-      userList={userList}
+      dummyMentionsDatas={userList || []}
     />
   );
 }

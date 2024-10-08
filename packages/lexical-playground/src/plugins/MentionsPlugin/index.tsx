@@ -365,8 +365,21 @@ const dummyLookupService = {
   },
 };
 
-function useMentionLookupService(mentionString: string | null) {
+function useMentionLookupService(dummyMentionsData :  Array<string> | [] ,mentionString: string | null) {
   const [results, setResults] = useState<Array<string>>([]);
+
+
+  const dummyLookupService = {
+    search(string: string, callback: (results: Array<string>) => void): void {
+      setTimeout(() => {
+        const results = dummyMentionsData.filter((mention) =>
+          mention.toLowerCase().includes(string.toLowerCase()),
+        );
+        callback(results);
+      }, 500);
+    },
+  };
+
 
   useEffect(() => {
     const cachedResults = mentionsCache.get(mentionString);
@@ -491,12 +504,17 @@ function MentionsTypeaheadMenuItem({
   );
 }
 
-export default function NewMentionsPlugin(): JSX.Element | null {
+interface MentionsPluginProps {
+  dummyMentionsDatas: string[]; 
+}
+
+export default function MentionsPlugin({ dummyMentionsDatas }: MentionsPluginProps): JSX.Element | null {
   const [editor] = useLexicalComposerContext();
 
   const [queryString, setQueryString] = useState<string | null>(null);
+  const [userData, setUserData] = useState<Array<string>>([]);
 
-  const results = useMentionLookupService(queryString);
+  const results = useMentionLookupService(userData ,queryString);
 
   const checkForSlashTriggerMatch = useBasicTypeaheadTriggerMatch('/', {
     minLength: 0,
@@ -539,6 +557,15 @@ export default function NewMentionsPlugin(): JSX.Element | null {
     },
     [checkForSlashTriggerMatch, editor],
   );
+
+
+  useEffect(()=>{
+    if (!dummyMentionsDatas || dummyMentionsDatas.length === 0) {
+      setUserData(dummyMentionsDatas)
+    }else{
+      setUserData(dummyMentionsDatas)
+    }
+   },[])
 
   return (
     <LexicalTypeaheadMenuPlugin<MentionTypeaheadOption>

@@ -96,7 +96,7 @@ export type EditorProps = {
   onUpload?: OnImageUpload;
   rootClassName?: string;
   containerClassName?: string;
-  userList?:string;
+  dummyMentionsDatas: string[];
 };
 
 const defaultToolbarConfig: ToolbarConfig = {
@@ -129,7 +129,7 @@ export default function Editor({
   toolbarConfig,
   rootClassName,
   containerClassName,
-  userList
+  dummyMentionsDatas
 }: EditorProps): JSX.Element {
   const {historyState} = useSharedHistoryContext();
   const text = isCollab
@@ -187,13 +187,13 @@ export default function Editor({
         <ComponentPickerPlugin /> 
         <EmojiPickerPlugin />
         <AutoEmbedPlugin />
-        <MentionsPlugin  />
+        <MentionsPlugin dummyMentionsDatas={dummyMentionsDatas}  />
         <EmojisPlugin />
         <HashtagPlugin />
         <KeywordsPlugin />
         <SpeechToTextPlugin />
         <AutoLinkPlugin />
-      
+
         {onChange && (
           <OnChangePlugin
             onChange={(editorState, editor) => {
