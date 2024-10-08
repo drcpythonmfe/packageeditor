@@ -202,10 +202,11 @@ export default function DropDown({
 
   return (
     <>
-      <button
+      <button 
         disabled={disabled}
         aria-label={buttonAriaLabel || buttonLabel}
         className={buttonClassName}
+        type='button'
         onClick={() => setShowDropDown(!showDropDown)}
         ref={buttonRef}>
         {buttonIconClassName && <span className={buttonIconClassName} />}
