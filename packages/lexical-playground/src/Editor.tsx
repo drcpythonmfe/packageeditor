@@ -96,7 +96,7 @@ export type EditorProps = {
   onUpload?: OnImageUpload;
   rootClassName?: string;
   containerClassName?: string;
-  dummyMentionsDatas: string[];
+  dummyMentionsDatas?: string[];
 };
 
 const defaultToolbarConfig: ToolbarConfig = {
