@@ -951,7 +951,7 @@ export default function CommentPlugin({
           />,
           document.body,
         )}
-      {activeAnchorKey !== null &&
+      {/* {activeAnchorKey !== null &&
         activeAnchorKey !== undefined &&
         !showCommentInput &&
         createPortal(
@@ -961,7 +961,7 @@ export default function CommentPlugin({
             onAddComment={onAddComment}
           />,
           document.body,
-        )}
+        )} */}
       {/* {createPortal(
         <Button
           className={`CommentPlugin_ShowCommentsButton ${
