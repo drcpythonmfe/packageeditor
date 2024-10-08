@@ -161,6 +161,7 @@ export default function ActionsPlugin({
     <div className="actions">
       {/* {SUPPORT_SPEECH_RECOGNITION && (
         <button
+          type='button'
           onClick={() => {
             editor.dispatchCommand(SPEECH_TO_TEXT_COMMAND, !isSpeechToText);
             setIsSpeechToText(!isSpeechToText);
@@ -177,6 +178,7 @@ export default function ActionsPlugin({
         </button>
       )} */}
       {/* <button
+        type='button'
         className="action-button import"
         onClick={() => importFile(editor)}
         title="Import"
@@ -184,6 +186,7 @@ export default function ActionsPlugin({
         <i className="import" />
       </button> 
       <button
+       type='button'
         className="action-button export"
         onClick={() =>
           exportFile(editor, {
@@ -196,6 +199,7 @@ export default function ActionsPlugin({
         <i className="export" />
       </button>
       <button
+       type='button'
         className="action-button clear"
         disabled={isEditorEmpty}
         onClick={() => {
@@ -207,6 +211,7 @@ export default function ActionsPlugin({
         aria-label="Clear editor contents">
         <i className="clear" />
       </button> <button
+      type='button'
         className={`action-button ${!isEditable ? 'unlock' : 'lock'}`}
         onClick={() => {
           // Send latest editor state to commenting validation server
@@ -221,6 +226,7 @@ export default function ActionsPlugin({
       </button> */}
       <button
         className="action-button"
+        type='button'
         onClick={handleMarkdownToggle}
         title="Convert From Markdown"
         aria-label="Convert from markdown">
@@ -228,6 +234,7 @@ export default function ActionsPlugin({
       </button>
       {isCollabActive && (
         <button
+          type='button'
           className="action-button connect"
           onClick={() => {
             editor.dispatchCommand(TOGGLE_CONNECT_COMMAND, !connected);

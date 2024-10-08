@@ -336,14 +336,14 @@ function TableActionMenu({
       onClick={(e) => {
         e.stopPropagation();
       }}>
-      <button className="item" onClick={() => insertTableRowAtSelection(false)}>
+      <button type='button' className="item" onClick={() => insertTableRowAtSelection(false)}>
         <span className="text">
           Insert{' '}
           {selectionCounts.rows === 1 ? 'row' : `${selectionCounts.rows} rows`}{' '}
           above
         </span>
       </button>
-      <button className="item" onClick={() => insertTableRowAtSelection(true)}>
+      <button type='button' className="item" onClick={() => insertTableRowAtSelection(true)}>
         <span className="text">
           Insert{' '}
           {selectionCounts.rows === 1 ? 'row' : `${selectionCounts.rows} rows`}{' '}
@@ -351,7 +351,8 @@ function TableActionMenu({
         </span>
       </button>
       <hr />
-      <button
+      <button 
+        type='button'
         className="item"
         onClick={() => insertTableColumnAtSelection(false)}>
         <span className="text">
@@ -363,6 +364,7 @@ function TableActionMenu({
         </span>
       </button>
       <button
+       type='button'
         className="item"
         onClick={() => insertTableColumnAtSelection(true)}>
         <span className="text">
@@ -374,17 +376,17 @@ function TableActionMenu({
         </span>
       </button>
       <hr />
-      <button className="item" onClick={() => deleteTableColumnAtSelection()}>
+      <button  type='button' className="item" onClick={() => deleteTableColumnAtSelection()}>
         <span className="text">Delete column</span>
       </button>
-      <button className="item" onClick={() => deleteTableRowAtSelection()}>
+      <button type='button' className="item" onClick={() => deleteTableRowAtSelection()}>
         <span className="text">Delete row</span>
       </button>
-      <button className="item" onClick={() => deleteTableAtSelection()}>
+      <button type='button' className="item" onClick={() => deleteTableAtSelection()}>
         <span className="text">Delete table</span>
       </button>
       <hr />
-      <button className="item" onClick={() => toggleTableRowIsHeader()}>
+      <button type='button' className="item" onClick={() => toggleTableRowIsHeader()}>
         <span className="text">
           {(tableCellNode.__headerState & TableCellHeaderStates.ROW) ===
           TableCellHeaderStates.ROW
@@ -393,7 +395,7 @@ function TableActionMenu({
           row header
         </span>
       </button>
-      <button className="item" onClick={() => toggleTableColumnIsHeader()}>
+      <button type='button' className="item" onClick={() => toggleTableColumnIsHeader()}>
         <span className="text">
           {(tableCellNode.__headerState & TableCellHeaderStates.COLUMN) ===
           TableCellHeaderStates.COLUMN
@@ -512,6 +514,7 @@ function TableCellActionMenuContainer({
       {tableCellNode != null && (
         <>
           <button
+            type='button'
             className="table-cell-action-button chevron-down"
             onClick={(e) => {
               e.stopPropagation();
