@@ -126,7 +126,7 @@ function DropDownItems({
 
   return (
     <DropDownContext.Provider value={contextValue}>
-      <div className="dropdown" ref={dropDownRef} onKeyDown={handleKeyDown}>
+      <div className="dropdown all_dropdown" ref={dropDownRef} onKeyDown={handleKeyDown}>
         {children}
       </div>
     </DropDownContext.Provider>
@@ -173,7 +173,7 @@ export default function DropDown({
         window.innerWidth - dropDown.offsetWidth - 20,
       )}px`;
     }
-  }, [dropDownRef, buttonRef, showDropDown]);
+  }, [dropDownRef, buttonRef, showDropDown]); 
 
   useEffect(() => {
     const button = buttonRef.current;

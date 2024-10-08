@@ -384,7 +384,7 @@ function TableActionMenu({
   return (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
-      className="dropdown"
+      className="dropdown Tabledropdown"
       ref={dropDownRef}
       onPointerMove={(e) => {
         e.stopPropagation();
