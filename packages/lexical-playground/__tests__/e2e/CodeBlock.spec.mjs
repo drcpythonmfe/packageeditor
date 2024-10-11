@@ -25,8 +25,8 @@ import {
 } from '../utils/index.mjs';
 
 async function toggleCodeBlock(page) {
-  await click(page, '.block-controls');
-  await click(page, '.dropdown .icon.code');
+  await click(page, '.blocks-controls');
+  await click(page, '.dropdowns .icon.code');
 }
 
 test.describe('CodeBlock', () => {

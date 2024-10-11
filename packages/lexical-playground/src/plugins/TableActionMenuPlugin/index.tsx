@@ -331,7 +331,7 @@ function TableActionMenu({
   return createPortal(
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
-      className="dropdown dropdown1"
+      className="dropdowns dropdown1"
       ref={dropDownRef}
       onClick={(e) => {
         e.stopPropagation();

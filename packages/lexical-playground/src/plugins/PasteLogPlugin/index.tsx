@@ -39,8 +39,8 @@ export default function PasteLogPlugin(): JSX.Element {
   return (
     <>
       <button
-        id="paste-log-button"
-        className={`editor-dev-button ${isActive ? 'active' : ''}`}
+        id="paste-log-buttons"
+        className={`editor-dev-buttons ${isActive ? 'active' : ''}`}
         onClick={() => {
           setIsActive(!isActive);
         }}

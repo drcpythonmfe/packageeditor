@@ -138,7 +138,7 @@ const FONT_SIZE_OPTIONS: [string, string][] = [
 ];
 
 function dropDownActiveClass(active: boolean) {
-  if (active) return 'active dropdown-item-active';
+  if (active) return 'active dropdowns-item-active';
   else return '';
 }
 
@@ -245,7 +245,7 @@ function BlockFormatDropDown({
   return (
     <DropDown
       disabled={disabled}
-      buttonClassName="toolbar-item block-controls"
+      buttonClassName="toolbar-item blocks-controls"
       buttonIconClassName={'icon block-type ' + blockType}
       buttonLabel={blockTypeToBlockName[blockType]}
       buttonAriaLabel="Formatting options for text style">
@@ -788,7 +788,7 @@ export default function ToolbarPlugin({
               buttonClassName="toolbar-item spaced"
               buttonLabel=""
               buttonAriaLabel="Formatting options for additional text styles"
-              buttonIconClassName="icon dropdown-more">
+              buttonIconClassName="icon dropdowns-more">
               <DropDownItem
                 onClick={() => {
                   activeEditor.dispatchCommand(

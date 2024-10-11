@@ -43,8 +43,8 @@ export default function Settings(): JSX.Element {
   return (
     <>
       <button
-        id="options-button"
-        className={`editor-dev-button ${showSettings ? 'active' : ''}`}
+        id="options-button text-options-button"
+        className={`editor-dev-buttons ${showSettings ? 'active' : ''}`}
         onClick={() => setShowSettings(!showSettings)}
       />
       {showSettings ? (

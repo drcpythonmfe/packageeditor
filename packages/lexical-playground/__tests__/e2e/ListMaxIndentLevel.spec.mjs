@@ -17,8 +17,8 @@ import {
 } from '../utils/index.mjs';
 
 async function toggleBulletList(page) {
-  await click(page, '.block-controls');
-  await click(page, '.dropdown .icon.bullet-list');
+  await click(page, '.blocks-controls');
+  await click(page, '.dropdowns .icon.bullet-list');
 }
 
 async function clickIndentButton(page, times = 1) {

@@ -11,8 +11,8 @@ export default function DocsPlugin(): JSX.Element {
   return (
     <a target="__blank" href="https://lexical.dev/docs/intro">
       <button
-        id="docs-button"
-        className="editor-dev-button"
+        id="docs-buttons"
+        className="editor-dev-buttons"
         title="Lexical Docs"
       />
     </a>

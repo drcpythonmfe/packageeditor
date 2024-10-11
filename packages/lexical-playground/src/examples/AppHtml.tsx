@@ -5,8 +5,6 @@ import {useState} from 'react';
 import {Editor, EditorComposer, useSyncWithInputHtml} from '../index';
 
 
-
-
 const dummyMentionsData = [
   'Aayla Secura',
   'Adi Gallia',

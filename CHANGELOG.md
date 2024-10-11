@@ -608,7 +608,7 @@ Commits:
 - chore(auto-link-plugin): fix invariant message for node registration check (#2790) Eric Charles
 - Fixing comments list scrolling issue (#2789) Ebad
 - Fix internal build error (#2787) John Flockton
-- fix: dropdown icon css (#2786) Adithya Vardhan
+- fix: dropdowns icon css (#2786) Adithya Vardhan
 - chore: Move useCollaborationContext to dedicated file (#2777) Thomas Sauques
 - chore(lexical-playground): typos, improved build (#2780) Yaroslav Kiliba
 - make importJSON static in test node (#2784) Acy Watson
@@ -625,14 +625,14 @@ Commits:
 - Fix selection format for empty paragraphs (#2759) Maksim Horbachevsky
 - Remove unused keys from evens and utils (#2763) John Flockton
 - chore: fix aria-label typo (#2762) 子瞻 Luci
-- feat: Replace select with dropdown for code (#2761) 子瞻 Luci
+- feat: Replace select with dropdowns for code (#2761) 子瞻 Luci
 - Fix typo in community page (#2760) Joshua Chen
 - Add initial editor state for collab example (#2749) Maksim Horbachevsky
 - Table of contents style improvements (#2743) Karam Qaoud
 - Highlight DOM Nodes onHover of Lexical DevTools Node (#2728) Will
 - Tighten check on top level decorator nodes (#2746) John Flockton
 - Remove unused markdown functions (#2747) John Flockton
-- feat: Replace select with dropdown for font size and font family (#2441) Adithya Vardhan
+- feat: Replace select with dropdowns for font size and font family (#2441) Adithya Vardhan
 - fix: Verify if there are text nodes before continue (#2616) Nahuel Veron
 - Convert pasted Google Docs Title text into a Heading (#2729) Acy Watson
 - Remove isCollapsed from selection onClick (#2727) John Flockton

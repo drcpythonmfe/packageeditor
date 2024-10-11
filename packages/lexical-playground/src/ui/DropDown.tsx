@@ -126,7 +126,7 @@ function DropDownItems({
 
   return (
     <DropDownContext.Provider value={contextValue}>
-      <div className="dropdown all_dropdown" ref={dropDownRef} onKeyDown={handleKeyDown}>
+      <div className="dropdowns all_dropdown" ref={dropDownRef} onKeyDown={handleKeyDown}>
         {children}
       </div>
     </DropDownContext.Provider>
@@ -228,7 +228,7 @@ export default function DropDown({
         ref={buttonRef}>
         {buttonIconClassName && <span className={buttonIconClassName} />}
         {buttonLabel && (
-          <span className="text dropdown-button-text">{buttonLabel}</span>
+          <span className="text dropdowns-button-text">{buttonLabel}</span>
         )}
         <i className="chevron-down" />
       </button>

@@ -676,7 +676,7 @@ export async function selectFromAdditionalStylesDropdown(page, selector) {
     page,
     '.toolbar-item[aria-label="Formatting options for additional text styles"]',
   );
-  await click(page, '.dropdown ' + selector);
+  await click(page, '.dropdowns ' + selector);
 }
 
 export async function selectFromBackgroundColorPicker(page) {
@@ -693,7 +693,7 @@ export async function selectFromFormatDropdown(page, selector) {
     page,
     '.toolbar-item[aria-label="Formatting options for text style"]',
   );
-  await click(page, '.dropdown ' + selector);
+  await click(page, '.dropdowns ' + selector);
 }
 
 export async function selectFromInsertDropdown(page, selector) {
@@ -701,7 +701,7 @@ export async function selectFromInsertDropdown(page, selector) {
     page,
     '.toolbar-item[aria-label="Insert specialized editor node"]',
   );
-  await click(page, '.dropdown ' + selector);
+  await click(page, '.dropdowns ' + selector);
 }
 
 export async function selectFromAlignDropdown(page, selector) {
@@ -709,7 +709,7 @@ export async function selectFromAlignDropdown(page, selector) {
     page,
     '.toolbar-item[aria-label="Formatting options for text alignment"]',
   );
-  await click(page, '.dropdown ' + selector);
+  await click(page, '.dropdowns ' + selector);
 }
 
 export async function insertTable(page) {

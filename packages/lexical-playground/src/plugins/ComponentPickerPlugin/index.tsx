@@ -379,7 +379,7 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
         ) =>
           anchorElementRef.current && options.length
             ? ReactDOM.createPortal(
-                <div className="typeahead-popover component-picker-menu">
+                <div className="typeahead-popovers component-picker-menu">
                   <ul>
                     {options.map((option, i: number) => (
                       <ComponentPickerMenuItem

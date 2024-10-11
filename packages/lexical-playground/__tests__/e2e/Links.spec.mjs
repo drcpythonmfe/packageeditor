@@ -1359,8 +1359,8 @@ test.describe('Links', () => {
 
     await page.keyboard.press('ArrowLeft');
 
-    await click(page, '.block-controls');
-    await click(page, '.dropdown .icon.h1');
+    await click(page, '.blocks-controls');
+    await click(page, '.dropdowns .icon.h1');
 
     await assertHTML(
       page,

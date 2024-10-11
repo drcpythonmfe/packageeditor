@@ -225,7 +225,7 @@ export default function Editor({
             <RichTextPlugin
               contentEditable={
                 <div className="editor-scroller">
-                  <div className="editor" ref={onRef}>
+                  <div className="editor themeeditor" ref={onRef}>
                     <ContentEditable />
                   </div>
                 </div>

@@ -27,8 +27,8 @@ test.describe('Headings', () => {
   }) => {
     await focusEditor(page);
 
-    await click(page, '.block-controls');
-    await click(page, '.dropdown .icon.h1');
+    await click(page, '.blocks-controls');
+    await click(page, '.dropdowns .icon.h1');
 
     await page.keyboard.type('Welcome to the playground');
 
@@ -64,8 +64,8 @@ test.describe('Headings', () => {
   }) => {
     await focusEditor(page);
 
-    await click(page, '.block-controls');
-    await click(page, '.dropdown .icon.h1');
+    await click(page, '.blocks-controls');
+    await click(page, '.dropdowns .icon.h1');
 
     await page.keyboard.type('Welcome to the playground');
 
@@ -108,8 +108,8 @@ test.describe('Headings', () => {
   }) => {
     await focusEditor(page);
 
-    await click(page, '.block-controls');
-    await click(page, '.dropdown .icon.h1');
+    await click(page, '.blocks-controls');
+    await click(page, '.dropdowns .icon.h1');
 
     await page.keyboard.type('Welcome to the playground');
 

@@ -298,7 +298,7 @@ export default function MentionsPlugin({ dummyMentionsDatas  }: any): JSX.Elemen
       ) =>
         anchorElementRef.current && results.length
           ? ReactDOM.createPortal(
-              <div className="typeahead-popover mentions-menu">
+              <div className="typeahead-popovers mentions-menu">
                 <ul>
                   {options.map((option, i: number) => (
                     <MentionsTypeaheadMenuItem

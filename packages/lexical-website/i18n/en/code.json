@@ -188,7 +188,7 @@
   },
   "theme.navbar.mobileVersionsDropdown.label": {
     "message": "Versions",
-    "description": "The label for the navbar versions dropdown on mobile view"
+    "description": "The label for the navbar versions dropdowns on mobile view"
   },
   "theme.common.skipToMainContent": {
     "message": "Skip to main content",
@@ -200,7 +200,7 @@
   },
   "theme.navbar.mobileLanguageDropdown.label": {
     "message": "Languages",
-    "description": "The label for the mobile language switcher dropdown"
+    "description": "The label for the mobile language switcher dropdowns"
   },
   "theme.tags.tagsListLabel": {
     "message": "Tags:",

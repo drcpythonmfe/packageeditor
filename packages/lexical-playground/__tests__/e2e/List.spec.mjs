@@ -37,18 +37,18 @@ import {
 } from '../utils/index.mjs';
 
 async function toggleBulletList(page) {
-  await click(page, '.block-controls');
-  await click(page, '.dropdown .icon.bullet-list');
+  await click(page, '.blocks-controls');
+  await click(page, '.dropdowns .icon.bullet-list');
 }
 
 async function toggleNumberedList(page) {
-  await click(page, '.block-controls');
-  await click(page, '.dropdown .icon.numbered-list');
+  await click(page, '.blocks-controls');
+  await click(page, '.dropdowns .icon.numbered-list');
 }
 
 async function toggleCheckList(page) {
-  await click(page, '.block-controls');
-  await click(page, '.dropdown .icon.check-list');
+  await click(page, '.blocks-controls');
+  await click(page, '.dropdowns .icon.check-list');
 }
 
 async function clickIndentButton(page, times = 1) {
@@ -695,7 +695,7 @@ test.describe('Nested List', () => {
   }) => {
     await focusEditor(page);
 
-    await waitForSelector(page, '.block-controls');
+    await waitForSelector(page, '.blocks-controls');
 
     await toggleBulletList(page);
 
