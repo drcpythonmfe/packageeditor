@@ -883,7 +883,7 @@ export default function ToolbarPlugin({
                 <i className="icon table" />
                 <span className="text">Table</span>
               </DropDownItem>
-              <DropDownItem
+              {/* <DropDownItem
                 onClick={() => {
                   showModal('Insert Poll', (onClose) => (
                     <InsertPollDialog
@@ -895,8 +895,8 @@ export default function ToolbarPlugin({
                 className="item">
                 <i className="icon poll" />
                 <span className="text">Poll</span>
-              </DropDownItem>
-              <DropDownItem
+              </DropDownItem> */}
+              {/* <DropDownItem
                 onClick={() => {
                   editor.update(() => {
                     const root = $getRoot();
@@ -907,7 +907,7 @@ export default function ToolbarPlugin({
                 className="item">
                 <i className="icon sticky" />
                 <span className="text">Sticky Note</span>
-              </DropDownItem>
+              </DropDownItem> */}
               <DropDownItem
                 onClick={() => {
                   editor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, undefined);

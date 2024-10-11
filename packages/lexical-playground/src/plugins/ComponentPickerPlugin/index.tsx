@@ -205,14 +205,14 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
             <InsertTableDialog activeEditor={editor} onClose={onClose} />
           )),
       }),
-      new ComponentPickerOption('Table (Experimental)', {
-        icon: <i className="icon table" />,
-        keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
-        onSelect: () =>
-          showModal('Insert Table', (onClose) => (
-            <InsertNewTableDialog activeEditor={editor} onClose={onClose} />
-          )),
-      }),
+      // new ComponentPickerOption('Table (Experimental)', {
+      //   icon: <i className="icon table" />,
+      //   keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
+      //   onSelect: () =>
+      //     showModal('Insert Table', (onClose) => (
+      //       <InsertNewTableDialog activeEditor={editor} onClose={onClose} />
+      //     )),
+      // }),
       new ComponentPickerOption('Numbered List', {
         icon: <i className="icon number" />,
         keywords: ['numbered list', 'ordered list', 'ol'],
@@ -269,14 +269,14 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
           editor.dispatchCommand(INSERT_HORIZONTAL_RULE_COMMAND, undefined),
       }),
 
-      new ComponentPickerOption('Poll', {
-        icon: <i className="icon poll" />,
-        keywords: ['poll', 'vote'],
-        onSelect: () =>
-          showModal('Insert Poll', (onClose) => (
-            <InsertPollDialog activeEditor={editor} onClose={onClose} />
-          )),
-      }),
+      // new ComponentPickerOption('Poll', {
+      //   icon: <i className="icon poll" />,
+      //   keywords: ['poll', 'vote'],
+      //   onSelect: () =>
+      //     showModal('Insert Poll', (onClose) => (
+      //       <InsertPollDialog activeEditor={editor} onClose={onClose} />
+      //     )),
+      // }),
       ...EmbedConfigs.map(
         (embedConfig) =>
           new ComponentPickerOption(`Embed ${embedConfig.contentName}`, {
@@ -286,23 +286,23 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
               editor.dispatchCommand(INSERT_EMBED_COMMAND, embedConfig.type),
           }),
       ),
-      new ComponentPickerOption('Equation', {
-        icon: <i className="icon equation" />,
-        keywords: ['equation', 'latex', 'math'],
-        onSelect: () =>
-          showModal('Insert Equation', (onClose) => (
-            <InsertEquationDialog activeEditor={editor} onClose={onClose} />
-          )),
-      }),
-      new ComponentPickerOption('GIF', {
-        icon: <i className="icon gif" />,
-        keywords: ['gif', 'animate', 'image', 'file'],
-        onSelect: () =>
-          editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
-            altText: 'Cat typing on a laptop',
-            src: '',
-          }),
-      }),
+      // new ComponentPickerOption('Equation', {
+      //   icon: <i className="icon equation" />,
+      //   keywords: ['equation', 'latex', 'math'],
+      //   onSelect: () =>
+      //     showModal('Insert Equation', (onClose) => (
+      //       <InsertEquationDialog activeEditor={editor} onClose={onClose} />
+      //     )),
+      // }),
+      // new ComponentPickerOption('GIF', {
+      //   icon: <i className="icon gif" />,
+      //   keywords: ['gif', 'animate', 'image', 'file'],
+      //   onSelect: () =>
+      //     editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
+      //       altText: 'Cat typing on a laptop',
+      //       src: '',
+      //     }),
+      // }),
       new ComponentPickerOption('Image', {
         icon: <i className="icon image" />,
         keywords: ['image', 'photo', 'picture', 'file'],
