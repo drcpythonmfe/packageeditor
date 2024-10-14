@@ -56,7 +56,7 @@ function App({
 }
 
 export default function PlaygroundApp1(): JSX.Element {
-  const [html, setHtml] = useState('<b>test</b>');
+  const [html, setHtml] = useState('<div><h3 class="TextEditor__h3"><b><strong class="TextEditor__textBold" style="font-size: 17px; background-color: rgb(208, 2, 27); color: rgb(139, 87, 42);">test</strong></b></h3></div>');
   return (
     <>
       <EditorComposer>
