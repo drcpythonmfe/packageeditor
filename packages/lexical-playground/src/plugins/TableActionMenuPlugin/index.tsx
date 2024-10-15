@@ -87,21 +87,36 @@ function TableActionMenu({
   useEffect(() => {
     const menuButtonElement = contextRef.current;
     const dropDownElement = dropDownRef.current;
+  
+    const updateDropdownPosition = () => {
+      if (menuButtonElement && dropDownElement) {
+        const menuButtonRect = menuButtonElement.getBoundingClientRect();
+        dropDownElement.style.opacity = '1';
+  
+        dropDownElement.style.left = `${
+          menuButtonRect.left + menuButtonRect.width + window.pageXOffset + 5
+        }px`;
+  
+        dropDownElement.style.top = `${
+          menuButtonRect.top + window.pageYOffset
+        }px`;
+      }
+    };
+  
 
-    if (menuButtonElement != null && dropDownElement != null) {
-      const menuButtonRect = menuButtonElement.getBoundingClientRect();
-
-      dropDownElement.style.opacity = '1';
-
-      dropDownElement.style.left = `${
-        menuButtonRect.left + menuButtonRect.width + window.pageXOffset + 5
-      }px`;
-
-      dropDownElement.style.top = `${
-        menuButtonRect.top + window.pageYOffset
-      }px`;
-    }
+    updateDropdownPosition();
+  
+    const handleScroll = () => {
+      updateDropdownPosition();
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+  
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [contextRef, dropDownRef]);
+  
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

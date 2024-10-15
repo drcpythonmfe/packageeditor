@@ -846,7 +846,7 @@ export default function ToolbarPlugin({
               buttonLabel="Insert"
               buttonAriaLabel="Insert specialized editor node"
               buttonIconClassName="icon plus">
-              <DropDownItem
+              {/* <DropDownItem
                 onClick={() => {
                   activeEditor.dispatchCommand(
                     INSERT_HORIZONTAL_RULE_COMMAND,
@@ -856,7 +856,7 @@ export default function ToolbarPlugin({
                 className="item">
                 <i className="icon horizontal-rule" />
                 <span className="text">Horizontal Rule</span>
-              </DropDownItem>
+              </DropDownItem> */}
               <DropDownItem
                 onClick={() => {
                   showModal('Insert Image', (onClose) => (

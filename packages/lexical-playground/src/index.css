@@ -426,6 +426,7 @@ i.chevron-down {
 
 .editor-scroller {
   min-height: 150px;
+  max-height: 150px;
   border: 0;
   resize: none;
   cursor: text;
@@ -845,6 +846,7 @@ pre::-webkit-scrollbar-thumb {
 .all_dropdown{
   position: fixed !important;
 }
+
 
 .dropdowns .item {
   margin: 0 8px 0 8px;
@@ -1753,6 +1755,9 @@ hr{
   box-shadow: 0px 0px 3px rgb(255 255 255 / 30%);
 }
 
+
+
+
 .theme-dark .editor-shell .toolbar{
   background-color: #1e2022;
   box-shadow: 0px 0px 3px rgb(255 255 255 / 30%);
@@ -1864,4 +1869,17 @@ hr{
 
 hr{
   padding: 0px !important
+}
+
+.nogridview ul {
+  grid-template-columns: repeat(1,1fr);
+}
+
+
+span[data-lexical-mention="true"] {
+  background-color: rgba(24, 119, 232, 0.2);
+}
+
+.dropdown1{
+  background:white
 }
