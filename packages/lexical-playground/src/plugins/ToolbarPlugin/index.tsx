@@ -369,10 +369,12 @@ function FontDropDown({
 
 export type ToolbarPluginProps = {
   config: ToolbarConfig;
+  handleClick?: ((data: any) => void | undefined | any) | undefined;
 };
 
 export default function ToolbarPlugin({
   config,
+  handleClick,
 }: ToolbarPluginProps): JSX.Element {
   const normFontFamilyOption = Array.isArray(config.fontFamilyOptions)
     ? config.fontFamilyOptions
@@ -703,6 +705,7 @@ export default function ToolbarPlugin({
                 }`}>
                 <i className="format bold" />
               </button>
+
               <button
                 disabled={!isEditable}
                 onClick={() => {
@@ -760,6 +763,7 @@ export default function ToolbarPlugin({
               <i className="format link" />
             </button>
           )}
+
           {config.textColorPicker && (
             <ColorPicker
               disabled={!isEditable}
@@ -838,7 +842,21 @@ export default function ToolbarPlugin({
               </DropDownItem>
             </DropDown>
           )}
+          {handleClick && (
+            <>
+              <label htmlFor="file-upload" className="custom-file-uploads">
+                Video Upload
+              </label>
+              <input
+                id="file-upload"
+                onChange={handleClick}
+                className="textfileupload"
+                type="file"
+              />
+            </>
+          )}
           <Divider />
+
           {config?.insertOptions && (
             <DropDown
               disabled={!isEditable}
@@ -870,6 +888,7 @@ export default function ToolbarPlugin({
                 <i className="icon image" />
                 <span className="text">Image</span>
               </DropDownItem>
+
               <DropDownItem
                 onClick={() => {
                   showModal('Insert Table', (onClose) => (

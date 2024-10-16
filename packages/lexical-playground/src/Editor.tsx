@@ -72,7 +72,8 @@ import YouTubePlugin from './plugins/YouTubePlugin';
 import ContentEditable from './ui/ContentEditable';
 import Placeholder from './ui/Placeholder';
 import joinClasses from './utils/joinClasses';
-import VideoPlugin from './plugins/VideoPlugin';
+import VideoPlugin, {INSERT_VIDEO_COMMAND} from './plugins/VideoPlugin';
+import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 const skipCollaborationInit =
   // @ts-ignore
@@ -95,6 +96,7 @@ export type EditorProps = {
   onChangeMode?: 'html' | 'json';
   toolbarConfig?: ToolbarConfig;
   onUpload?: OnImageUpload;
+  onDataSend?: ((data: any) => void | undefined | any) | undefined;
   rootClassName?: string;
   containerClassName?: string;
   dummyMentionsDatas?: string[];
@@ -127,10 +129,11 @@ export default function Editor({
   onChange,
   onChangeMode = 'json',
   onUpload,
+  onDataSend,
   toolbarConfig,
   rootClassName,
   containerClassName,
-  dummyMentionsDatas
+  dummyMentionsDatas,
 }: EditorProps): JSX.Element {
   const {historyState} = useSharedHistoryContext();
   const text = isCollab
@@ -149,7 +152,7 @@ export default function Editor({
       setFloatingAnchorElem(_floatingAnchorElem);
     }
   };
-
+  const [editor] = useLexicalComposerContext();
   const editorContext = useEditorComposerContext();
 
   const normToolbarConfig = useMemo(
@@ -174,6 +177,34 @@ export default function Editor({
     };
   }, [isSmallWidthViewport]);
 
+  const handleClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      if (onDataSend) {
+        onDataSend(selectedFile).then((res: any) => {
+          const parts = res.split('.');
+          const extension = parts[parts.length - 1].toLowerCase();
+          const validVideoTypes = [
+            'mp4',
+            'webm',
+            'mov',
+            'avi',
+            'flv',
+            'mkv',
+            'wmv',
+          ];
+
+          if (validVideoTypes.includes(extension)) {
+            editor.dispatchCommand(INSERT_VIDEO_COMMAND, res);
+            return;
+          }
+        });
+      } else {
+        console.error('onDataSend function is not defined');
+      }
+    }
+  };
+
   return (
     <div className={joinClasses('editor-shell', rootClassName)}>
       <div
@@ -185,10 +216,10 @@ export default function Editor({
         <AutoFocusPlugin />
         <ClearEditorPlugin />
         <CommentPlugin />
-        <ComponentPickerPlugin /> 
+        <ComponentPickerPlugin />
         <EmojiPickerPlugin />
         <AutoEmbedPlugin />
-        <MentionsPlugin dummyMentionsDatas={dummyMentionsDatas}  />
+        <MentionsPlugin dummyMentionsDatas={dummyMentionsDatas} />
         <EmojisPlugin />
         <HashtagPlugin />
         <KeywordsPlugin />
@@ -290,7 +321,7 @@ export default function Editor({
         <div>{showTableOfContents && <TableOfContentsPlugin />}</div>
         <ActionsPlugin isRichText={isRichText} />
       </div>
-      {isRichText && <ToolbarPlugin config={normToolbarConfig} />}
+      {isRichText && <ToolbarPlugin config={normToolbarConfig} handleClick={handleClick} />}
       {showTreeView && <TreeViewPlugin />}
     </div>
   );

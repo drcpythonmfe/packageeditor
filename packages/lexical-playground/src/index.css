@@ -1888,3 +1888,17 @@ span[data-lexical-mention="true"] {
 .dropdown1{
   background:white
 }
+
+
+/*  */
+
+.textfileupload {
+  display: none;
+}
+
+.custom-file-uploads {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}

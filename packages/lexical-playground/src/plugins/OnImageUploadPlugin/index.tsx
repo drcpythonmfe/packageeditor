@@ -11,7 +11,6 @@ import {type LexicalEditor, $getNodeByKey} from 'lexical';
 import {useEffect} from 'react';
 
 import {$isImageNode, ImageNode} from '../../nodes/ImageNode';
-import { INSERT_VIDEO_COMMAND } from '../VideoPlugin';
 
 export type OnImageUpload = (img: File, altText: string) => Promise<string>;
 
