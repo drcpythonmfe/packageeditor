@@ -26,6 +26,7 @@ import {DialogActions} from '../../ui/Dialog';
 import {INSERT_FIGMA_COMMAND} from '../FigmaPlugin';
 import {INSERT_TWEET_COMMAND} from '../TwitterPlugin';
 import {INSERT_YOUTUBE_COMMAND} from '../YouTubePlugin';
+import { INSERT_VIDEO_COMMAND } from '../VideoPlugin';
 
 interface PlaygroundEmbedConfig extends EmbedConfig {
   // Human readable name of the embeded content e.g. Tweet or Google Map.
@@ -76,6 +77,40 @@ export const YoutubeEmbedConfig: PlaygroundEmbedConfig = {
   },
 
   type: 'youtube-video',
+};
+
+
+export const VideoEmbedConfig: PlaygroundEmbedConfig = {
+  contentName: 'Video',
+
+  exampleUrl: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+
+  // Icon for display.
+  icon: <i className="icon videos" />,
+
+  insertNode: (editor: LexicalEditor, result: EmbedMatchResult) => {
+    console.log("result.id" ,result)
+    editor.dispatchCommand(INSERT_VIDEO_COMMAND, result.url);
+  },
+
+  keywords: ["mp4" ,'video'],
+
+  // Determine if a given URL is a match and return url data.
+
+  parseUrl: async (url: string) => {
+    console.log(url)
+
+    if (url != null) {
+      return {
+        id : "",
+        url,
+      };
+    }
+
+    return null;
+  },
+
+  type: 'video',
 };
 
 export const TwitterEmbedConfig: PlaygroundEmbedConfig = {
@@ -150,6 +185,7 @@ export const EmbedConfigs = [
   // TwitterEmbedConfig,
   YoutubeEmbedConfig,
   // FigmaEmbedConfig,
+  VideoEmbedConfig,
 ];
 
 function AutoEmbedMenuItem({

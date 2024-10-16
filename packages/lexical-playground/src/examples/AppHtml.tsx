@@ -56,7 +56,14 @@ function App({
 }
 
 export default function PlaygroundApp1(): JSX.Element {
-  const [html, setHtml] = useState('<div><p class="TextEditor__paragraph"><span data-lexical-mention="true">Admiral Firmus Piett</span><span> </span></p></div>');
+ let data = `
+ 
+ <div>
+ <iframe data-lexical-video="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" width="560" height="315" src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" title="video"></iframe>
+ </div>
+ `
+
+  const [html, setHtml] = useState(data);
   return (
     <>
       <EditorComposer>

@@ -72,6 +72,7 @@ import YouTubePlugin from './plugins/YouTubePlugin';
 import ContentEditable from './ui/ContentEditable';
 import Placeholder from './ui/Placeholder';
 import joinClasses from './utils/joinClasses';
+import VideoPlugin from './plugins/VideoPlugin';
 
 const skipCollaborationInit =
   // @ts-ignore
@@ -246,6 +247,7 @@ export default function Editor({
             <PollPlugin />
             <TwitterPlugin />
             <YouTubePlugin />
+            <VideoPlugin />
             <FigmaPlugin />
             <ClickableLinkPlugin />
             <HorizontalRulePlugin />

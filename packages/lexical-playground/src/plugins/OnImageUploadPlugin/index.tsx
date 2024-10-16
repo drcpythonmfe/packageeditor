@@ -11,6 +11,7 @@ import {type LexicalEditor, $getNodeByKey} from 'lexical';
 import {useEffect} from 'react';
 
 import {$isImageNode, ImageNode} from '../../nodes/ImageNode';
+import { INSERT_VIDEO_COMMAND } from '../VideoPlugin';
 
 export type OnImageUpload = (img: File, altText: string) => Promise<string>;
 
@@ -47,17 +48,29 @@ export default function OnImageUploadPlugin({
                   (async () => {
                     try {
                       const imgUrl = await onUpload(file, altText);
-                      const preloadImage = new Image();
-                      preloadImage.onload = () => {
-                        editor.update(() => {
-                          imageNode.setFile(undefined);
-                          imageNode.setSrc(imgUrl);
-                        });
-                      };
-                      preloadImage.onerror = () => {
-                        removeNode(editor, imageNode);
-                      };
-                      preloadImage.src = imgUrl;
+
+                      const parts = imgUrl.split('.');
+                      const extension = parts[parts.length - 1].toLowerCase();
+                      const validImageTypes = ['jpg', 'jpeg', 'png'];
+                      const validVideoTypes = ['mp4', 'webm', 'mov', 'avi', 'flv', 'mkv', 'wmv'];
+
+                      
+                      if (validImageTypes.includes(extension)) {
+                        const preloadImage = new Image();
+                        preloadImage.onload = () => {
+                          editor.update(() => {
+                            imageNode.setFile(undefined);
+                            imageNode.setSrc(imgUrl);
+                          });
+                        };
+                        preloadImage.onerror = () => {
+                          removeNode(editor, imageNode);
+                        };
+                        preloadImage.src = imgUrl;
+                      } else if (validVideoTypes.includes(extension)) {
+                        editor.dispatchCommand(INSERT_VIDEO_COMMAND, imgUrl);
+                      } 
+                    
                     } catch (e) {
                       removeNode(editor, imageNode);
                     }

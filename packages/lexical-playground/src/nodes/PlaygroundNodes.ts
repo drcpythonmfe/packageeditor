@@ -34,6 +34,7 @@ import {TweetNode} from './TweetNode';
 import {YouTubeNode} from './YouTubeNode';
 import { ExcalidrawNode } from './ExcalidrawNode';
 import { ExtendedTextNode } from './ExtendedTextNode';
+import { VideoNode } from './VideoNode';
 
 const PlaygroundNodes: Array<Klass<LexicalNode>> = [
   HeadingNode,
@@ -66,6 +67,7 @@ const PlaygroundNodes: Array<Klass<LexicalNode>> = [
   CollapsibleContentNode,
   CollapsibleTitleNode,
   ExtendedTextNode,
+  VideoNode,
 ];
 
 export default PlaygroundNodes;

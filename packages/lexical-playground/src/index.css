@@ -185,6 +185,11 @@ i.prettier-error {
 }
 
 
+i.videos{
+  background-image: url(images/icons/videos.svg);
+
+}
+
 
 #text-options-button::after {
   background-image: url(images/icons/gear.svg);
