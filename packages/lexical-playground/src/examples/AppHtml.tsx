@@ -63,7 +63,7 @@ export default function PlaygroundApp1(): JSX.Element {
  </div>
  `
 
-  const [html, setHtml] = useState(data);
+  const [html, setHtml] = useState(``);
   return (
     <>
       <EditorComposer>

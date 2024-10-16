@@ -118,7 +118,7 @@ export function InsertImageUploadedDialogBody({
       <FileInput
         label="Image Upload"
         onChange={loadImage}
-        accept="image/*,video/*"
+        accept="image/*"
         data-test-id="image-modal-file-upload"
       />
       <TextInput
