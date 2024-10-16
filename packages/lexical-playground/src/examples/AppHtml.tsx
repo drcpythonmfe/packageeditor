@@ -30,7 +30,7 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout
 const uploadImg = async (file: File, altText: string) => {
   console.log("file",file)
   await delay(500);
-  return `https://placehold.co/300x300?text=${altText}`;
+  return `https://media.stage.truflux.drcsystems.ooo/uploads/project/372/2024-09-16_13-38-11_1.mp4`;
 };
 
 function App({
