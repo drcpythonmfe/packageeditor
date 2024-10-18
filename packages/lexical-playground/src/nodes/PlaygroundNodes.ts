@@ -23,18 +23,20 @@ import {CollapsibleContentNode} from '../plugins/CollapsiblePlugin/CollapsibleCo
 import {CollapsibleTitleNode} from '../plugins/CollapsiblePlugin/CollapsibleTitleNode';
 import {AutocompleteNode} from './AutocompleteNode';
 import {EmojiNode} from './EmojiNode';
+import { ExtendedTextNode } from './ExtendedTextNode';
 import {FigmaNode} from './FigmaNode';
 import {ImageNode} from './ImageNode';
 import {KeywordNode} from './KeywordNode';
 import {MentionNode} from './MentionNode';
+import { OfficeNode } from './OfficeNode';
+import { PdfNode } from './PdfNode';
 import {PollNode} from './PollNode';
 import {StickyNode} from './StickyNode';
 import {TableNode as NewTableNode} from './TableNode';
 import {TweetNode} from './TweetNode';
-import {YouTubeNode} from './YouTubeNode';
-import { ExcalidrawNode } from './ExcalidrawNode';
-import { ExtendedTextNode } from './ExtendedTextNode';
 import { VideoNode } from './VideoNode';
+import {YouTubeNode} from './YouTubeNode';
+
 
 const PlaygroundNodes: Array<Klass<LexicalNode>> = [
   HeadingNode,
@@ -68,6 +70,8 @@ const PlaygroundNodes: Array<Klass<LexicalNode>> = [
   CollapsibleTitleNode,
   ExtendedTextNode,
   VideoNode,
+  PdfNode,
+  OfficeNode
 ];
 
 export default PlaygroundNodes;

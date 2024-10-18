@@ -24,9 +24,11 @@ import useModal from '../../hooks/useModal';
 import Button from '../../ui/Button';
 import {DialogActions} from '../../ui/Dialog';
 import {INSERT_FIGMA_COMMAND} from '../FigmaPlugin';
+import { INSERT_OFFICE_COMMAND } from '../OfficePlugin';
+import { INSERT_PDF_COMMAND } from '../PdfPlugin';
 import {INSERT_TWEET_COMMAND} from '../TwitterPlugin';
-import {INSERT_YOUTUBE_COMMAND} from '../YouTubePlugin';
 import { INSERT_VIDEO_COMMAND } from '../VideoPlugin';
+import {INSERT_YOUTUBE_COMMAND} from '../YouTubePlugin';
 
 interface PlaygroundEmbedConfig extends EmbedConfig {
   // Human readable name of the embeded content e.g. Tweet or Google Map.
@@ -113,6 +115,66 @@ export const VideoEmbedConfig: PlaygroundEmbedConfig = {
   type: 'video',
 };
 
+export const PdfEmbedConfig: PlaygroundEmbedConfig = {
+  contentName: 'Pdf',
+
+  exampleUrl: 'https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210101201653/PDF.pdf',
+
+  // Icon for display.
+  icon: <i className="icon pdf" />,
+
+  insertNode: (editor: LexicalEditor, result: EmbedMatchResult) => {
+    editor.dispatchCommand(INSERT_PDF_COMMAND, result.url);
+  },
+
+  keywords: ['pdf'],
+
+  // Determine if a given URL is a match and return url data.
+  parseUrl: async (url: string) => {
+
+    if (url != null) {
+      return {
+        id : "",
+        url,
+      };
+    }
+
+    return null;
+  },
+
+  type: 'pdf',
+};
+
+export const OfficeEmbedConfig: PlaygroundEmbedConfig = {
+  contentName: 'Office',
+
+  exampleUrl: 'https://media.stage.truflux.drcsystems.ooo/uploads/project/294/Timesheet%20report%20_1_.xlsx',
+
+  // Icon for display.
+  icon: <i className="icon office" />,
+
+  insertNode: (editor: LexicalEditor, result: EmbedMatchResult) => {
+    editor.dispatchCommand(INSERT_OFFICE_COMMAND, result.url);
+  },
+
+  keywords: ['office'],
+
+  // Determine if a given URL is a match and return url data.
+  parseUrl: async (url: string) => {
+
+    if (url != null) {
+      return {
+        id : "",
+        url,
+      };
+    }
+
+    return null;
+  },
+
+  type: 'office',
+};
+
 export const TwitterEmbedConfig: PlaygroundEmbedConfig = {
   // e.g. Tweet or Google Map.
   contentName: 'Tweet',
@@ -186,6 +248,8 @@ export const EmbedConfigs = [
   YoutubeEmbedConfig,
   // FigmaEmbedConfig,
   VideoEmbedConfig,
+  PdfEmbedConfig,
+  OfficeEmbedConfig
 ];
 
 function AutoEmbedMenuItem({

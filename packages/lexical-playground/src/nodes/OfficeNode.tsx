@@ -25,7 +25,7 @@ import {
 } from '@lexical/react/LexicalDecoratorBlockNode';
 import * as React from 'react';
 
-type VideoComponentProps = Readonly<{
+type OfficeComponentProps = Readonly<{
   className: Readonly<{
     base: string;
     focus: string;
@@ -35,71 +35,68 @@ type VideoComponentProps = Readonly<{
   url: string;
 }>;
 
-function VideoComponent({
+function OfficeComponent({
   className,
   format,
   nodeKey,
   url,
-}: VideoComponentProps) {
+}: OfficeComponentProps) {
   return (
     <BlockWithAlignableContents
       className={className}
       format={format}
       nodeKey={nodeKey}>
       <iframe
-        width="560"
-        height="315"
-        src={url}
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen={true}
-        title="Video"
+        width="800"
+        height="500"
+        className="office"
+        src={`https://view.officeapps.live.com/op/embed.aspx?src=${url}`}
       />
     </BlockWithAlignableContents>
   );
 }
 
-export type SerializedVideoNode = Spread<
+export type SerializedOfficeNode = Spread<
   {
     url: string;
-    type: 'video';
+    type: 'office';
     version: 1;
   },
   SerializedDecoratorBlockNode
 >;
 
-function convertVideoElement(
+function convertOfficeElement(
   domNode: HTMLElement,
 ): null | DOMConversionOutput {
-  const url = domNode.getAttribute('data-lexical-video');
+  const url = domNode.getAttribute('data-lexical-office');
   if (url) {
-    const node = $createVideoNode(url);
+    const node = $createOfficeNode(url);
     return {node};
   }
   return null;
 }
 
-export class VideoNode extends DecoratorBlockNode {
+export class OfficeNode extends DecoratorBlockNode {
   __url: string;
 
   static getType(): string {
-    return 'video';
+    return 'office';
   }
 
-  static clone(node: VideoNode): VideoNode {
-    return new VideoNode(node.__url, node.__format, node.__key);
+  static clone(node: OfficeNode): OfficeNode {
+    return new OfficeNode(node.__url, node.__format, node.__key);
   }
 
-  static importJSON(serializedNode: SerializedVideoNode): VideoNode {
-    const node = $createVideoNode(serializedNode.url);
+  static importJSON(serializedNode: SerializedOfficeNode): OfficeNode {
+    const node = $createOfficeNode(serializedNode.url);
     node.setFormat(serializedNode.format);
     return node;
   }
 
-  exportJSON(): SerializedVideoNode {
+  exportJSON(): SerializedOfficeNode {
     return {
       ...super.exportJSON(),
-      type: 'video',
+      type: 'office',
       url: this.__url,
       version: 1,
     };
@@ -112,28 +109,22 @@ export class VideoNode extends DecoratorBlockNode {
 
   exportDOM(): DOMExportOutput {
     const element = document.createElement('iframe');
-    element.setAttribute('data-lexical-video', this.__url);
-    element.setAttribute('width', '560');
-    element.setAttribute('height', '315');
-    element.setAttribute('src', `${this.__url}`);
-    element.setAttribute('frameborder', '0');
-    element.setAttribute(
-      'allow',
-      'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
-    );
-    element.setAttribute('allowfullscreen', 'true');
-    element.setAttribute('title', 'Video');
+    element.setAttribute('data-lexical-office', this.__url);
+    element.setAttribute('width', '800');
+    element.setAttribute('height', '500');
+    element.setAttribute('src', `https://view.officeapps.live.com/op/embed.aspx?src=${this.__url}`);
+    element.setAttribute('class', 'office');
     return {element};
   }
 
   static importDOM(): DOMConversionMap | null {
     return {
       iframe: (domNode: HTMLElement) => {
-        if (!domNode.hasAttribute('data-lexical-video')) {
+        if (!domNode.hasAttribute('data-lexical-office')) {
           return null;
         }
         return {
-          conversion: convertVideoElement,
+          conversion: convertOfficeElement,
           priority: 1,
         };
       },
@@ -162,7 +153,7 @@ export class VideoNode extends DecoratorBlockNode {
       focus: embedBlockTheme.focus || '',
     };
     return (
-      <VideoComponent
+      <OfficeComponent
         className={className}
         format={this.__format}
         nodeKey={this.getKey()}
@@ -176,12 +167,12 @@ export class VideoNode extends DecoratorBlockNode {
   }
 }
 
-export function $createVideoNode(url: string): VideoNode {
-  return new VideoNode(url);
+export function $createOfficeNode(url: string): OfficeNode {
+  return new OfficeNode(url);
 }
 
-export function $isVideoNode(
-  node: VideoNode | LexicalNode | null | undefined,
-): node is VideoNode {
-  return node instanceof VideoNode;
+export function $isOfficeNode(
+  node: OfficeNode | LexicalNode | null | undefined,
+): node is OfficeNode {
+  return node instanceof OfficeNode;
 }

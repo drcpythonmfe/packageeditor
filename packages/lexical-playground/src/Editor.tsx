@@ -15,6 +15,7 @@ import {CharacterLimitPlugin} from '@lexical/react/LexicalCharacterLimitPlugin';
 import {CheckListPlugin} from '@lexical/react/LexicalCheckListPlugin';
 import {ClearEditorPlugin} from '@lexical/react/LexicalClearEditorPlugin';
 import {CollaborationPlugin} from '@lexical/react/LexicalCollaborationPlugin';
+import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import {HashtagPlugin} from '@lexical/react/LexicalHashtagPlugin';
 import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
@@ -56,9 +57,11 @@ import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
 import MarkdownShortcutPlugin from './plugins/MarkdownShortcutPlugin';
 import {MaxLengthPlugin} from './plugins/MaxLengthPlugin';
 import MentionsPlugin from './plugins/MentionsPlugin';
+import OfficePlugin, {INSERT_OFFICE_COMMAND} from './plugins/OfficePlugin';
 import OnImageUploadPlugin, {
   type OnImageUpload,
 } from './plugins/OnImageUploadPlugin';
+import PdfPlugin, {INSERT_PDF_COMMAND} from './plugins/PdfPlugin';
 import PollPlugin from './plugins/PollPlugin';
 import SpeechToTextPlugin from './plugins/SpeechToTextPlugin';
 import TabFocusPlugin from './plugins/TabFocusPlugin';
@@ -68,12 +71,11 @@ import TableOfContentsPlugin from './plugins/TableOfContentsPlugin';
 import ToolbarPlugin from './plugins/ToolbarPlugin';
 import TreeViewPlugin from './plugins/TreeViewPlugin';
 import TwitterPlugin from './plugins/TwitterPlugin';
+import VideoPlugin, {INSERT_VIDEO_COMMAND} from './plugins/VideoPlugin';
 import YouTubePlugin from './plugins/YouTubePlugin';
 import ContentEditable from './ui/ContentEditable';
 import Placeholder from './ui/Placeholder';
 import joinClasses from './utils/joinClasses';
-import VideoPlugin, {INSERT_VIDEO_COMMAND} from './plugins/VideoPlugin';
-import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 const skipCollaborationInit =
   // @ts-ignore
@@ -194,8 +196,28 @@ export default function Editor({
             'wmv',
           ];
 
+          const validPdfTypes = [
+            'pdf'
+          ]
+
+          const validOfficeTypes = [
+            'xlsx',
+            'docx',
+            'pptx',
+          ]
+
           if (validVideoTypes.includes(extension)) {
             editor.dispatchCommand(INSERT_VIDEO_COMMAND, res);
+            return;
+          }
+
+          if (validPdfTypes.includes(extension)) {
+            editor.dispatchCommand(INSERT_PDF_COMMAND, res);
+            return;
+          }
+
+          if (validOfficeTypes.includes(extension)) {
+            editor.dispatchCommand(INSERT_OFFICE_COMMAND, res);
             return;
           }
         });
@@ -279,6 +301,8 @@ export default function Editor({
             <TwitterPlugin />
             <YouTubePlugin />
             <VideoPlugin />
+            <PdfPlugin />
+            <OfficePlugin />
             <FigmaPlugin />
             <ClickableLinkPlugin />
             <HorizontalRulePlugin />
