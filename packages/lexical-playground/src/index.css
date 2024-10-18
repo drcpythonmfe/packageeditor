@@ -190,11 +190,11 @@ i.videos{
 }
 
 i.pdf{
-  background-image: url(images/icons/videos.svg);
+  background-image: url(images/icons/pdfs.svg);
 }
 
 i.office{
-  background-image: url(images/icons/videos.svg);
+  background-image: url(images/icons/offices.svg);
 }
 
 
@@ -1905,6 +1905,6 @@ span[data-lexical-mention="true"] {
 
 .custom-file-uploads {
   display: inline-block;
-  padding: 6px 12px;
+  padding: 10px 5px;
   cursor: pointer;
 }

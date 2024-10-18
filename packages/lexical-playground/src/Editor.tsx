@@ -184,8 +184,8 @@ export default function Editor({
     if (selectedFile) {
       if (onDataSend) {
         onDataSend(selectedFile).then((res: any) => {
-          const parts = res.split('.');
-          const extension = parts[parts.length - 1].toLowerCase();
+          const parts = res?.split('.');
+          const extension = parts[parts.length - 1]?.toLowerCase();
           const validVideoTypes = [
             'mp4',
             'webm',
@@ -204,6 +204,8 @@ export default function Editor({
             'xlsx',
             'docx',
             'pptx',
+            'csv',
+            'ods',
           ]
 
           if (validVideoTypes.includes(extension)) {
