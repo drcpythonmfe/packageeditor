@@ -41,17 +41,29 @@ function PdfComponent({
   nodeKey,
   url,
 }: PdfComponentProps) {
+  const pdfName = url.split('/').pop() || 'Open PDF'; // Extract PDF name from URL
+  const buttonStyle = {
+    backgroundColor: '#8c74f7',
+    borderRadius: '20px',
+    color: 'white',
+    display: 'inline-block',
+    fontFamily: 'Arial, sans-serif', 
+    fontSize: '14px', 
+    fontWeight: 'bold',
+    padding: '10px 20px',
+    textDecoration: 'none',
+    transition: 'background-color 0.3s ease',
+  };
+
   return (
     <BlockWithAlignableContents
       className={className}
       format={format}
-      nodeKey={nodeKey}>
-      <embed
-        width="800"
-        height="500"
-        className="pdf"
-        src={url}
-      />
+      nodeKey={nodeKey}
+    >
+      <a href={url} target="_blank" rel="noopener noreferrer" style={buttonStyle}>
+        {pdfName}
+      </a>
     </BlockWithAlignableContents>
   );
 }
@@ -108,13 +120,26 @@ export class PdfNode extends DecoratorBlockNode {
   }
 
   exportDOM(): DOMExportOutput {
-    const element = document.createElement('embed');
-    element.setAttribute('data-lexical-pdf', this.__url);
-    element.setAttribute('width', '800');
-    element.setAttribute('height', '500');
-    element.setAttribute('src', `${this.__url}`);
-    element.setAttribute('class', 'pdf');
-    return {element};
+    // Create the button element
+    const a = document.createElement('a');
+
+    a.textContent = this.__url.split('/').pop() || 'Open PDF';
+
+    a.style.display='inline-block';
+    a.style.padding='10px 20px';
+    a.style.backgroundColor='#8c74f7';
+    a.style.color='white';
+    a.style.textDecoration='none';
+    a.style.borderRadius='20px';
+    a.style.fontFamily='Arial, sans-serif';
+    a.style.fontSize='14px';
+    a.style.fontWeight='bold';
+
+    a.href=this.__url;
+
+    a.setAttribute('target','_blank')
+
+    return { element: a };
   }
 
   static importDOM(): DOMConversionMap | null {

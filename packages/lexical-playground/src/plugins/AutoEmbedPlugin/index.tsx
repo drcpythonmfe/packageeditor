@@ -85,26 +85,29 @@ export const YoutubeEmbedConfig: PlaygroundEmbedConfig = {
 export const VideoEmbedConfig: PlaygroundEmbedConfig = {
   contentName: 'Video',
 
-  exampleUrl: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+  exampleUrl:
+    'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
 
   // Icon for display.
   icon: <i className="icon videos" />,
 
   insertNode: (editor: LexicalEditor, result: EmbedMatchResult) => {
-    console.log("result.id" ,result)
     editor.dispatchCommand(INSERT_VIDEO_COMMAND, result.url);
   },
 
-  keywords: ["mp4" ,'video'],
+  keywords: ['mp4', 'webm', 'mov', 'avi', 'flv', 'mkv', 'wmv', 'video'],
 
   // Determine if a given URL is a match and return url data.
 
   parseUrl: async (url: string) => {
-    console.log(url)
+    const parts = url?.split('.');
+    const extension = parts[parts.length - 1]?.toLowerCase();
 
-    if (url != null) {
+    const validVideoTypes = ['mp4', 'webm', 'mov', 'avi', 'flv', 'mkv', 'wmv'];
+
+    if (validVideoTypes.includes(extension) && url != null) {
       return {
-        id : "",
+        id: '',
         url,
       };
     }
@@ -131,10 +134,16 @@ export const PdfEmbedConfig: PlaygroundEmbedConfig = {
 
   // Determine if a given URL is a match and return url data.
   parseUrl: async (url: string) => {
+    const parts = url?.split('.');
+    const extension = parts[parts.length - 1]?.toLowerCase();
 
-    if (url != null) {
+    const validPdfTypes = [
+      'pdf'
+    ]
+
+    if (validPdfTypes.includes(extension) && url != null) {
       return {
-        id : "",
+        id : '',
         url,
       };
     }
@@ -148,7 +157,8 @@ export const PdfEmbedConfig: PlaygroundEmbedConfig = {
 export const OfficeEmbedConfig: PlaygroundEmbedConfig = {
   contentName: 'Office',
 
-  exampleUrl: 'https://media.stage.truflux.drcsystems.ooo/uploads/project/294/Timesheet%20report%20_1_.xlsx',
+  exampleUrl:
+    'https://media.stage.truflux.drcsystems.ooo/uploads/project/294/Timesheet%20report%20_1_.xlsx',
 
   // Icon for display.
   icon: <i className="icon office" />,
@@ -157,14 +167,18 @@ export const OfficeEmbedConfig: PlaygroundEmbedConfig = {
     editor.dispatchCommand(INSERT_OFFICE_COMMAND, result.url);
   },
 
-  keywords: ['office'],
+  keywords: ['office', 'xlsx', 'docx', 'pptx', 'csv', 'ods'],
 
   // Determine if a given URL is a match and return url data.
   parseUrl: async (url: string) => {
+    const parts = url?.split('.');
+    const extension = parts[parts.length - 1]?.toLowerCase();
 
-    if (url != null) {
+    const validOfficeTypes = ['xlsx', 'docx', 'pptx', 'csv', 'ods'];
+
+    if (validOfficeTypes.includes(extension) && url != null) {
       return {
-        id : "",
+        id: '',
         url,
       };
     }

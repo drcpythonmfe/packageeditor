@@ -41,6 +41,33 @@ function OfficeComponent({
   nodeKey,
   url,
 }: OfficeComponentProps) {
+  const docName = url.split('/').pop() || 'Open Document'; // Extract Document name from URL
+  const buttonStyle = {
+    backgroundColor: '#8c74f7',
+    borderRadius: '20px',
+    color: 'white',
+    display: 'inline-block',
+    fontFamily: 'Arial, sans-serif', 
+    fontSize: '14px', 
+    fontWeight: 'bold',
+    padding: '10px 20px',
+    textDecoration: 'none',
+    transition: 'background-color 0.3s ease',
+  };
+
+  return (
+    <BlockWithAlignableContents
+      className={className}
+      format={format}
+      nodeKey={nodeKey}
+    >
+      <a href={`https://view.officeapps.live.com/op/view.aspx?src=${url}`} target="_blank" rel="noopener noreferrer" style={buttonStyle}>
+        {docName}
+      </a>
+    </BlockWithAlignableContents>
+  );
+
+
   return (
     <BlockWithAlignableContents
       className={className}
@@ -108,6 +135,29 @@ export class OfficeNode extends DecoratorBlockNode {
   }
 
   exportDOM(): DOMExportOutput {
+        
+  
+    // Create the button element
+    const a = document.createElement('a');
+
+    a.textContent = this.__url.split('/').pop() || 'Open Document';
+
+    a.style.display='inline-block';
+    a.style.padding='10px 20px';
+    a.style.backgroundColor='#8c74f7';
+    a.style.color='white';
+    a.style.textDecoration='none';
+    a.style.borderRadius='20px';
+    a.style.fontFamily='Arial, sans-serif';
+    a.style.fontSize='14px';
+    a.style.fontWeight='bold';
+
+    a.href=`https://view.officeapps.live.com/op/embed.aspx?src=${this.__url}`;
+
+    a.setAttribute('target','_blank')
+
+    return { element: a };
+
     const element = document.createElement('iframe');
     element.setAttribute('data-lexical-office', this.__url);
     element.setAttribute('width', '800');
