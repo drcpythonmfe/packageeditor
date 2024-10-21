@@ -152,7 +152,7 @@ export class OfficeNode extends DecoratorBlockNode {
     a.style.fontSize='14px';
     a.style.fontWeight='bold';
 
-    a.href=`https://view.officeapps.live.com/op/embed.aspx?src=${this.__url}`;
+    a.href=`https://view.officeapps.live.com/op/view.aspx?src=${this.__url}`;
 
     a.setAttribute('target','_blank')
 
