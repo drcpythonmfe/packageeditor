@@ -100,8 +100,11 @@ import {
       const fontSize = node.style.fontSize;
       const textDecoration = node.style.textDecoration;
       const textalignment =  node.style.alignItems
-
-  
+      const display = node.style.display
+      const height =  node.style.height
+      const borderRadius = node.style.borderRadius
+      const padding = node.style.padding
+      const width =node.style.width
       return {
         ...originalOutput,
         forChild: (lexicalNode, parent) => {
@@ -116,6 +119,12 @@ import {
               fontSize ? `font-size: ${fontSize}` : null,
               textDecoration ? `text-decoration: ${textDecoration}` : null,
               textalignment ?  `text-align: ${textalignment}` : null,
+              display ?  `display : ${display}` : null,
+              height ?  `height : ${height}` :null,
+              borderRadius ? `border-radius :${borderRadius}` :null,
+              padding ? `padding :${padding}`:null,
+              width ? `width :${width}`:null,
+              
             ]
               .filter((value) => value != null)
               .join('; ');

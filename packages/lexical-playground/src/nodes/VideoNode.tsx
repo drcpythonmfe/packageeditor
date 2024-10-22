@@ -41,29 +41,40 @@ function VideoComponent({
   nodeKey,
   url,
 }: VideoComponentProps) {
-  const videoName = url.split('/').pop() || 'Open Video'; // Extract PDF name from URL
+  
+  const parts = url?.split('.');
+  const extension = parts[parts.length - 1]?.toLowerCase();
+
+  let videoName = url.split('/').pop() || 'Open Video'; 
+  videoName = videoName.length > 15 ? videoName.slice(0, 15) + '...' +extension : videoName;
+
+  
+
   const buttonStyle = {
-    backgroundColor: '#8c74f7',
-    borderRadius: '20px',
+    backgroundColor: 'rgb(140, 116, 247)',
+    borderRadius: '8px',
     color: 'white',
     display: 'inline-block',
-    fontFamily: 'Arial, sans-serif', 
-    fontSize: '14px', 
+    fontFamily: 'Arial, sans-serif',
     fontWeight: 'bold',
-    padding: '10px 20px',
+    padding: '6px',
     textDecoration: 'none',
-    transition: 'background-color 0.3s ease',
+    height: '30px',
+    width: 'auto'
   };
 
   return (
     <BlockWithAlignableContents
       className={className}
       format={format}
-      nodeKey={nodeKey}
-    >
-      <a href={url} target="_blank" rel="noopener noreferrer" style={buttonStyle}>
-        {videoName}
-      </a>
+      nodeKey={nodeKey}>
+      <p>
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          <span data-lexical-text="true" style={buttonStyle}>
+            {videoName}
+          </span>
+        </a> &nbsp;
+      </p>
     </BlockWithAlignableContents>
   );
   return (
@@ -93,9 +104,7 @@ export type SerializedVideoNode = Spread<
   SerializedDecoratorBlockNode
 >;
 
-function convertVideoElement(
-  domNode: HTMLElement,
-): null | DOMConversionOutput {
+function convertVideoElement(domNode: HTMLElement): null | DOMConversionOutput {
   const url = domNode.getAttribute('data-lexical-video');
   if (url) {
     const node = $createVideoNode(url);
@@ -136,25 +145,44 @@ export class VideoNode extends DecoratorBlockNode {
   }
 
   exportDOM(): DOMExportOutput {
-    const a = document.createElement('a');
 
-    a.textContent = this.__url.split('/').pop() || 'Open Video';
+  
+  const a = document.createElement('a');
+  a.href = this.__url; 
+  a.setAttribute('target', '_blank');
+  a.setAttribute('rel', 'noopener noreferrer'); 
+  a.setAttribute('data-lexical-video', this.__url);
+  a.setAttribute('allowfullscreen', 'true');
 
-    a.style.display='inline-block';
-    a.style.padding='10px 20px';
-    a.style.backgroundColor='#8c74f7';
-    a.style.color='white';
-    a.style.textDecoration='none';
-    a.style.borderRadius='20px';
-    a.style.fontFamily='Arial, sans-serif';
-    a.style.fontSize='14px';
-    a.style.fontWeight='bold';
+  const span = document.createElement('span');
+  
 
-    a.href=this.__url;
+  const parts = this.__url?.split('.');
+  const extension = parts[parts.length - 1]?.toLowerCase();
+  let urlPart  =  this.__url.split('/').pop() || 'Open Video';
+  urlPart = urlPart.length > 15 ? urlPart.slice(0, 15) + '...' +extension : urlPart;
+  span.textContent =  urlPart;
 
-    a.setAttribute('target','_blank')
+  span.style.backgroundColor = 'rgb(140, 116, 247)';
+  span.style.borderRadius = '8px';
+  span.style.color = 'white';
+  span.style.display = 'inline-block';
+  span.style.fontFamily = 'Arial, sans-serif';
+  span.style.fontSize = '14px';
+  span.style.fontWeight = 'bold';
+  span.style.padding = '6px';
+  span.style.textDecoration = 'none';
+  span.style.width = 'auto';
+  span.style.height = '30px';
+  a.appendChild(span);
+  const space = document.createElement('p');
+  space.textContent = ' '
+  const p = document.createElement('p');
+  p.appendChild(a); 
+  p.appendChild(space)
 
-    return { element: a };
+  return { element: p };
+
 
     const element = document.createElement('iframe');
     element.setAttribute('data-lexical-video', this.__url);
