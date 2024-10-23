@@ -224,14 +224,14 @@ export default function ActionsPlugin({
         aria-label={`${!isEditable ? 'Unlock' : 'Lock'} read-only mode`}>
         <i className={!isEditable ? 'unlock' : 'lock'} />
       </button> */}
-      <button
+      {/* <button
         className="action-button"
         type='button'
         onClick={handleMarkdownToggle}
         title="Convert From Markdown"
         aria-label="Convert from markdown">
         <i className="markdown" />
-      </button>
+      </button> */}
       {isCollabActive && (
         <button
           type='button'

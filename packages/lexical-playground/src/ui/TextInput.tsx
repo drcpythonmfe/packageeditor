@@ -16,28 +16,50 @@ type Props = Readonly<{
   onChange: (val: string) => void;
   placeholder?: string;
   value: string;
+  type?: string;
 }>;
 
 export default function TextInput({
   label,
   value,
   onChange,
+  type = 'text',
   placeholder = '',
   'data-test-id': dataTestId,
 }: Props): JSX.Element {
   return (
-    <div className="Input__wrapper">
-      <label className="Input__label">{label}</label>
-      <input
-        type="text"
-        className="Input__input"
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => {
-          onChange(e.target.value);
-        }}
-        data-test-id={dataTestId}
-      />
-    </div>
+    <>
+      {type == 'number' ? (
+        <div className="Input__wrapper">
+          <label className="Input__label">{label}</label>
+          <input
+            type="number"
+            max="5"
+            min="1"
+            className="Input__input"
+            placeholder={placeholder}
+            value={value}
+            onChange={(e) => {
+              onChange(e.target.value);
+            }}
+            data-test-id={dataTestId}
+          />
+        </div>
+      ) : (
+        <div className="Input__wrapper">
+          <label className="Input__label">{label}</label>
+          <input
+            type={type}
+            className="Input__input"
+            placeholder={placeholder}
+            value={value}
+            onChange={(e) => {
+              onChange(e.target.value);
+            }}
+            data-test-id={dataTestId}
+          />
+        </div>
+      )}
+    </>
   );
 }

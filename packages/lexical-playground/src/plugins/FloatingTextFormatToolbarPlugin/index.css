@@ -1,7 +1,7 @@
 .floating-text-format-popup {
   display: flex;
   background: #fff;
-  padding: 4px;
+  /* padding: 4px; */
   vertical-align: middle;
   position: absolute;
   top: 0;

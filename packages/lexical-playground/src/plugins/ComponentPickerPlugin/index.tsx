@@ -166,6 +166,8 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
 
   const options = useMemo(() => {
     const baseOptions = [
+
+
       new ComponentPickerOption('Paragraph', {
         icon: <i className="icon paragraph" />,
         keywords: ['normal', 'paragraph', 'p', 'text'],
@@ -231,37 +233,37 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
         onSelect: () =>
           editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined),
       }),
-      new ComponentPickerOption('Quote', {
-        icon: <i className="icon quote" />,
-        keywords: ['block quote'],
-        onSelect: () =>
-          editor.update(() => {
-            const selection = $getSelection();
-            if ($isRangeSelection(selection)) {
-              $setBlocksType_experimental(selection, () => $createQuoteNode());
-            }
-          }),
-      }),
-      new ComponentPickerOption('Code', {
-        icon: <i className="icon code" />,
-        keywords: ['javascript', 'python', 'js', 'codeblock'],
-        onSelect: () =>
-          editor.update(() => {
-            const selection = $getSelection();
+      // new ComponentPickerOption('Quote', {
+      //   icon: <i className="icon quote" />,
+      //   keywords: ['block quote'],
+      //   onSelect: () =>
+      //     editor.update(() => {
+      //       const selection = $getSelection();
+      //       if ($isRangeSelection(selection)) {
+      //         $setBlocksType_experimental(selection, () => $createQuoteNode());
+      //       }
+      //     }),
+      // }),
+      // new ComponentPickerOption('Code', {
+      //   icon: <i className="icon code" />,
+      //   keywords: ['javascript', 'python', 'js', 'codeblock'],
+      //   onSelect: () =>
+      //     editor.update(() => {
+      //       const selection = $getSelection();
 
-            if ($isRangeSelection(selection)) {
-              if (selection.isCollapsed()) {
-                $setBlocksType_experimental(selection, () => $createCodeNode());
-              } else {
-                // Will this ever happen?
-                const textContent = selection.getTextContent();
-                const codeNode = $createCodeNode();
-                selection.insertNodes([codeNode]);
-                selection.insertRawText(textContent);
-              }
-            }
-          }),
-      }),
+      //       if ($isRangeSelection(selection)) {
+      //         if (selection.isCollapsed()) {
+      //           $setBlocksType_experimental(selection, () => $createCodeNode());
+      //         } else {
+      //           // Will this ever happen?
+      //           const textContent = selection.getTextContent();
+      //           const codeNode = $createCodeNode();
+      //           selection.insertNodes([codeNode]);
+      //           selection.insertRawText(textContent);
+      //         }
+      //       }
+      //     }),
+      // }),
       // new ComponentPickerOption('Divider', {
       //   icon: <i className="icon horizontal-rule" />,
       //   keywords: ['horizontal rule', 'divider', 'hr'],
@@ -311,12 +313,12 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
             <InsertImageDialog activeEditor={editor} onClose={onClose} />
           )),
       }),
-      new ComponentPickerOption('Collapsible', {
-        icon: <i className="icon caret-right" />,
-        keywords: ['collapse', 'collapsible', 'toggle'],
-        onSelect: () =>
-          editor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, undefined),
-      }),
+      // new ComponentPickerOption('Collapsible', {
+      //   icon: <i className="icon caret-right" />,
+      //   keywords: ['collapse', 'collapsible', 'toggle'],
+      //   onSelect: () =>
+      //     editor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, undefined),
+      // }),
       ...['left', 'center', 'right', 'justify'].map(
         (alignment) =>
           new ComponentPickerOption(`Align ${alignment}`, {
@@ -379,9 +381,10 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
         ) =>
           anchorElementRef.current && options.length
             ? ReactDOM.createPortal(
-                <div className="typeahead-popovers component-picker-menu">
+              <div className="typeahead-popovers component-picker-menu">
                   <ul>
                     {options.map((option, i: number) => (
+                      <>
                       <ComponentPickerMenuItem
                         index={i}
                         isSelected={selectedIndex === i}
@@ -395,6 +398,7 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
                         key={option.key}
                         option={option}
                       />
+                      </>
                     ))}
                   </ul>
                 </div>,

@@ -320,6 +320,8 @@ export default function Editor({
                 <FloatingTextFormatToolbarPlugin
                   anchorElem={floatingAnchorElem}
                   config={normToolbarConfig}
+                  isRichText={isRichText}
+                   handleClick={handleClick}
                 />
               </>
             )}
@@ -347,7 +349,7 @@ export default function Editor({
         <div>{showTableOfContents && <TableOfContentsPlugin />}</div>
         <ActionsPlugin isRichText={isRichText} />
       </div>
-      {isRichText && <ToolbarPlugin config={normToolbarConfig} handleClick={handleClick} />}
+      {isRichText && <ToolbarPlugin config={normToolbarConfig} handleClick={handleClick} floatingText={false} />}
       {showTreeView && <TreeViewPlugin />}
     </div>
   );

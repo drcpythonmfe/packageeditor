@@ -36,8 +36,6 @@ const uploadImg = async (file: File, altText: string) => {
 const onDataSend = async (file: File) => {
   console.log(file)
   await delay(500);
-  // return `https://media.stage.truflux.drcsystems.ooo/uploads/project/372/2024-09-16_13-38-11_1.mp4`;
-
   return `https://media.stage.truflux.drcsystems.ooo/uploads/project/294/Designs for SectorConnect Requriements _1__6.pptx`;
 };
 
@@ -67,8 +65,8 @@ function App({
 }
 
 export default function PlaygroundApp1(): JSX.Element {
- let data = `<p class="TextEditor__paragraph"><br></p><p><a href="https://media.stage.truflux.drcsystems.ooo/uploads/project/372/2024-09-16_13-38-11_1.mp4" target="_blank" rel="noopener noreferrer" data-lexical-video="https://media.stage.truflux.drcsystems.ooo/uploads/project/372/2024-09-16_13-38-11_1.mp4" allowfullscreen="true"><span style="background-color: rgb(140, 116, 247); border-radius: 8px; color: white; display: inline-block; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; padding: 6px; text-decoration: none; width: auto; height: 30px;">2024-09-16_13-3...mp4</span></a><p> </p></p><p class="TextEditor__paragraph"><br></p>
- `
+ let data = `<p class="TextEditor__paragraph" dir="ltr"><span>sdfsdf</span></p><p class="TextEditor__paragraph" dir="ltr"><span>sdfs</span></p><p class="TextEditor__paragraph" dir="ltr"><span>sdfsdf</span><br><i><b><strong class="TextEditor__textBold TextEditor__textItalic">SDSDF</strong></b></i><br><span>SD</span><br><span>FSDFSD</span><br><span>F</span><br><span style="font-size: 14px;">SdFS</span></p><p class="TextEditor__paragraph" dir="ltr"><span style="font-size: 14px;">adf</span></p><p class="TextEditor__paragraph" dir="ltr"><span style="font-size: 14px;">sd</span></p><p class="TextEditor__paragraph" dir="ltr"><br><span>asdasfdas</span></p><p class="TextEditor__paragraph" dir="ltr"><span>a</span></p><p class="TextEditor__paragraph" dir="ltr"><span>fsdfsdf</span></p>
+`
 
   const [html, setHtml] = useState(data);
   return (

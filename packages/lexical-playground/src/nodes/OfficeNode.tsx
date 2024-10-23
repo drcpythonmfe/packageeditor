@@ -46,7 +46,7 @@ function OfficeComponent({
   const extension = parts[parts.length - 1]?.toLowerCase();
 
   let videoName = url.split('/').pop() || 'Open Document'; 
-  videoName = videoName.length > 15 ? videoName.slice(0, 15) + '...' +extension : videoName;
+  videoName = videoName.length > 25 ? videoName.slice(0, 25) + '...' +extension : videoName;
 
   
 
@@ -60,7 +60,7 @@ function OfficeComponent({
     padding: '6px',
     textDecoration: 'none',
     height: '30px',
-    width: 'auto'
+    width: '250px'
   };
 
   return (
@@ -178,7 +178,7 @@ export class OfficeNode extends DecoratorBlockNode {
   const parts = this.__url?.split('.');
   const extension = parts[parts.length - 1]?.toLowerCase();
   let urlPart  =  this.__url.split('/').pop() || 'Open Document';
-  urlPart = urlPart.length > 15 ? urlPart.slice(0, 15) + '...' +extension : urlPart;
+  urlPart = urlPart.length > 25 ? urlPart.slice(0, 25) + '...' +extension : urlPart;
   span.textContent =  urlPart;
 
   span.style.backgroundColor = 'rgb(140, 116, 247)';
@@ -190,7 +190,7 @@ export class OfficeNode extends DecoratorBlockNode {
   span.style.fontWeight = 'bold';
   span.style.padding = '6px';
   span.style.textDecoration = 'none';
-  span.style.width = 'auto';
+  span.style.width = '250px';
   span.style.height = '30px';
   a.appendChild(span);
   const space = document.createElement('p');

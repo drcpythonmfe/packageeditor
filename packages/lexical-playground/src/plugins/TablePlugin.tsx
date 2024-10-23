@@ -110,12 +110,35 @@ export function InsertTableDialog({
     onClose();
   };
 
+  const newLocal = Number(columns) > 5 || Number(rows) > 5;
   return (
     <>
-      <TextInput label="No of rows" onChange={setRows} value={rows} />
-      <TextInput label="No of columns" onChange={setColumns} value={columns} />
+      <TextInput
+        label="No of rows"
+        type="number"
+        onChange={setRows}
+        value={rows}
+      />
+      <TextInput
+        label="No of columns"
+        type="number"
+        onChange={setColumns}
+        value={columns}
+      />
       <DialogActions data-test-id="table-model-confirm-insert">
-        <Button onClick={onClick}>Confirm</Button>
+        {newLocal ? (
+          <>
+            <Button onClick={onClick} disabled={true}>
+              Confirm
+            </Button>{' '}
+          </>
+        ) : (
+          <Button
+            onClick={onClick}
+            disabled={columns == '' || rows == '' ? true : false}>
+            Confirm
+          </Button>
+        )}
       </DialogActions>
     </>
   );
@@ -135,13 +158,35 @@ export function InsertNewTableDialog({
     activeEditor.dispatchCommand(INSERT_NEW_TABLE_COMMAND, {columns, rows});
     onClose();
   };
-
+  const newLocal = Number(columns) > 5 || Number(rows) > 5;
   return (
     <>
-      <TextInput label="No of rows" onChange={setRows} value={rows} />
-      <TextInput label="No of columns" onChange={setColumns} value={columns} />
+      <TextInput
+        label="No of rows"
+        type="number"
+        onChange={setRows}
+        value={rows}
+      />
+      <TextInput
+        label="No of columns"
+        type="number"
+        onChange={setColumns}
+        value={columns}
+      />
       <DialogActions data-test-id="table-model-confirm-insert">
-        <Button onClick={onClick}>Confirm</Button>
+        {newLocal ? (
+          <>
+            <Button onClick={onClick} disabled={true}>
+              Confirm
+            </Button>{' '}
+          </>
+        ) : (
+          <Button
+            onClick={onClick}
+            disabled={columns == '' || rows == '' ? true : false}>
+            Confirm
+          </Button>
+        )}
       </DialogActions>
     </>
   );

@@ -85,6 +85,27 @@ import {InsertImageDialog} from '../ImagesPlugin';
 import {InsertPollDialog} from '../PollPlugin';
 import {InsertTableDialog} from '../TablePlugin';
 
+
+
+const SvgIcon: React.FC<{ isDarkTheme: boolean }> = ({ isDarkTheme }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 50 50"
+      width="16px"
+      height="16px"
+      className={isDarkTheme ? 'theme-dark-svg' : 'theme-light-svg'}
+    >
+      <path
+        d="M 7 2 L 7 48 L 43 48 L 43 14.59375 L 42.71875 14.28125 L 30.71875 2.28125 L 30.40625 2 Z M 9 4 L 29 4 L 29 16 L 41 16 L 41 46 L 9 46 Z M 31 5.4375 L 39.5625 14 L 31 14 Z"
+        style={{ color: isDarkTheme ? "#ffffff" : "#000000" }} 
+      />
+    </svg>
+  );
+};
+
+
+
 const blockTypeToBlockName = {
   bullet: 'Bulleted List',
   check: 'Check List',
@@ -124,17 +145,10 @@ const FONT_FAMILY_OPTIONS: [string, string][] = [
 ];
 
 const FONT_SIZE_OPTIONS: [string, string][] = [
-  ['10px', '10px'],
-  ['11px', '11px'],
-  ['12px', '12px'],
-  ['13px', '13px'],
   ['14px', '14px'],
   ['15px', '15px'],
   ['16px', '16px'],
   ['17px', '17px'],
-  ['18px', '18px'],
-  ['19px', '19px'],
-  ['20px', '20px'],
 ];
 
 function dropDownActiveClass(active: boolean) {
@@ -286,7 +300,7 @@ function BlockFormatDropDown({
         <i className="icon numbered-list" />
         <span className="text">Numbered List</span>
       </DropDownItem>
-      <DropDownItem
+      {/* <DropDownItem
         className={'item ' + dropDownActiveClass(blockType === 'check')}
         onClick={formatCheckList}>
         <i className="icon check-list" />
@@ -303,7 +317,7 @@ function BlockFormatDropDown({
         onClick={formatCode}>
         <i className="icon code" />
         <span className="text">Code Block</span>
-      </DropDownItem>
+      </DropDownItem> */}
     </DropDown>
   );
 }
@@ -370,11 +384,13 @@ function FontDropDown({
 export type ToolbarPluginProps = {
   config: ToolbarConfig;
   handleClick?: ((data: any) => void | undefined | any) | undefined;
+  floatingText?:boolean
 };
 
 export default function ToolbarPlugin({
   config,
-  handleClick,
+  handleClick,  
+  floatingText
 }: ToolbarPluginProps): JSX.Element {
   const normFontFamilyOption = Array.isArray(config.fontFamilyOptions)
     ? config.fontFamilyOptions
@@ -609,7 +625,10 @@ export default function ToolbarPlugin({
 
   return (
     <div className="toolbar">
-      {config.undoRedo && (
+
+      {floatingText ? (
+        <>
+           {config.undoRedo && (
         <>
           <button
             disabled={!canUndo || !isEditable}
@@ -842,7 +861,7 @@ export default function ToolbarPlugin({
               </DropDownItem>
             </DropDown>
           )}
-          {handleClick && (
+          {/* {handleClick && (
             <>
               <label htmlFor="file-upload" className="custom-file-uploads">
                <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 30 30" width="16px" height="16px">    <path d="M24.707,8.793l-6.5-6.5C18.019,2.105,17.765,2,17.5,2H7C5.895,2,5,2.895,5,4v22c0,1.105,0.895,2,2,2h16c1.105,0,2-0.895,2-2 V9.5C25,9.235,24.895,8.981,24.707,8.793z M18,10c-0.552,0-1-0.448-1-1V3.904L23.096,10H18z"/></svg>
@@ -855,112 +874,10 @@ export default function ToolbarPlugin({
                 accept="video/*, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, text/csv"
               />
             </>
-          )}
+          )} */}
           <Divider />
 
-          {config?.insertOptions && (
-            <DropDown
-              disabled={!isEditable}
-              buttonClassName="toolbar-item spaced"
-              buttonLabel="Insert"
-              buttonAriaLabel="Insert specialized editor node"
-              buttonIconClassName="icon plus">
-              {/* <DropDownItem
-                onClick={() => {
-                  activeEditor.dispatchCommand(
-                    INSERT_HORIZONTAL_RULE_COMMAND,
-                    undefined,
-                  );
-                }}
-                className="item">
-                <i className="icon horizontal-rule" />
-                <span className="text">Horizontal Rule</span>
-              </DropDownItem> */}
-              <DropDownItem
-                onClick={() => {
-                  showModal('Insert Image', (onClose) => (
-                    <InsertImageDialog
-                      activeEditor={activeEditor}
-                      onClose={onClose}
-                    />
-                  ));
-                }}
-                className="item">
-                <i className="icon image" />
-                <span className="text">Image</span>
-              </DropDownItem>
-
-              <DropDownItem
-                onClick={() => {
-                  showModal('Insert Table', (onClose) => (
-                    <InsertTableDialog
-                      activeEditor={activeEditor}
-                      onClose={onClose}
-                    />
-                  ));
-                }}
-                className="item">
-                <i className="icon table" />
-                <span className="text">Table</span>
-              </DropDownItem>
-              {/* <DropDownItem
-                onClick={() => {
-                  showModal('Insert Poll', (onClose) => (
-                    <InsertPollDialog
-                      activeEditor={activeEditor}
-                      onClose={onClose}
-                    />
-                  ));
-                }}
-                className="item">
-                <i className="icon poll" />
-                <span className="text">Poll</span>
-              </DropDownItem> */}
-              {/* <DropDownItem
-                onClick={() => {
-                  editor.update(() => {
-                    const root = $getRoot();
-                    const stickyNode = $createStickyNode(0, 0);
-                    root.append(stickyNode);
-                  });
-                }}
-                className="item">
-                <i className="icon sticky" />
-                <span className="text">Sticky Note</span>
-              </DropDownItem> */}
-              <DropDownItem
-                onClick={() => {
-                  editor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, undefined);
-                }}
-                className="item">
-                <i className="icon caret-right" />
-                <span className="text">Collapsible container</span>
-              </DropDownItem>
-              {EmbedConfigs.map((embedConfig) => (
-                <DropDownItem
-                  key={embedConfig.type}
-                  onClick={() => {
-                    activeEditor.dispatchCommand(
-                      INSERT_EMBED_COMMAND,
-                      embedConfig.type,
-                    );
-                  }}
-                  className="item">
-                  {embedConfig.icon}
-                  <span className="text">{embedConfig.contentName}</span>
-                </DropDownItem>
-              ))}
-              {editorContext.extensions.toolbarInsertsAfter.map(
-                ([extName, ExtDropDownItem]) => (
-                  <ExtDropDownItem
-                    key={extName}
-                    showModal={showModal}
-                    activeEditor={activeEditor}
-                  />
-                ),
-              )}
-            </DropDown>
-          )}
+      
         </>
       )}
       <Divider />
@@ -1022,7 +939,257 @@ export default function ToolbarPlugin({
           </DropDownItem>
         </DropDown>
       )}
+        </>
+      ):(
+        <>
+
+{config.undoRedo && (
+        <>
+          <button
+            disabled={!canUndo || !isEditable}
+            onClick={() => {
+              activeEditor.dispatchCommand(UNDO_COMMAND, undefined);
+            }}
+            title={IS_APPLE ? 'Undo (⌘Z)' : 'Undo (Ctrl+Z)'}
+            type="button"
+            className="toolbar-item spaced"
+            aria-label="Undo">
+            <i className="format undo" />
+          </button>
+          <button
+            disabled={!canRedo || !isEditable}
+            onClick={() => {
+              activeEditor.dispatchCommand(REDO_COMMAND, undefined);
+            }}
+            title={IS_APPLE ? 'Redo (⌘Y)' : 'Redo (Ctrl+Y)'}
+            type="button"
+            className="toolbar-item"
+            aria-label="Redo">
+            <i className="format redo" />
+          </button>
+        </>
+      )}
+      <Divider />
+
+      {config.biu && (
+            <>
+              <button
+                disabled={!isEditable}
+                onClick={() => {
+                  activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
+                }}
+                className={'toolbar-item spaced ' + (isBold ? 'active' : '')}
+                title={IS_APPLE ? 'Bold (⌘B)' : 'Bold (Ctrl+B)'}
+                type="button"
+                aria-label={`Format text as bold. Shortcut: ${
+                  IS_APPLE ? '⌘B' : 'Ctrl+B'
+                }`}>
+                <i className="format bold" />
+              </button>
+
+              <button
+                disabled={!isEditable}
+                onClick={() => {
+                  activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
+                }}
+                className={'toolbar-item spaced ' + (isItalic ? 'active' : '')}
+                title={IS_APPLE ? 'Italic (⌘I)' : 'Italic (Ctrl+I)'}
+                type="button"
+                aria-label={`Format text as italics. Shortcut: ${
+                  IS_APPLE ? '⌘I' : 'Ctrl+I'
+                }`}>
+                <i className="format italic" />
+              </button>
+              <button
+                disabled={!isEditable}
+                onClick={() => {
+                  activeEditor.dispatchCommand(
+                    FORMAT_TEXT_COMMAND,
+                    'underline',
+                  );
+                }}
+                className={
+                  'toolbar-item spaced ' + (isUnderline ? 'active' : '')
+                }
+                title={IS_APPLE ? 'Underline (⌘U)' : 'Underline (Ctrl+U)'}
+                type="button"
+                aria-label={`Format text to underlined. Shortcut: ${
+                  IS_APPLE ? '⌘U' : 'Ctrl+U'
+                }`}>
+                <i className="format underline" />
+              </button>
+            </>
+          )}
+
+  
+
+{config.link && (
+            <button
+              disabled={!isEditable}
+              onClick={insertLink}
+              className={'toolbar-item spaced ' + (isLink ? 'active' : '')}
+              aria-label="Insert link"
+              title="Insert link"
+              type="button">
+              <i className="format link" />
+            </button>
+          )}
+   {handleClick && (
+            <>
+              <label htmlFor="file-upload" className="custom-file-uploads">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="16px" height="16px">
+              <path d="M 7 2 L 7 48 L 43 48 L 43 14.59375 L 42.71875 14.28125 L 30.71875 2.28125 L 30.40625 2 Z M 9 4 L 29 4 L 29 16 L 41 16 L 41 46 L 9 46 Z M 31 5.4375 L 39.5625 14 L 31 14 Z"  style={{color: "#ffffff"}}/>
+              </svg>
+              </label>
+              <input
+                id="file-upload"
+                onChange={handleClick}
+                className="textfileupload"
+                type="file"
+                accept="video/*, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, text/csv"
+              />
+            </>
+          )}
+          
+          {config.textColorPicker && (
+            <ColorPicker
+              disabled={!isEditable}
+              buttonClassName="toolbar-item color-picker"
+              buttonAriaLabel="Formatting text color"
+              buttonIconClassName="icon font-color"
+              color={fontColor}
+              onChange={onFontColorSelect}
+              title="text color"
+            />
+          )}
+          {config.bgColorPicker && (
+            <ColorPicker
+              disabled={!isEditable}
+              buttonClassName="toolbar-item color-picker"
+              buttonAriaLabel="Formatting background color"
+              buttonIconClassName="icon bg-color"
+              color={bgColor}
+              onChange={onBgColorSelect}
+              title="bg color"
+            />
+          )}
+        
+
+          {config?.insertOptions && (
+            <DropDown
+              disabled={!isEditable}
+              buttonClassName="toolbar-item spaced"
+              buttonLabel="Insert"
+              buttonAriaLabel="Insert specialized editor node"
+              buttonIconClassName="icon plus"
+              >
+              {/* <DropDownItem
+                onClick={() => {
+                  activeEditor.dispatchCommand(
+                    INSERT_HORIZONTAL_RULE_COMMAND,
+                    undefined,
+                  );
+                }}
+                className="item">
+                <i className="icon horizontal-rule" />
+                <span className="text">Horizontal Rule</span>
+              </DropDownItem>  */}
+              <DropDownItem
+                onClick={() => {
+                  showModal('Insert Image', (onClose) => (
+                    <InsertImageDialog
+                      activeEditor={activeEditor}
+                      onClose={onClose}
+                    />
+                  ));
+                }}
+                className="item">
+                <i className="icon image" />
+                <span className="text">Image</span>
+              </DropDownItem>
+
+           
+
+               <DropDownItem
+                onClick={() => {
+                  showModal('Insert Table', (onClose) => (
+                    <InsertTableDialog
+                      activeEditor={activeEditor}
+                      onClose={onClose}
+                    />
+                  ));
+                }}
+                className="item">
+                <i className="icon table" />
+                <span className="text">Table</span>
+              </DropDownItem> 
+              {/* <DropDownItem
+                onClick={() => {
+                  showModal('Insert Poll', (onClose) => (
+                    <InsertPollDialog
+                      activeEditor={activeEditor}
+                      onClose={onClose}
+                    />
+                  ));
+                }}
+                className="item">
+                <i className="icon poll" />
+                <span className="text">Poll</span>
+              </DropDownItem> */}
+              {/* <DropDownItem
+                onClick={() => {
+                  editor.update(() => {
+                    const root = $getRoot();
+                    const stickyNode = $createStickyNode(0, 0);
+                    root.append(stickyNode);
+                  });
+                }}
+                className="item">
+                <i className="icon sticky" />
+                <span className="text">Sticky Note</span>
+              </DropDownItem> */}
+              {/* <DropDownItem
+                onClick={() => {
+                  editor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, undefined);
+                }}
+                className="item">
+                <i className="icon caret-right" />
+                <span className="text">Collapsible container</span>
+              </DropDownItem> */}
+              {/* {EmbedConfigs.map((embedConfig) => (
+                <DropDownItem
+                  key={embedConfig.type}
+                  onClick={() => {
+                    activeEditor.dispatchCommand(
+                      INSERT_EMBED_COMMAND,
+                      embedConfig.type,
+                    );
+                  }}
+                  className="item">
+                  {embedConfig.icon}
+                  <span className="text">{embedConfig.contentName}</span>
+                </DropDownItem>
+              ))} */}
+              {editorContext.extensions.toolbarInsertsAfter.map(
+                ([extName, ExtDropDownItem]) => (
+                  <ExtDropDownItem
+                    key={extName}
+                    showModal={showModal}
+                    activeEditor={activeEditor}
+                  />
+                ),
+              )}
+            </DropDown>
+          )}
+
+ 
+        </>
+      )}
+   
       {modal}
     </div>
   );
 }
+
+
+
