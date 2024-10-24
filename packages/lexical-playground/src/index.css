@@ -443,8 +443,8 @@ i.chevron-down {
 }
 
 .editor-scroller {
-  min-height: 150px;
-  max-height: 150px;
+  min-height: 200px;
+  max-height: 200px;
   border: 0;
   resize: none;
   cursor: text;
@@ -1355,7 +1355,7 @@ button.action-button:disabled {
   /* border-top-left-radius: 10px;
   border-top-right-radius: 10px; */
   vertical-align: middle;
-  overflow: auto;
+  /* overflow: auto; */
   height: 36px;
 }
 

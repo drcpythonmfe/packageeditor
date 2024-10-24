@@ -86,25 +86,24 @@ import {InsertPollDialog} from '../PollPlugin';
 import {InsertTableDialog} from '../TablePlugin';
 
 
+const SvgIcon: React.FC = () => {
+  const bodyElement = document.querySelector('body');
+  const isDarkTheme: boolean = bodyElement?.classList.contains('theme-dark') || false;
 
-const SvgIcon: React.FC<{ isDarkTheme: boolean }> = ({ isDarkTheme }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 50 50"
       width="16px"
       height="16px"
-      className={isDarkTheme ? 'theme-dark-svg' : 'theme-light-svg'}
-    >
+      className={isDarkTheme ? 'theme-dark-svg' : 'theme-light-svg'}>
       <path
         d="M 7 2 L 7 48 L 43 48 L 43 14.59375 L 42.71875 14.28125 L 30.71875 2.28125 L 30.40625 2 Z M 9 4 L 29 4 L 29 16 L 41 16 L 41 46 L 9 46 Z M 31 5.4375 L 39.5625 14 L 31 14 Z"
-        style={{ color: isDarkTheme ? "#ffffff" : "#000000" }} 
+        style={{ fill: isDarkTheme ? '#ffffff' : '#000000' }}
       />
     </svg>
   );
 };
-
-
 
 const blockTypeToBlockName = {
   bullet: 'Bulleted List',
@@ -165,6 +164,10 @@ function BlockFormatDropDown({
   editor: LexicalEditor;
   disabled?: boolean;
 }): JSX.Element {
+
+ 
+
+
   const formatParagraph = () => {
     if (blockType !== 'paragraph') {
       editor.update(() => {
@@ -384,13 +387,13 @@ function FontDropDown({
 export type ToolbarPluginProps = {
   config: ToolbarConfig;
   handleClick?: ((data: any) => void | undefined | any) | undefined;
-  floatingText?:boolean
+  floatingText?: boolean;
 };
 
 export default function ToolbarPlugin({
   config,
-  handleClick,  
-  floatingText
+  handleClick,
+  floatingText,
 }: ToolbarPluginProps): JSX.Element {
   const normFontFamilyOption = Array.isArray(config.fontFamilyOptions)
     ? config.fontFamilyOptions
@@ -625,90 +628,260 @@ export default function ToolbarPlugin({
 
   return (
     <div className="toolbar">
-
       {floatingText ? (
-        <>
-           {config.undoRedo && (
-        <>
-          <button
-            disabled={!canUndo || !isEditable}
-            onClick={() => {
-              activeEditor.dispatchCommand(UNDO_COMMAND, undefined);
-            }}
-            title={IS_APPLE ? 'Undo (⌘Z)' : 'Undo (Ctrl+Z)'}
-            type="button"
-            className="toolbar-item spaced"
-            aria-label="Undo">
-            <i className="format undo" />
-          </button>
-          <button
-            disabled={!canRedo || !isEditable}
-            onClick={() => {
-              activeEditor.dispatchCommand(REDO_COMMAND, undefined);
-            }}
-            title={IS_APPLE ? 'Redo (⌘Y)' : 'Redo (Ctrl+Y)'}
-            type="button"
-            className="toolbar-item"
-            aria-label="Redo">
-            <i className="format redo" />
-          </button>
-        </>
-      )}
-      <Divider />
-      {config.formatBlockOptions &&
-        blockType in blockTypeToBlockName &&
-        activeEditor === editor && (
-          <>
-            <BlockFormatDropDown
+        <>         
+          {blockType === 'code' ? (
+            <>
+              <DropDown
+                disabled={!isEditable}
+                buttonClassName="toolbar-item code-language"
+                buttonLabel={getLanguageFriendlyName(codeLanguage)}
+                buttonAriaLabel="Select language">
+                {CODE_LANGUAGE_OPTIONS.map(([value, name]) => {
+                  return (
+                    <DropDownItem
+                      className={`item ${dropDownActiveClass(
+                        value === codeLanguage,
+                      )}`}
+                      onClick={() => onCodeLanguageSelect(value)}
+                      key={value}>
+                      <span className="text">{name}</span>
+                    </DropDownItem>
+                  );
+                })}
+              </DropDown>
+            </>
+          ) : (
+            <>
+              {Boolean(config.fontFamilyOptions) && (
+                <FontDropDown
+                  disabled={!isEditable}
+                  style={'font-family'}
+                  value={fontFamily}
+                  editor={editor}
+                  options={normFontFamilyOption}
+                />
+              )}
+              {config.formatBlockOptions &&
+                blockType in blockTypeToBlockName &&
+                activeEditor === editor && (
+                  <>
+                    <BlockFormatDropDown
+                      disabled={!isEditable}
+                      blockType={blockType}
+                      editor={editor}
+                    />
+                    <Divider />
+                  </>
+                )}
+              <Divider />
+              {config.biu && (
+                <>
+                  <button
+                    disabled={!isEditable}
+                    onClick={() => {
+                      activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
+                    }}
+                    className={
+                      'toolbar-item spaced ' + (isBold ? 'active' : '')
+                    }
+                    title={IS_APPLE ? 'Bold (⌘B)' : 'Bold (Ctrl+B)'}
+                    type="button"
+                    aria-label={`Format text as bold. Shortcut: ${
+                      IS_APPLE ? '⌘B' : 'Ctrl+B'
+                    }`}>
+                    <i className="format bold" />
+                  </button>
+
+                  <button
+                    disabled={!isEditable}
+                    onClick={() => {
+                      activeEditor.dispatchCommand(
+                        FORMAT_TEXT_COMMAND,
+                        'italic',
+                      );
+                    }}
+                    className={
+                      'toolbar-item spaced ' + (isItalic ? 'active' : '')
+                    }
+                    title={IS_APPLE ? 'Italic (⌘I)' : 'Italic (Ctrl+I)'}
+                    type="button"
+                    aria-label={`Format text as italics. Shortcut: ${
+                      IS_APPLE ? '⌘I' : 'Ctrl+I'
+                    }`}>
+                    <i className="format italic" />
+                  </button>
+                  <button
+                    disabled={!isEditable}
+                    onClick={() => {
+                      activeEditor.dispatchCommand(
+                        FORMAT_TEXT_COMMAND,
+                        'underline',
+                      );
+                    }}
+                    className={
+                      'toolbar-item spaced ' + (isUnderline ? 'active' : '')
+                    }
+                    title={IS_APPLE ? 'Underline (⌘U)' : 'Underline (Ctrl+U)'}
+                    type="button"
+                    aria-label={`Format text to underlined. Shortcut: ${
+                      IS_APPLE ? '⌘U' : 'Ctrl+U'
+                    }`}>
+                    <i className="format underline" />
+                  </button>
+                </>
+              )}
+              {config.codeBlock && (
+                <button
+                  disabled={!isEditable}
+                  onClick={() => {
+                    activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
+                  }}
+                  className={'toolbar-item spaced ' + (isCode ? 'active' : '')}
+                  title="Insert code block"
+                  type="button"
+                  aria-label="Insert code block">
+                  <i className="format code" />
+                </button>
+              )}
+              {config.link && (
+                <button
+                  disabled={!isEditable}
+                  onClick={insertLink}
+                  className={'toolbar-item spaced ' + (isLink ? 'active' : '')}
+                  aria-label="Insert link"
+                  title="Insert link"
+                  type="button">
+                  <i className="format link" />
+                </button>
+              )}
+
+              {config.textColorPicker && (
+                <ColorPicker
+                  disabled={!isEditable}
+                  buttonClassName="toolbar-item color-picker"
+                  buttonAriaLabel="Formatting text color"
+                  buttonIconClassName="icon font-color"
+                  color={fontColor}
+                  onChange={onFontColorSelect}
+                  title="text color"
+                />
+              )}
+              {config.bgColorPicker && (
+                <ColorPicker
+                  disabled={!isEditable}
+                  buttonClassName="toolbar-item color-picker"
+                  buttonAriaLabel="Formatting background color"
+                  buttonIconClassName="icon bg-color"
+                  color={bgColor}
+                  onChange={onBgColorSelect}
+                  title="bg color"
+                />
+              )}
+            </>
+          )}
+          <Divider />
+          {config.align && (
+            <DropDown
               disabled={!isEditable}
-              blockType={blockType}
-              editor={editor}
-            />
-            <Divider />
-          </>
-        )}
-      {blockType === 'code' ? (
-        <>
-          <DropDown
-            disabled={!isEditable}
-            buttonClassName="toolbar-item code-language"
-            buttonLabel={getLanguageFriendlyName(codeLanguage)}
-            buttonAriaLabel="Select language">
-            {CODE_LANGUAGE_OPTIONS.map(([value, name]) => {
-              return (
-                <DropDownItem
-                  className={`item ${dropDownActiveClass(
-                    value === codeLanguage,
-                  )}`}
-                  onClick={() => onCodeLanguageSelect(value)}
-                  key={value}>
-                  <span className="text">{name}</span>
-                </DropDownItem>
-              );
-            })}
-          </DropDown>
+              buttonLabel="Align"
+              buttonIconClassName="icon left-align"
+              buttonClassName="toolbar-item spaced alignment"
+              buttonAriaLabel="Formatting options for text alignment">
+              <DropDownItem
+                onClick={() => {
+                  activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left');
+                }}
+                className="item">
+                <i className="icon left-align" />
+                <span className="text">Left Align</span>
+              </DropDownItem>
+              <DropDownItem
+                onClick={() => {
+                  activeEditor.dispatchCommand(
+                    FORMAT_ELEMENT_COMMAND,
+                    'center',
+                  );
+                }}
+                className="item">
+                <i className="icon center-align" />
+                <span className="text">Center Align</span>
+              </DropDownItem>
+              <DropDownItem
+                onClick={() => {
+                  activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right');
+                }}
+                className="item">
+                <i className="icon right-align" />
+                <span className="text">Right Align</span>
+              </DropDownItem>
+              <DropDownItem
+                onClick={() => {
+                  activeEditor.dispatchCommand(
+                    FORMAT_ELEMENT_COMMAND,
+                    'justify',
+                  );
+                }}
+                className="item">
+                <i className="icon justify-align" />
+                <span className="text">Justify Align</span>
+              </DropDownItem>
+              <Divider />
+              <DropDownItem
+                onClick={() => {
+                  activeEditor.dispatchCommand(
+                    OUTDENT_CONTENT_COMMAND,
+                    undefined,
+                  );
+                }}
+                className="item">
+                <i className={'icon ' + (isRTL ? 'indent' : 'outdent')} />
+                <span className="text">Outdent</span>
+              </DropDownItem>
+              <DropDownItem
+                onClick={() => {
+                  activeEditor.dispatchCommand(
+                    INDENT_CONTENT_COMMAND,
+                    undefined,
+                  );
+                }}
+                className="item">
+                <i className={'icon ' + (isRTL ? 'outdent' : 'indent')} />
+                <span className="text">Indent</span>
+              </DropDownItem>
+            </DropDown>
+          )}
         </>
       ) : (
         <>
-          {Boolean(config.fontFamilyOptions) && (
-            <FontDropDown
-              disabled={!isEditable}
-              style={'font-family'}
-              value={fontFamily}
-              editor={editor}
-              options={normFontFamilyOption}
-            />
-          )}
-          {config.fontSizeOptions && (
-            <FontDropDown
-              disabled={!isEditable}
-              style={'font-size'}
-              value={fontSize}
-              editor={editor}
-              options={FONT_SIZE_OPTIONS}
-            />
+          {config.undoRedo && (
+            <>
+              <button
+                disabled={!canUndo || !isEditable}
+                onClick={() => {
+                  activeEditor.dispatchCommand(UNDO_COMMAND, undefined);
+                }}
+                title={IS_APPLE ? 'Undo (⌘Z)' : 'Undo (Ctrl+Z)'}
+                type="button"
+                className="toolbar-item spaced"
+                aria-label="Undo">
+                <i className="format undo" />
+              </button>
+              <button
+                disabled={!canRedo || !isEditable}
+                onClick={() => {
+                  activeEditor.dispatchCommand(REDO_COMMAND, undefined);
+                }}
+                title={IS_APPLE ? 'Redo (⌘Y)' : 'Redo (Ctrl+Y)'}
+                type="button"
+                className="toolbar-item"
+                aria-label="Redo">
+                <i className="format redo" />
+              </button>
+            </>
           )}
           <Divider />
+
           {config.biu && (
             <>
               <button
@@ -758,19 +931,7 @@ export default function ToolbarPlugin({
               </button>
             </>
           )}
-          {config.codeBlock && (
-            <button
-              disabled={!isEditable}
-              onClick={() => {
-                activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
-              }}
-              className={'toolbar-item spaced ' + (isCode ? 'active' : '')}
-              title="Insert code block"
-              type="button"
-              aria-label="Insert code block">
-              <i className="format code" />
-            </button>
-          )}
+
           {config.link && (
             <button
               disabled={!isEditable}
@@ -782,29 +943,34 @@ export default function ToolbarPlugin({
               <i className="format link" />
             </button>
           )}
+          {handleClick && (
+            <>
 
-          {config.textColorPicker && (
-            <ColorPicker
+       
+            <div className='toolbar-item spaced'>
+            <label htmlFor="file-upload" className="custom-file-uploads">
+              <SvgIcon />
+              </label>
+              <input
+                id="file-upload"
+                onChange={handleClick}
+                className="textfileupload"
+                type="file"
+                accept="video/*, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, text/csv"
+              />
+            </div>      
+            </>
+          )}
+          {config.fontSizeOptions && (
+            <FontDropDown
               disabled={!isEditable}
-              buttonClassName="toolbar-item color-picker"
-              buttonAriaLabel="Formatting text color"
-              buttonIconClassName="icon font-color"
-              color={fontColor}
-              onChange={onFontColorSelect}
-              title="text color"
+              style={'font-size'}
+              value={fontSize}
+              editor={editor}
+              options={FONT_SIZE_OPTIONS}
             />
           )}
-          {config.bgColorPicker && (
-            <ColorPicker
-              disabled={!isEditable}
-              buttonClassName="toolbar-item color-picker"
-              buttonAriaLabel="Formatting background color"
-              buttonIconClassName="icon bg-color"
-              color={bgColor}
-              onChange={onBgColorSelect}
-              title="bg color"
-            />
-          )}
+
           {config.formatTextOptions && (
             <DropDown
               disabled={!isEditable}
@@ -861,219 +1027,6 @@ export default function ToolbarPlugin({
               </DropDownItem>
             </DropDown>
           )}
-          {/* {handleClick && (
-            <>
-              <label htmlFor="file-upload" className="custom-file-uploads">
-               <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 30 30" width="16px" height="16px">    <path d="M24.707,8.793l-6.5-6.5C18.019,2.105,17.765,2,17.5,2H7C5.895,2,5,2.895,5,4v22c0,1.105,0.895,2,2,2h16c1.105,0,2-0.895,2-2 V9.5C25,9.235,24.895,8.981,24.707,8.793z M18,10c-0.552,0-1-0.448-1-1V3.904L23.096,10H18z"/></svg>
-              </label>
-              <input
-                id="file-upload"
-                onChange={handleClick}
-                className="textfileupload"
-                type="file"
-                accept="video/*, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, text/csv"
-              />
-            </>
-          )} */}
-          <Divider />
-
-      
-        </>
-      )}
-      <Divider />
-      {config.align && (
-        <DropDown
-          disabled={!isEditable}
-          buttonLabel="Align"
-          buttonIconClassName="icon left-align"
-          buttonClassName="toolbar-item spaced alignment"
-          buttonAriaLabel="Formatting options for text alignment">
-          <DropDownItem
-            onClick={() => {
-              activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left');
-            }}
-            className="item">
-            <i className="icon left-align" />
-            <span className="text">Left Align</span>
-          </DropDownItem>
-          <DropDownItem
-            onClick={() => {
-              activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center');
-            }}
-            className="item">
-            <i className="icon center-align" />
-            <span className="text">Center Align</span>
-          </DropDownItem>
-          <DropDownItem
-            onClick={() => {
-              activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right');
-            }}
-            className="item">
-            <i className="icon right-align" />
-            <span className="text">Right Align</span>
-          </DropDownItem>
-          <DropDownItem
-            onClick={() => {
-              activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify');
-            }}
-            className="item">
-            <i className="icon justify-align" />
-            <span className="text">Justify Align</span>
-          </DropDownItem>
-          <Divider />
-          <DropDownItem
-            onClick={() => {
-              activeEditor.dispatchCommand(OUTDENT_CONTENT_COMMAND, undefined);
-            }}
-            className="item">
-            <i className={'icon ' + (isRTL ? 'indent' : 'outdent')} />
-            <span className="text">Outdent</span>
-          </DropDownItem>
-          <DropDownItem
-            onClick={() => {
-              activeEditor.dispatchCommand(INDENT_CONTENT_COMMAND, undefined);
-            }}
-            className="item">
-            <i className={'icon ' + (isRTL ? 'outdent' : 'indent')} />
-            <span className="text">Indent</span>
-          </DropDownItem>
-        </DropDown>
-      )}
-        </>
-      ):(
-        <>
-
-{config.undoRedo && (
-        <>
-          <button
-            disabled={!canUndo || !isEditable}
-            onClick={() => {
-              activeEditor.dispatchCommand(UNDO_COMMAND, undefined);
-            }}
-            title={IS_APPLE ? 'Undo (⌘Z)' : 'Undo (Ctrl+Z)'}
-            type="button"
-            className="toolbar-item spaced"
-            aria-label="Undo">
-            <i className="format undo" />
-          </button>
-          <button
-            disabled={!canRedo || !isEditable}
-            onClick={() => {
-              activeEditor.dispatchCommand(REDO_COMMAND, undefined);
-            }}
-            title={IS_APPLE ? 'Redo (⌘Y)' : 'Redo (Ctrl+Y)'}
-            type="button"
-            className="toolbar-item"
-            aria-label="Redo">
-            <i className="format redo" />
-          </button>
-        </>
-      )}
-      <Divider />
-
-      {config.biu && (
-            <>
-              <button
-                disabled={!isEditable}
-                onClick={() => {
-                  activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
-                }}
-                className={'toolbar-item spaced ' + (isBold ? 'active' : '')}
-                title={IS_APPLE ? 'Bold (⌘B)' : 'Bold (Ctrl+B)'}
-                type="button"
-                aria-label={`Format text as bold. Shortcut: ${
-                  IS_APPLE ? '⌘B' : 'Ctrl+B'
-                }`}>
-                <i className="format bold" />
-              </button>
-
-              <button
-                disabled={!isEditable}
-                onClick={() => {
-                  activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
-                }}
-                className={'toolbar-item spaced ' + (isItalic ? 'active' : '')}
-                title={IS_APPLE ? 'Italic (⌘I)' : 'Italic (Ctrl+I)'}
-                type="button"
-                aria-label={`Format text as italics. Shortcut: ${
-                  IS_APPLE ? '⌘I' : 'Ctrl+I'
-                }`}>
-                <i className="format italic" />
-              </button>
-              <button
-                disabled={!isEditable}
-                onClick={() => {
-                  activeEditor.dispatchCommand(
-                    FORMAT_TEXT_COMMAND,
-                    'underline',
-                  );
-                }}
-                className={
-                  'toolbar-item spaced ' + (isUnderline ? 'active' : '')
-                }
-                title={IS_APPLE ? 'Underline (⌘U)' : 'Underline (Ctrl+U)'}
-                type="button"
-                aria-label={`Format text to underlined. Shortcut: ${
-                  IS_APPLE ? '⌘U' : 'Ctrl+U'
-                }`}>
-                <i className="format underline" />
-              </button>
-            </>
-          )}
-
-  
-
-{config.link && (
-            <button
-              disabled={!isEditable}
-              onClick={insertLink}
-              className={'toolbar-item spaced ' + (isLink ? 'active' : '')}
-              aria-label="Insert link"
-              title="Insert link"
-              type="button">
-              <i className="format link" />
-            </button>
-          )}
-   {handleClick && (
-            <>
-              <label htmlFor="file-upload" className="custom-file-uploads">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="16px" height="16px">
-              <path d="M 7 2 L 7 48 L 43 48 L 43 14.59375 L 42.71875 14.28125 L 30.71875 2.28125 L 30.40625 2 Z M 9 4 L 29 4 L 29 16 L 41 16 L 41 46 L 9 46 Z M 31 5.4375 L 39.5625 14 L 31 14 Z"  style={{color: "#ffffff"}}/>
-              </svg>
-              </label>
-              <input
-                id="file-upload"
-                onChange={handleClick}
-                className="textfileupload"
-                type="file"
-                accept="video/*, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, text/csv"
-              />
-            </>
-          )}
-          
-          {config.textColorPicker && (
-            <ColorPicker
-              disabled={!isEditable}
-              buttonClassName="toolbar-item color-picker"
-              buttonAriaLabel="Formatting text color"
-              buttonIconClassName="icon font-color"
-              color={fontColor}
-              onChange={onFontColorSelect}
-              title="text color"
-            />
-          )}
-          {config.bgColorPicker && (
-            <ColorPicker
-              disabled={!isEditable}
-              buttonClassName="toolbar-item color-picker"
-              buttonAriaLabel="Formatting background color"
-              buttonIconClassName="icon bg-color"
-              color={bgColor}
-              onChange={onBgColorSelect}
-              title="bg color"
-            />
-          )}
-        
 
           {config?.insertOptions && (
             <DropDown
@@ -1081,8 +1034,7 @@ export default function ToolbarPlugin({
               buttonClassName="toolbar-item spaced"
               buttonLabel="Insert"
               buttonAriaLabel="Insert specialized editor node"
-              buttonIconClassName="icon plus"
-              >
+              buttonIconClassName="icon plus">
               {/* <DropDownItem
                 onClick={() => {
                   activeEditor.dispatchCommand(
@@ -1108,9 +1060,7 @@ export default function ToolbarPlugin({
                 <span className="text">Image</span>
               </DropDownItem>
 
-           
-
-               <DropDownItem
+              <DropDownItem
                 onClick={() => {
                   showModal('Insert Table', (onClose) => (
                     <InsertTableDialog
@@ -1122,7 +1072,7 @@ export default function ToolbarPlugin({
                 className="item">
                 <i className="icon table" />
                 <span className="text">Table</span>
-              </DropDownItem> 
+              </DropDownItem>
               {/* <DropDownItem
                 onClick={() => {
                   showModal('Insert Poll', (onClose) => (
@@ -1181,15 +1131,10 @@ export default function ToolbarPlugin({
               )}
             </DropDown>
           )}
-
- 
         </>
       )}
-   
+
       {modal}
     </div>
   );
 }
-
-
-

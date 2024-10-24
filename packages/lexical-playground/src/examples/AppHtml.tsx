@@ -50,8 +50,6 @@ function App({
 }): JSX.Element {
   useSyncWithInputHtml(html);
 
-  console.log(html)
-
   return (
     <Editor
       isRichText={true}
@@ -65,8 +63,7 @@ function App({
 }
 
 export default function PlaygroundApp1(): JSX.Element {
- let data = `<p class="TextEditor__paragraph" dir="ltr"><span>sdfsdf</span></p><p class="TextEditor__paragraph" dir="ltr"><span>sdfs</span></p><p class="TextEditor__paragraph" dir="ltr"><span>sdfsdf</span><br><i><b><strong class="TextEditor__textBold TextEditor__textItalic">SDSDF</strong></b></i><br><span>SD</span><br><span>FSDFSD</span><br><span>F</span><br><span style="font-size: 14px;">SdFS</span></p><p class="TextEditor__paragraph" dir="ltr"><span style="font-size: 14px;">adf</span></p><p class="TextEditor__paragraph" dir="ltr"><span style="font-size: 14px;">sd</span></p><p class="TextEditor__paragraph" dir="ltr"><br><span>asdasfdas</span></p><p class="TextEditor__paragraph" dir="ltr"><span>a</span></p><p class="TextEditor__paragraph" dir="ltr"><span>fsdfsdf</span></p>
-`
+ let data = ``
 
   const [html, setHtml] = useState(data);
   return (

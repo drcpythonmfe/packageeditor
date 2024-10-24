@@ -128,9 +128,9 @@ export class TableCellNode extends DEPRECATED_GridCellNode {
       element.style.verticalAlign = 'top';
       element.style.textAlign = 'start';
 
-      if (this.hasHeader()) {
-        element.style.backgroundColor = '#f2f3f5';
-      }
+      // if (this.hasHeader()) {
+      //   element.style.backgroundColor = '#f2f3f5';
+      // }
     }
 
     return {

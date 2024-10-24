@@ -19,10 +19,11 @@
 .draggable-block-menu:active {
   cursor: grabbing;
 }
+/* 
 
 .draggable-block-menu:hover {
   background-color: #efefef;
-}
+} */
 
 .draggable-block-target-line {
   pointer-events: none;
