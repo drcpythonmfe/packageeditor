@@ -85,10 +85,11 @@ import {InsertImageDialog} from '../ImagesPlugin';
 import {InsertPollDialog} from '../PollPlugin';
 import {InsertTableDialog} from '../TablePlugin';
 
-
 const SvgIcon: React.FC = () => {
   const bodyElement = document.querySelector('body');
-  const isDarkTheme: boolean = bodyElement?.classList.contains('theme-dark') || false;
+  
+  const isDarkTheme: boolean =
+    bodyElement?.classList.contains('theme-dark') || false;
 
   return (
     <svg
@@ -99,7 +100,7 @@ const SvgIcon: React.FC = () => {
       className={isDarkTheme ? 'theme-dark-svg' : 'theme-light-svg'}>
       <path
         d="M 7 2 L 7 48 L 43 48 L 43 14.59375 L 42.71875 14.28125 L 30.71875 2.28125 L 30.40625 2 Z M 9 4 L 29 4 L 29 16 L 41 16 L 41 46 L 9 46 Z M 31 5.4375 L 39.5625 14 L 31 14 Z"
-        style={{ fill: isDarkTheme ? '#ffffff' : '#000000' }}
+        style={{fill: isDarkTheme ? '#171313' : '#0A0303'}}
       />
     </svg>
   );
@@ -164,10 +165,6 @@ function BlockFormatDropDown({
   editor: LexicalEditor;
   disabled?: boolean;
 }): JSX.Element {
-
- 
-
-
   const formatParagraph = () => {
     if (blockType !== 'paragraph') {
       editor.update(() => {
@@ -264,7 +261,7 @@ function BlockFormatDropDown({
       disabled={disabled}
       buttonClassName="toolbar-item blocks-controls"
       buttonIconClassName={'icon block-type ' + blockType}
-      buttonLabel={blockTypeToBlockName[blockType]}
+      // buttonLabel={blockTypeToBlockName[blockType]}
       buttonAriaLabel="Formatting options for text style">
       <DropDownItem
         className={'item ' + dropDownActiveClass(blockType === 'paragraph')}
@@ -362,25 +359,47 @@ function FontDropDown({
       : 'Formatting options for font size';
 
   return (
-    <DropDown
-      disabled={disabled}
-      buttonClassName={'toolbar-item ' + style}
-      buttonLabel={value}
-      buttonIconClassName={
-        style === 'font-family' ? 'icon block-type font-family' : ''
-      }
-      buttonAriaLabel={buttonAriaLabel}>
-      {options.map(([option, text]) => (
-        <DropDownItem
-          className={`item ${dropDownActiveClass(value === option)} ${
-            style === 'font-size' ? 'fontsize-item' : ''
-          }`}
-          onClick={() => handleClick(option)}
-          key={option}>
-          <span className="text">{text}</span>
-        </DropDownItem>
-      ))}
-    </DropDown>
+    <>
+      {style === 'font-size' ? (
+        <DropDown
+          disabled={disabled}
+          buttonClassName={'toolbar-item ' + style}
+          // buttonLabel={value}
+          buttonIconClassName={'icon block-type font-family'}
+          buttonAriaLabel={buttonAriaLabel}>
+          {options.map(([option, text]) => (
+            <DropDownItem
+              className={`item ${dropDownActiveClass(value === option)} ${
+                style === 'font-size' ? 'fontsize-item' : ''
+              }`}
+              onClick={() => handleClick(option)}
+              key={option}>
+              <span className="text">{text}</span>
+            </DropDownItem>
+          ))}
+        </DropDown>
+      ) : (
+        <DropDown
+          disabled={disabled}
+          buttonClassName={'toolbar-item ' + style}
+          // buttonLabel={value}
+          buttonIconClassName={
+            style === 'font-family' ? 'icon block-type font-family' : ''
+          }
+          buttonAriaLabel={buttonAriaLabel}>
+          {options.map(([option, text]) => (
+            <DropDownItem
+              className={`item ${dropDownActiveClass(value === option)} ${
+                style === 'font-size' ? 'fontsize-item' : ''
+              }`}
+              onClick={() => handleClick(option)}
+              key={option}>
+              <span className="text">{text}</span>
+            </DropDownItem>
+          ))}
+        </DropDown>
+      )}
+    </>
   );
 }
 
@@ -629,7 +648,7 @@ export default function ToolbarPlugin({
   return (
     <div className="toolbar">
       {floatingText ? (
-        <>         
+        <>
           {blockType === 'code' ? (
             <>
               <DropDown
@@ -671,10 +690,10 @@ export default function ToolbarPlugin({
                       blockType={blockType}
                       editor={editor}
                     />
-                    <Divider />
+                    {/* <Divider /> */}
                   </>
                 )}
-              <Divider />
+              {/* <Divider /> */}
               {config.biu && (
                 <>
                   <button
@@ -780,11 +799,11 @@ export default function ToolbarPlugin({
               )}
             </>
           )}
-          <Divider />
+          {/* <Divider /> */}
           {config.align && (
             <DropDown
               disabled={!isEditable}
-              buttonLabel="Align"
+              // buttonLabel="Align"
               buttonIconClassName="icon left-align"
               buttonClassName="toolbar-item spaced alignment"
               buttonAriaLabel="Formatting options for text alignment">
@@ -851,114 +870,23 @@ export default function ToolbarPlugin({
               </DropDownItem>
             </DropDown>
           )}
-        </>
-      ) : (
-        <>
-          {config.undoRedo && (
-            <>
-              <button
-                disabled={!canUndo || !isEditable}
-                onClick={() => {
-                  activeEditor.dispatchCommand(UNDO_COMMAND, undefined);
-                }}
-                title={IS_APPLE ? 'Undo (⌘Z)' : 'Undo (Ctrl+Z)'}
-                type="button"
-                className="toolbar-item spaced"
-                aria-label="Undo">
-                <i className="format undo" />
-              </button>
-              <button
-                disabled={!canRedo || !isEditable}
-                onClick={() => {
-                  activeEditor.dispatchCommand(REDO_COMMAND, undefined);
-                }}
-                title={IS_APPLE ? 'Redo (⌘Y)' : 'Redo (Ctrl+Y)'}
-                type="button"
-                className="toolbar-item"
-                aria-label="Redo">
-                <i className="format redo" />
-              </button>
-            </>
-          )}
-          <Divider />
 
-          {config.biu && (
-            <>
-              <button
-                disabled={!isEditable}
-                onClick={() => {
-                  activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
-                }}
-                className={'toolbar-item spaced ' + (isBold ? 'active' : '')}
-                title={IS_APPLE ? 'Bold (⌘B)' : 'Bold (Ctrl+B)'}
-                type="button"
-                aria-label={`Format text as bold. Shortcut: ${
-                  IS_APPLE ? '⌘B' : 'Ctrl+B'
-                }`}>
-                <i className="format bold" />
-              </button>
-
-              <button
-                disabled={!isEditable}
-                onClick={() => {
-                  activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
-                }}
-                className={'toolbar-item spaced ' + (isItalic ? 'active' : '')}
-                title={IS_APPLE ? 'Italic (⌘I)' : 'Italic (Ctrl+I)'}
-                type="button"
-                aria-label={`Format text as italics. Shortcut: ${
-                  IS_APPLE ? '⌘I' : 'Ctrl+I'
-                }`}>
-                <i className="format italic" />
-              </button>
-              <button
-                disabled={!isEditable}
-                onClick={() => {
-                  activeEditor.dispatchCommand(
-                    FORMAT_TEXT_COMMAND,
-                    'underline',
-                  );
-                }}
-                className={
-                  'toolbar-item spaced ' + (isUnderline ? 'active' : '')
-                }
-                title={IS_APPLE ? 'Underline (⌘U)' : 'Underline (Ctrl+U)'}
-                type="button"
-                aria-label={`Format text to underlined. Shortcut: ${
-                  IS_APPLE ? '⌘U' : 'Ctrl+U'
-                }`}>
-                <i className="format underline" />
-              </button>
-            </>
-          )}
-
-          {config.link && (
-            <button
-              disabled={!isEditable}
-              onClick={insertLink}
-              className={'toolbar-item spaced ' + (isLink ? 'active' : '')}
-              aria-label="Insert link"
-              title="Insert link"
-              type="button">
-              <i className="format link" />
-            </button>
-          )}
           {handleClick && (
             <>
-
-       
-            <div className='toolbar-item spaced'>
-            <label htmlFor="file-upload" className="custom-file-uploads">
-              <SvgIcon />
-              </label>
-              <input
-                id="file-upload"
-                onChange={handleClick}
-                className="textfileupload"
-                type="file"
-                accept="video/*, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, text/csv"
-              />
-            </div>      
+              <button type="button" className="toolbar-item spaced">
+                <div className="toolbar-item spaced">
+                  <label htmlFor="file-upload" className="custom-file-uploads">
+                    <SvgIcon />
+                  </label>
+                  <input
+                    id="file-upload"
+                    onChange={handleClick}
+                    className="textfileupload"
+                    type="file"
+                    accept="video/*, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, text/csv"
+                  />
+                </div>
+              </button>
             </>
           )}
           {config.fontSizeOptions && (
@@ -1027,15 +955,45 @@ export default function ToolbarPlugin({
               </DropDownItem>
             </DropDown>
           )}
+        </>
+      ) : (
+        <>
+          {/* {config.undoRedo && (
+            <>
+              <button
+                disabled={!canUndo || !isEditable}
+                onClick={() => {
+                  activeEditor.dispatchCommand(UNDO_COMMAND, undefined);
+                }}
+                title={IS_APPLE ? 'Undo (⌘Z)' : 'Undo (Ctrl+Z)'}
+                type="button"
+                className="toolbar-item spaced"
+                aria-label="Undo">
+                <i className="format undo" />
+              </button>
+              <button
+                disabled={!canRedo || !isEditable}
+                onClick={() => {
+                  activeEditor.dispatchCommand(REDO_COMMAND, undefined);
+                }}
+                title={IS_APPLE ? 'Redo (⌘Y)' : 'Redo (Ctrl+Y)'}
+                type="button"
+                className="toolbar-item"
+                aria-label="Redo">
+                <i className="format redo" />
+              </button>
+            </>
+          )} */}
+          {/* <Divider /> */}
 
-          {config?.insertOptions && (
+          {config?.insertOptions && false && (
             <DropDown
               disabled={!isEditable}
               buttonClassName="toolbar-item spaced"
               buttonLabel="Insert"
               buttonAriaLabel="Insert specialized editor node"
               buttonIconClassName="icon plus">
-              {/* <DropDownItem
+              <DropDownItem
                 onClick={() => {
                   activeEditor.dispatchCommand(
                     INSERT_HORIZONTAL_RULE_COMMAND,
@@ -1045,7 +1003,7 @@ export default function ToolbarPlugin({
                 className="item">
                 <i className="icon horizontal-rule" />
                 <span className="text">Horizontal Rule</span>
-              </DropDownItem>  */}
+              </DropDownItem>
               <DropDownItem
                 onClick={() => {
                   showModal('Insert Image', (onClose) => (
@@ -1073,7 +1031,7 @@ export default function ToolbarPlugin({
                 <i className="icon table" />
                 <span className="text">Table</span>
               </DropDownItem>
-              {/* <DropDownItem
+              <DropDownItem
                 onClick={() => {
                   showModal('Insert Poll', (onClose) => (
                     <InsertPollDialog
@@ -1085,8 +1043,8 @@ export default function ToolbarPlugin({
                 className="item">
                 <i className="icon poll" />
                 <span className="text">Poll</span>
-              </DropDownItem> */}
-              {/* <DropDownItem
+              </DropDownItem>
+              <DropDownItem
                 onClick={() => {
                   editor.update(() => {
                     const root = $getRoot();
@@ -1097,16 +1055,16 @@ export default function ToolbarPlugin({
                 className="item">
                 <i className="icon sticky" />
                 <span className="text">Sticky Note</span>
-              </DropDownItem> */}
-              {/* <DropDownItem
+              </DropDownItem>
+              <DropDownItem
                 onClick={() => {
                   editor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, undefined);
                 }}
                 className="item">
                 <i className="icon caret-right" />
                 <span className="text">Collapsible container</span>
-              </DropDownItem> */}
-              {/* {EmbedConfigs.map((embedConfig) => (
+              </DropDownItem>
+              {EmbedConfigs.map((embedConfig) => (
                 <DropDownItem
                   key={embedConfig.type}
                   onClick={() => {
@@ -1119,7 +1077,7 @@ export default function ToolbarPlugin({
                   {embedConfig.icon}
                   <span className="text">{embedConfig.contentName}</span>
                 </DropDownItem>
-              ))} */}
+              ))}
               {editorContext.extensions.toolbarInsertsAfter.map(
                 ([extName, ExtDropDownItem]) => (
                   <ExtDropDownItem

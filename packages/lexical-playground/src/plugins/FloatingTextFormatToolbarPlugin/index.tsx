@@ -139,7 +139,8 @@ function TextFormatFloatingToolbar({
   }, [editor, updateTextFormatFloatingToolbar]);
 
   return (
-    <div ref={popupCharStylesEditorRef} className="floating-text-format-popup">
+    <div>
+ <div ref={popupCharStylesEditorRef} className="floating-text-format-popup">
             {isRichText && <ToolbarPlugin config={config} handleClick={handleClick} floatingText={true} />}
 
       {/* {config.biu && (
@@ -226,6 +227,7 @@ function TextFormatFloatingToolbar({
           <i className="format link" />
         </button>
       )} */}
+    </div>
     </div>
   );
 }

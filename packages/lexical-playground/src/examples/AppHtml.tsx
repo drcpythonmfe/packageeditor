@@ -68,7 +68,7 @@ export default function PlaygroundApp1(): JSX.Element {
   const [html, setHtml] = useState(data);
   return (
     <>
-      <EditorComposer>
+    <EditorComposer>
         <App html={html} setHtml={setHtml}   userList={dummyMentionsData} />
       </EditorComposer>
       <div dangerouslySetInnerHTML={{__html: html}} />

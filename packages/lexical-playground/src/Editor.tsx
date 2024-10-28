@@ -141,7 +141,7 @@ export default function Editor({
   const text = isCollab
     ? 'Enter some collaborative rich text...'
     : isRichText
-    ? 'Enter some rich text...'
+    ? 'Write something or type / for commands and @ to mention person'
     : 'Enter some plain text...';
   const placeholder = <Placeholder>{text}</Placeholder>;
   const [floatingAnchorElem, setFloatingAnchorElem] =
@@ -349,7 +349,7 @@ export default function Editor({
         <div>{showTableOfContents && <TableOfContentsPlugin />}</div>
         <ActionsPlugin isRichText={isRichText} />
       </div>
-      {isRichText && <ToolbarPlugin config={normToolbarConfig} handleClick={handleClick} floatingText={false} />}
+      {/* {isRichText && <ToolbarPlugin config={normToolbarConfig} handleClick={handleClick} floatingText={false} />} */}
       {showTreeView && <TreeViewPlugin />}
     </div>
   );
