@@ -9,6 +9,7 @@ import {
   SerializedEditorState,
   useSyncWithInputJson,
 } from '../index';
+import PlaygroundApp1 from './AppHtml';
 
 
 const dummyMentionsData = [
@@ -67,22 +68,18 @@ function App({
 }
 
 export default function PlaygroundApp3(): JSX.Element {
-  const [json, setJson] = useState<SerializedEditorState>({
-    root: {
-      children: [{type: 'paragraph', version: 1}],
-      direction: 'ltr',
-      format: '',
-      indent: 0,
-      type: 'root',
-      version: 1,
-    },
-  });
+
+  let data  =`{"root":{"children":[{"children":[{"detail":0,"format":1,"mode":"normal","style":"background-color: #f8e71c;","text":"adsdasdasdasd","type":"text","version":1}],"direction":"ltr","format":"right","type":"paragraph","version":1},{"children":[{"detail":0,"format":1,"mode":"normal","style":"background-color: #f8e71c;","text":"sd","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":1,"mode":"normal","style":"background-color: #f8e71c;","text":"fs","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":1,"mode":"normal","style":"background-color: #f8e71c;","text":"adsfdsfsdfsdfsd","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"format":"","type":"office","version":1,"url":"https://media.stage.truflux.drcsystems.ooo/uploads/project/294/Designs for SectorConnect Requriements _1__6.pptx"},{"children":[{"detail":0,"format":1,"mode":"normal","style":"background-color: #f8e71c;","text":"df","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`
+  const [json, setJson] = useState<SerializedEditorState>(JSON.parse(JSON.stringify(data)));
+
   return (
     <>
       <EditorComposer>
         <App json={json} setJson={setJson} userList={dummyMentionsData} />
       </EditorComposer>
       <div dangerouslySetInnerHTML={{__html: JSON.stringify(json)}} />
+
+      <PlaygroundApp1 />
     </>
   );
 }

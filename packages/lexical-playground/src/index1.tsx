@@ -12,7 +12,7 @@ import './index.css';
 import * as React from 'react';
 import {createRoot} from 'react-dom/client';
 
-import App from './examples/AppHtml';
+import App from './examples/AppJson';  //AppHtml
 
 // Handle runtime errors
 const showErrorOverlay = (err: Event) => {

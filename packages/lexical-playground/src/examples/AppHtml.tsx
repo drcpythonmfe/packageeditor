@@ -63,13 +63,13 @@ function App({
 }
 
 export default function PlaygroundApp1(): JSX.Element {
- let data = ``
+ let data = `<p class="TextEditor__paragraph" dir="ltr" style="text-align: right;"><b><strong class="TextEditor__textBold" style="background-color: rgb(248, 231, 28);"> </strong></b><b><strong class="TextEditor__textBold" style="background-color: rgb(248, 231, 28); font-size: 16px;">hello  js examples </strong></b><span> </span></p><p class="TextEditor__paragraph" dir="ltr" style="text-align: right;"><br></p>`
 
   const [html, setHtml] = useState(data);
   return (
     <>
     <EditorComposer>
-        <App html={html} setHtml={setHtml}   userList={dummyMentionsData} />
+        <App html={html}  setHtml={setHtml}   userList={dummyMentionsData} />
       </EditorComposer>
       <div dangerouslySetInnerHTML={{__html: html}} />
     </>

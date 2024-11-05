@@ -67,6 +67,11 @@ import {
         ...super.exportJSON(),
         type: 'extended-text',
         version: 1,
+        detail: this.getDetail(),
+        format: this.getFormat(),
+        mode: this.getMode(),
+        style: this.getStyle(),
+        text: this.getTextContent(),
       }
     }
   }
@@ -84,6 +89,7 @@ import {
   ): (node: HTMLElement) => DOMConversionOutput | null {
     return (node) => {
       const original = originalDOMConverter?.(node);
+
       if (!original) {
         return null;
       }
@@ -104,7 +110,8 @@ import {
       const height =  node.style.height
       const borderRadius = node.style.borderRadius
       const padding = node.style.padding
-      const width =node.style.width
+      const width = node.style.width
+
       return {
         ...originalOutput,
         forChild: (lexicalNode, parent) => {
@@ -112,13 +119,13 @@ import {
           const result = originalForChild(lexicalNode, parent);
           if ($isTextNode(result)) {
             const style = [
+              textalignment ?  `text-align: ${textalignment}` : null,
               backgroundColor ? `background-color: ${backgroundColor}` : null,
               color ? `color: ${color}` : null,
               fontFamily ? `font-family: ${fontFamily}` : null,
               fontWeight ? `font-weight: ${fontWeight}` : null,
               fontSize ? `font-size: ${fontSize}` : null,
               textDecoration ? `text-decoration: ${textDecoration}` : null,
-              textalignment ?  `text-align: ${textalignment}` : null,
               display ?  `display : ${display}` : null,
               height ?  `height : ${height}` :null,
               borderRadius ? `border-radius :${borderRadius}` :null,
@@ -132,8 +139,6 @@ import {
               return result.setStyle(style);
             }
           }
-
-            console.log(result)
           return result;
         }
       };
