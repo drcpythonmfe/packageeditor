@@ -63,9 +63,9 @@ function App({
 }
 
 export default function PlaygroundApp1(): JSX.Element {
- let data = `<p class="TextEditor__paragraph" dir="ltr" style="text-align: right;"><b><strong class="TextEditor__textBold" style="background-color: rgb(248, 231, 28);"> </strong></b><b><strong class="TextEditor__textBold" style="background-color: rgb(248, 231, 28); font-size: 16px;">hello  js examples </strong></b><span> </span></p><p class="TextEditor__paragraph" dir="ltr" style="text-align: right;"><br></p>`
+ let data = `<div><ul class="TextEditor__ul"><li value="1" class="TextEditor__listItem"><span>asdfsdfsf</span></li><li value="2" class="TextEditor__listItem"><span>adfdf</span></li><li value="3" class="TextEditor__listItem"><span>sdf</span></li><li value="4" class="TextEditor__listItem"><span>sdf</span></li><li value="5" class="TextEditor__listItem"><span>sdf</span></li><li value="6" class="TextEditor__listItem"></li></ul><p class="TextEditor__paragraph" dir="ltr"><span>sdf</span></p><p class="TextEditor__paragraph" dir="ltr"><span>sd</span></p><p class="TextEditor__paragraph" dir="ltr"><span>f</span></p><p class="TextEditor__paragraph" dir="ltr"><span>sf</span></p><p class="TextEditor__paragraph" dir="ltr"><span>s</span></p><p class="TextEditor__paragraph" dir="ltr"><span>fs</span></p><p class="TextEditor__paragraph" dir="ltr"><span>df</span></p><p class="TextEditor__paragraph" dir="ltr"><span>s</span></p><p class="TextEditor__paragraph" dir="ltr"><span>f</span></p><p class="TextEditor__paragraph" dir="ltr"><span>df</span></p><p class="TextEditor__paragraph" dir="ltr" style="text-align: right;"><span>fsdf</span></p></div>`
 
-  const [html, setHtml] = useState(data);
+  const [html, setHtml] = useState(``);
   return (
     <>
     <EditorComposer>

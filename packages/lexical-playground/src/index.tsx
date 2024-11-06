@@ -4,6 +4,7 @@ import './index.css';
 import Editor from './Editor';
 import EditorComposer from './EditorComposer';
 import useSyncWithInputHtml from './hooks/useSyncWithInputHtml';
+import useSyncWithInputHtml2 from './hooks/useSyncWithInputHtml2';
 import useSyncWithInputJson from './hooks/useSyncWithInputJson';
 import PlaygroundNodes from './nodes/PlaygroundNodes';
 import PasteLogPlugin from './plugins/PasteLogPlugin';
@@ -29,4 +30,5 @@ export {
   TypingPerfPlugin,
   useSyncWithInputHtml,
   useSyncWithInputJson,
+  useSyncWithInputHtml2
 };
