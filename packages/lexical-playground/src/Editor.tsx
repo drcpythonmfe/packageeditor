@@ -117,6 +117,24 @@ const defaultToolbarConfig: ToolbarConfig = {
   link: true,
   textColorPicker: true,
   undoRedo: true,
+  paragraph: true,
+  heading1: true,
+  heading2: true,
+  heading3: true,
+  table: true,
+  numberedList: true,
+  bulletedList: true,
+  checkList: true,
+  embedYoutubeVideo: true,
+  embedVideo: true,
+  embedPdf: true,
+  embedOffice: true,
+  image: true,
+  alignments:true,
+  alignLeft: true,
+  alignCenter: true,
+  alignRight: true,
+  alignJustify: true,
 };
 
 export default function Editor({
@@ -240,7 +258,7 @@ export default function Editor({
         <AutoFocusPlugin />
         <ClearEditorPlugin />
         <CommentPlugin />
-        <ComponentPickerPlugin />
+        <ComponentPickerPlugin config={normToolbarConfig}  />
         <EmojiPickerPlugin />
         <AutoEmbedPlugin />
         <MentionsPlugin dummyMentionsDatas={dummyMentionsDatas} />

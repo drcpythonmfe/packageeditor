@@ -43,6 +43,7 @@ import {INSERT_EXCALIDRAW_COMMAND} from '../ExcalidrawPlugin';
 import {INSERT_IMAGE_COMMAND, InsertImageDialog} from '../ImagesPlugin';
 import {InsertPollDialog} from '../PollPlugin';
 import {InsertNewTableDialog, InsertTableDialog} from '../TablePlugin';
+import {ToolbarConfig} from '../toolbarTypes';
 
 class ComponentPickerOption extends TypeaheadOption {
   // What shows up in the editor
@@ -80,35 +81,58 @@ function ComponentPickerMenuItem({
   onClick,
   onMouseEnter,
   option,
+  dynamicOptions,
 }: {
   index: number;
   isSelected: boolean;
   onClick: () => void;
+  dynamicOptions: any;
   onMouseEnter: () => void;
   option: ComponentPickerOption;
 }) {
   let className = 'item';
+  let data;
+
   if (isSelected) {
     className += ' selected';
   }
+
+  if (dynamicOptions && option) {
+    data = Object.entries(dynamicOptions)
+      ?.filter(
+        ([key, value]) =>
+          key?.toLowerCase()?.replace(/\s+/g, '') ===
+          option?.title?.toLowerCase()?.replace(/\s+/g, ''),
+      )
+      ?.map(([key, value]) => [
+        'show' || key.toLowerCase().replace(/\s+/g, ''),
+        value,
+      ]);
+  }
+
+
   return (
-    <li
-      key={option.key}
-      tabIndex={-1}
-      className={className}
-      ref={option.setRefElement}
-      role="option"
-      aria-selected={isSelected}
-      id={'typeahead-item-' + index}
-      onMouseEnter={onMouseEnter}
-      onClick={onClick}>
-      {option.icon}
-      <span className="text">{option.title}</span>
-    </li>
+    <>
+      {Object.fromEntries(data)?.show && (
+        <li
+          key={option.key}
+          tabIndex={-1}
+          className={className}
+          ref={option.setRefElement}
+          role="option"
+          aria-selected={isSelected}
+          id={'typeahead-item-' + index}
+          onMouseEnter={onMouseEnter}
+          onClick={onClick}>
+          {option.icon}
+          <span className="text">{option.title}</span>
+        </li>
+      )}
+    </>
   );
 }
 
-export default function ComponentPickerMenuPlugin(): JSX.Element {
+export default function ComponentPickerMenuPlugin(config: any): JSX.Element {
   const [editor] = useLexicalComposerContext();
   const [modal, showModal] = useModal();
   const [queryString, setQueryString] = useState<string | null>(null);
@@ -166,8 +190,6 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
 
   const options = useMemo(() => {
     const baseOptions = [
-
-
       new ComponentPickerOption('Paragraph', {
         icon: <i className="icon paragraph" />,
         keywords: ['normal', 'paragraph', 'p', 'text'],
@@ -331,7 +353,6 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
       ),
     ];
 
-    
     const dynamicOptions = getDynamicOptions();
 
     return queryString
@@ -381,23 +402,24 @@ export default function ComponentPickerMenuPlugin(): JSX.Element {
         ) =>
           anchorElementRef.current && options.length
             ? ReactDOM.createPortal(
-              <div className="typeahead-popovers component-picker-menu">
+                <div className="typeahead-popovers component-picker-menu">
                   <ul>
                     {options.map((option, i: number) => (
                       <>
-                      <ComponentPickerMenuItem
-                        index={i}
-                        isSelected={selectedIndex === i}
-                        onClick={() => {
-                          setHighlightedIndex(i);
-                          selectOptionAndCleanUp(option);
-                        }}
-                        onMouseEnter={() => {
-                          setHighlightedIndex(i);
-                        }}
-                        key={option.key}
-                        option={option}
-                      />
+                        <ComponentPickerMenuItem
+                          index={i}
+                          isSelected={selectedIndex === i}
+                          dynamicOptions={config?.config}
+                          onClick={() => {
+                            setHighlightedIndex(i);
+                            selectOptionAndCleanUp(option);
+                          }}
+                          onMouseEnter={() => {
+                            setHighlightedIndex(i);
+                          }}
+                          key={option.key}
+                          option={option}
+                        />
                       </>
                     ))}
                   </ul>

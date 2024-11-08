@@ -19,6 +19,7 @@ export type DragDropPasteProps = {
 };
 
 const removeNode = (editor: LexicalEditor, node: ImageNode) => {
+
   try {
     editor.update(() => {
       node.remove();
@@ -50,9 +51,7 @@ export default function OnImageUploadPlugin({
                       if(imgUrl){
                         const parts = imgUrl.split('.');
                         const extension = parts[parts.length - 1].toLowerCase();
-                        const validImageTypes = ['jpg', 'jpeg', 'png'];
-  
-                        
+                        const validImageTypes = ['jpg', 'jpeg', 'png'];                        
                         if (validImageTypes.includes(extension)) {
                           const preloadImage = new Image();
                           preloadImage.onload = () => {
@@ -62,6 +61,7 @@ export default function OnImageUploadPlugin({
                             });
                           };
                           preloadImage.onerror = () => {
+                            console.log(editor ,imageNode)
                             removeNode(editor, imageNode);
                           };
                           preloadImage.src = imgUrl;

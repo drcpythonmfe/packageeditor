@@ -39,6 +39,40 @@ const onDataSend = async (file: File) => {
   return `https://media.stage.truflux.drcsystems.ooo/uploads/project/294/Designs for SectorConnect Requriements _1__6.pptx`;
 };
 
+
+const toolbarConfig ={
+  align: true,
+  bgColorPicker: true,
+  biu: true,
+  codeBlock: true,
+  fontFamilyOptions: true,
+  fontSizeOptions: true,
+  formatBlockOptions: true,
+  formatTextOptions: true,
+  insertOptions: true,
+  link: true,
+  textColorPicker: true,
+  undoRedo: true,
+  paragraph: false,     //   / type data 
+  heading1: false,
+  heading2: false,
+  heading3: false,
+  table: true,
+  numberedList: false,
+  bulletedList: false,
+  checkList: true,
+  embedYoutubeVideo: true,
+  embedVideo: false,
+  embedPdf: false,
+  embedOffice: false,
+  image: true,
+  alignLeft: false,
+  alignCenter: false,
+  alignRight: false,
+  alignJustify: false,
+}
+
+
 function App({
   html,
   setHtml,
@@ -56,6 +90,7 @@ function App({
       onChange={setHtml}
       onUpload={uploadImg}
       onChangeMode="html"
+      toolbarConfig={toolbarConfig}
       onDataSend={onDataSend}
       dummyMentionsDatas={userList || []}
     />

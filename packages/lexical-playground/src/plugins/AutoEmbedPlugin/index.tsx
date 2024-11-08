@@ -81,7 +81,6 @@ export const YoutubeEmbedConfig: PlaygroundEmbedConfig = {
   type: 'youtube-video',
 };
 
-
 export const VideoEmbedConfig: PlaygroundEmbedConfig = {
   contentName: 'Video',
 
@@ -124,6 +123,7 @@ export const PdfEmbedConfig: PlaygroundEmbedConfig = {
   exampleUrl: 'https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210101201653/PDF.pdf',
 
   // Icon for display.
+
   icon: <i className="icon pdf" />,
 
   insertNode: (editor: LexicalEditor, result: EmbedMatchResult) => {
@@ -137,9 +137,7 @@ export const PdfEmbedConfig: PlaygroundEmbedConfig = {
     const parts = url?.split('.');
     const extension = parts[parts.length - 1]?.toLowerCase();
 
-    const validPdfTypes = [
-      'pdf'
-    ]
+    const validPdfTypes = ['pdf']
 
     if (validPdfTypes.includes(extension) && url != null) {
       return {
