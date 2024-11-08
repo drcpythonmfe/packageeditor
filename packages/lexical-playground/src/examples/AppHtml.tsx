@@ -30,6 +30,11 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout
 const uploadImg = async (file: File, altText: string) => {
   console.log("file",file)
   await delay(500);
+  let data = {
+    url : `https://media.stage.truflux.drcsystems.ooo/uploads/project/372/2024-09-16_13-38-11_1.mp4`,
+    id : ""
+  }
+
   return `https://media.stage.truflux.drcsystems.ooo/uploads/project/372/2024-09-16_13-38-11_1.mp4`;
 };
 
@@ -44,16 +49,16 @@ const toolbarConfig ={
   align: true,
   bgColorPicker: true,
   biu: true,
-  codeBlock: true,
-  fontFamilyOptions: true,
-  fontSizeOptions: true,
+  codeBlock: false,
+  fontFamilyOptions: false,
+  fontSizeOptions: false,
   formatBlockOptions: true,
   formatTextOptions: true,
   insertOptions: true,
   link: true,
   textColorPicker: true,
   undoRedo: true,
-  paragraph: false,     //   / type data 
+  paragraph: false,      //   / type data 
   heading1: false,
   heading2: false,
   heading3: false,
@@ -61,7 +66,7 @@ const toolbarConfig ={
   numberedList: false,
   bulletedList: false,
   checkList: true,
-  embedYoutubeVideo: true,
+  embedYoutubeVideo: false,
   embedVideo: false,
   embedPdf: false,
   embedOffice: false,

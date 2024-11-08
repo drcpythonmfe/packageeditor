@@ -367,7 +367,7 @@ export default function Editor({
         <div>{showTableOfContents && <TableOfContentsPlugin />}</div>
         <ActionsPlugin isRichText={isRichText} />
       </div>
-      {/* {isRichText && <ToolbarPlugin config={normToolbarConfig} handleClick={handleClick} floatingText={false} />} */}
+      {isRichText && <ToolbarPlugin config={normToolbarConfig} handleClick={handleClick} floatingText={false} />}
       {showTreeView && <TreeViewPlugin />}
     </div>
   );
