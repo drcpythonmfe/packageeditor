@@ -58,6 +58,7 @@ export default function OnImageUploadPlugin({
                             editor.update(() => {
                               imageNode.setFile(undefined);
                               imageNode.setSrc(imgUrl);
+                              imageNode.settext("img");
                             });
                           };
                           preloadImage.onerror = () => {

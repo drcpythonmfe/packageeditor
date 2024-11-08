@@ -31,11 +31,11 @@ const uploadImg = async (file: File, altText: string) => {
   console.log("file",file)
   await delay(500);
   let data = {
-    url : `https://media.stage.truflux.drcsystems.ooo/uploads/project/372/2024-09-16_13-38-11_1.mp4`,
-    id : ""
+    url : `https://commondatastorage.googleapis.com/codeskulptor-assets/lathrop/nebula_blue.s2014.png`,
+    id :  126548545485465 
   }
 
-  return `https://media.stage.truflux.drcsystems.ooo/uploads/project/372/2024-09-16_13-38-11_1.mp4`;
+  return `https://commondatastorage.googleapis.com/codeskulptor-assets/lathrop/nebula_blue.s2014.png`
 };
 
 const onDataSend = async (file: File) => {
@@ -103,9 +103,11 @@ function App({
 }
 
 export default function PlaygroundApp1(): JSX.Element {
- let data = `<div><ul class="TextEditor__ul"><li value="1" class="TextEditor__listItem"><span>asdfsdfsf</span></li><li value="2" class="TextEditor__listItem"><span>adfdf</span></li><li value="3" class="TextEditor__listItem"><span>sdf</span></li><li value="4" class="TextEditor__listItem"><span>sdf</span></li><li value="5" class="TextEditor__listItem"><span>sdf</span></li><li value="6" class="TextEditor__listItem"></li></ul><p class="TextEditor__paragraph" dir="ltr"><span>sdf</span></p><p class="TextEditor__paragraph" dir="ltr"><span>sd</span></p><p class="TextEditor__paragraph" dir="ltr"><span>f</span></p><p class="TextEditor__paragraph" dir="ltr"><span>sf</span></p><p class="TextEditor__paragraph" dir="ltr"><span>s</span></p><p class="TextEditor__paragraph" dir="ltr"><span>fs</span></p><p class="TextEditor__paragraph" dir="ltr"><span>df</span></p><p class="TextEditor__paragraph" dir="ltr"><span>s</span></p><p class="TextEditor__paragraph" dir="ltr"><span>f</span></p><p class="TextEditor__paragraph" dir="ltr"><span>df</span></p><p class="TextEditor__paragraph" dir="ltr" style="text-align: right;"><span>fsdf</span></p></div>`
+ 
 
-  const [html, setHtml] = useState(``);
+  let data = `<p class="TextEditor__paragraph"><img class="TextEditor__image editor-image" src="https://commondatastorage.googleapis.com/codeskulptor-assets/lathrop/nebula_blue.s2014.png" alt="ss" width="inherit" height="inherit"></p>`
+  const [html, setHtml] = useState(data);
+  
   return (
     <>
     <EditorComposer>

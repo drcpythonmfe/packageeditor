@@ -199,6 +199,12 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     writable.__src = src;
   }
 
+  settext(id: string): void {
+    const writable = this.getWritable();
+    writable.__altText = id;
+  }
+
+
   setFile(file: File | undefined): void {
     const writable = this.getWritable();
     writable.__file = file;

@@ -34,11 +34,19 @@ const dummyMentionsData = [
 
 const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
+
 const uploadImg = async (file: File, altText: string) => {
   console.log("file",file)
   await delay(500);
-  return `https://media.stage.truflux.drcsystems.ooo/uploads/project/372/2024-09-16_13-38-11_1.mp4`;
+  let data = {
+    url : `https://commondatastorage.googleapis.com/codeskulptor-assets/lathrop/nebula_blue.s2014.png`,
+    id :  126548545485465 
+  }
+
+  return `https://commondatastorage.googleapis.com/codeskulptor-assets/lathrop/nebula_blue.s2014.png`
 };
+
+
 
 const onDataSend = async (file: File) => {
   console.log(file)
@@ -69,7 +77,7 @@ function App({
 
 export default function PlaygroundApp3(): JSX.Element {
 
-  let data  =`{"root":{"children":[{"children":[{"detail":0,"format":1,"mode":"normal","style":"background-color: #f8e71c;","text":"adsdasdasdasd","type":"text","version":1}],"direction":"ltr","format":"right","type":"paragraph","version":1},{"children":[{"detail":0,"format":1,"mode":"normal","style":"background-color: #f8e71c;","text":"sd","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":1,"mode":"normal","style":"background-color: #f8e71c;","text":"fs","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":1,"mode":"normal","style":"background-color: #f8e71c;","text":"adsfdsfsdfsdfsd","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"format":"","type":"office","version":1,"url":"https://media.stage.truflux.drcsystems.ooo/uploads/project/294/Designs for SectorConnect Requriements _1__6.pptx"},{"children":[{"detail":0,"format":1,"mode":"normal","style":"background-color: #f8e71c;","text":"df","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`
+  let data  =`{}`
   const [json, setJson] = useState<SerializedEditorState>(JSON.parse(JSON.stringify(data)));
 
   return (
