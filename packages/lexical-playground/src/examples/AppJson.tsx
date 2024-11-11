@@ -43,7 +43,7 @@ const uploadImg = async (file: File, altText: string) => {
     id :  126548545485465 
   }
 
-  return `https://commondatastorage.googleapis.com/codeskulptor-assets/lathrop/nebula_blue.s2014.png`
+  return data
 };
 
 
@@ -51,7 +51,14 @@ const uploadImg = async (file: File, altText: string) => {
 const onDataSend = async (file: File) => {
   console.log(file)
   await delay(500);
-  return `https://media.stage.truflux.drcsystems.ooo/uploads/project/294/Designs for SectorConnect Requriements _1__6.pptx`;
+
+  let data = {
+    url : `https://media.stage.truflux.drcsystems.ooo/uploads/project/294/Designs for SectorConnect Requriements _1__6.pptx`,
+    id :  126548545485465 
+  }
+
+  return data
+  
 };
 
 
