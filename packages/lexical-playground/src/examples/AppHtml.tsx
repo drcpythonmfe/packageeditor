@@ -34,8 +34,7 @@ const uploadImg = async (file: File, altText: string) => {
     url : `https://commondatastorage.googleapis.com/codeskulptor-assets/lathrop/nebula_blue.s2014.png`,
     id :  126548545485465 
   }
-
-  return `https://commondatastorage.googleapis.com/codeskulptor-assets/lathrop/nebula_blue.s2014.png`
+  return data
 };
 
 const onDataSend = async (file: File) => {
