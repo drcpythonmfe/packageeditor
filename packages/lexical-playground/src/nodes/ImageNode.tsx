@@ -252,7 +252,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
           captionsEnabled={this.__captionsEnabled}
           resizable={true}
         />
-        {this.__file && <ImageSpinner />}
+        {/* {this.__file && <ImageSpinner />} */}
       </Suspense>
     );
   }

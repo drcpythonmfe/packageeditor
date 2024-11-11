@@ -1015,7 +1015,7 @@ export default function ToolbarPlugin({
                 }}
                 className="item">
                 <i className="icon image" />
-                <span className="text">Image</span>
+                <span className="text">Upload Document</span>
               </DropDownItem>
 
               <DropDownItem

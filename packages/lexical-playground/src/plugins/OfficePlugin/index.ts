@@ -3,7 +3,6 @@
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- *
  */
 
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
@@ -13,7 +12,14 @@ import {useEffect} from 'react';
 
 import {$createOfficeNode, OfficeNode} from '../../nodes/OfficeNode';
 
-export const INSERT_OFFICE_COMMAND: LexicalCommand<string> = createCommand(
+// Define the type for the Office data
+export interface OfficeData {
+  url: string;
+  id: string;
+}
+
+// Update the command type to use OfficeData interface
+export const INSERT_OFFICE_COMMAND: LexicalCommand<OfficeData> = createCommand(
   'INSERT_OFFICE_COMMAND',
 );
 
@@ -25,9 +31,9 @@ export default function OfficePlugin(): JSX.Element | null {
       throw new Error('OfficePlugin: OfficeNode not registered on editor');
     }
 
-    return editor.registerCommand<string>(
+    return editor.registerCommand(
       INSERT_OFFICE_COMMAND,
-      (payload) => {
+      (payload: OfficeData) => {
         const officeNode = $createOfficeNode(payload);
         $insertNodeToNearestRoot(officeNode);
 

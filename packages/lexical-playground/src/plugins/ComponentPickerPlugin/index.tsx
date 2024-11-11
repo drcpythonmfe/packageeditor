@@ -327,11 +327,11 @@ export default function ComponentPickerMenuPlugin(config: any): JSX.Element {
       //       src: '',
       //     }),
       // }),
-      new ComponentPickerOption('Image', {
+      new ComponentPickerOption('Upload Documents', {
         icon: <i className="icon image" />,
-        keywords: ['image', 'photo', 'picture', 'file'],
+        keywords: ['image', 'photo', 'picture', 'file' ,'ppt' ,'mp4' , 'pdf' ,'docux' ,'word file'],
         onSelect: () =>
-          showModal('Insert Image', (onClose) => (
+          showModal('Upload Document', (onClose) => (
             <InsertImageDialog activeEditor={editor} onClose={onClose} />
           )),
       }),

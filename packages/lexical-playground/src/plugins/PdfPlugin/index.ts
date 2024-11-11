@@ -13,7 +13,13 @@ import {useEffect} from 'react';
 
 import {$createPdfNode, PdfNode} from '../../nodes/PdfNode';
 
-export const INSERT_PDF_COMMAND: LexicalCommand<string> = createCommand(
+// Define the type for the Office data
+export interface PdfData {
+  url: string;
+  id: string;
+}
+
+export const INSERT_PDF_COMMAND: LexicalCommand<PdfData> = createCommand(
   'INSERT_PDF_COMMAND',
 );
 
@@ -25,7 +31,7 @@ export default function PdfPlugin(): JSX.Element | null {
       throw new Error('PdfPlugin: PdfNode not registered on editor');
     }
 
-    return editor.registerCommand<string>(
+    return editor.registerCommand<PdfData>(
       INSERT_PDF_COMMAND,
       (payload) => {
         const pdfNode = $createPdfNode(payload);

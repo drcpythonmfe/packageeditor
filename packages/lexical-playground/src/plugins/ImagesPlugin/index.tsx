@@ -116,18 +116,18 @@ export function InsertImageUploadedDialogBody({
   return (
     <>
       <FileInput
-        label="Image Upload"
+        label="Upload Document"
         onChange={loadImage}
-        accept="image/*"
+        accept="image/jpeg,image/jpg,image/png,video/mp4,video/webm,video/mov,video/avi,video/flv,video/mkv,video/wmv,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/csv,application/vnd.oasis.opendocument.spreadsheet"
         data-test-id="image-modal-file-upload"
       />
-      <TextInput
+      {/* <TextInput
         label="Alt Text"
         placeholder="Descriptive alternative text"
         onChange={setAltText}
         value={altText}
         data-test-id="image-modal-alt-text-input"
-      />
+      /> */}
       <DialogActions>
         <Button
           data-test-id="image-modal-file-upload-btn"

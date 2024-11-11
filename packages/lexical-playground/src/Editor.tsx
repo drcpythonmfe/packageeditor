@@ -129,7 +129,7 @@ const defaultToolbarConfig: ToolbarConfig = {
   embedVideo: true,
   embedPdf: true,
   embedOffice: true,
-  image: true,
+  UploadDocuments: true,
   alignments:true,
   alignLeft: true,
   alignCenter: true,

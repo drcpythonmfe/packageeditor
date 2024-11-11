@@ -13,7 +13,13 @@ import {useEffect} from 'react';
 
 import {$createVideoNode, VideoNode} from '../../nodes/VideoNode';
 
-export const INSERT_VIDEO_COMMAND: LexicalCommand<string> = createCommand(
+export interface VideoData {
+  url: string;
+  id: string;
+}
+
+
+export const INSERT_VIDEO_COMMAND: LexicalCommand<VideoData> = createCommand(
   'INSERT_VIDEO_COMMAND',
 );
 
@@ -25,7 +31,7 @@ export default function VideoPlugin(): JSX.Element | null {
       throw new Error('VideoPlugin: VideoNode not registered on editor');
     }
 
-    return editor.registerCommand<string>(
+    return editor.registerCommand<VideoData>(
       INSERT_VIDEO_COMMAND,
       (payload) => {
         const videoNode = $createVideoNode(payload);

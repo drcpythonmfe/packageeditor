@@ -26,7 +26,7 @@ export type ToolbarConfig = {
   embedVideo?: boolean;
   embedPdf?: boolean;
   embedOffice?: boolean;
-  image?: boolean;
+  UploadDocuments?: boolean;
   alignments?:boolean;
   alignLeft?: boolean;
   alignCenter?: boolean;
