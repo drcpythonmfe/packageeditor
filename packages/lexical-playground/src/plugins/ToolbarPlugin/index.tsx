@@ -871,7 +871,7 @@ export default function ToolbarPlugin({
             </DropDown>
           )}
 
-          {handleClick && (
+          {/* {handleClick && (
             <>
               <button type="button" className="toolbar-item spaced">
                 <div className="toolbar-item spaced">
@@ -888,7 +888,7 @@ export default function ToolbarPlugin({
                 </div>
               </button>
             </>
-          )}
+          )} */}
           {config.fontSizeOptions && (
             <FontDropDown
               disabled={!isEditable}

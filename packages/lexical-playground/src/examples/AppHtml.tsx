@@ -97,8 +97,6 @@ function App({
 
 export default function PlaygroundApp1(): JSX.Element {
  
-
-  let data = `<div><p class="TextEditor__paragraph" dir="ltr"><span style="text-align: left;">asdadasdad</span></p><p><a href="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" target="_blank" rel="0.7138092931844775" data-lexical-video-url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" data-lexical-video-id="0.7138092931844775"><span title="0.7138092931844775" alt="0.7138092931844775" style="background-color: rgb(140, 116, 247); border-radius: 8px; color: white; display: inline-block; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; padding: 6px; text-decoration: none; width: 250px; height: 30px;">BigBuckBunny.mp4</span></a></p><p> </p><p></p><p class="TextEditor__paragraph"><br></p></div>`
   const [html, setHtml] = useState(``);
   
   return (
