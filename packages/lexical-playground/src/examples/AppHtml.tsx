@@ -40,7 +40,12 @@ const uploadImg = async (file: File, altText: string) => {
 const onDataSend = async (file: File) => {
   console.log(file)
   await delay(500);
-  return `https://media.stage.truflux.drcsystems.ooo/uploads/project/294/Designs for SectorConnect Requriements _1__6.pptx`;
+
+  let data = {
+    url : `http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`,
+    id :  Math.random() 
+  }
+  return data
 };
 
 
@@ -66,9 +71,11 @@ const toolbarConfig ={
   bulletedList: false,
   checkList: true,
   embedYoutubeVideo: false,
-  embedVideo: false,
-  embedPdf: false,
-  embedOffice: false,
+
+  embedVideo: true,
+  embedPdf: true,
+  embedOffice: true,
+  
   image: true,
   alignLeft: false,
   alignCenter: false,
@@ -104,7 +111,7 @@ function App({
 export default function PlaygroundApp1(): JSX.Element {
  
 
-  let data = `<p class="TextEditor__paragraph"><img class="TextEditor__image editor-image" src="https://commondatastorage.googleapis.com/codeskulptor-assets/lathrop/nebula_blue.s2014.png" alt="ss" width="inherit" height="inherit"></p>`
+  let data = `<div><p class="TextEditor__paragraph" dir="ltr"><span style="text-align: left;">asdadasdad</span></p><p><a href="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" target="_blank" rel="0.7138092931844775" data-lexical-video-url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" data-lexical-video-id="0.7138092931844775"><span title="0.7138092931844775" alt="0.7138092931844775" style="background-color: rgb(140, 116, 247); border-radius: 8px; color: white; display: inline-block; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; padding: 6px; text-decoration: none; width: 250px; height: 30px;">BigBuckBunny.mp4</span></a></p><p> </p><p></p><p class="TextEditor__paragraph"><br></p></div>`
   const [html, setHtml] = useState(data);
   
   return (

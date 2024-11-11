@@ -47,6 +47,25 @@ interface PlaygroundEmbedConfig extends EmbedConfig {
   description?: string;
 }
 
+type Datatypes = {
+  url: string;
+  id: string;
+};
+
+
+function generateUUIDWithTimestamp() {
+  const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+
+  const timestamp = new Date().toISOString(); 
+  return `${uuid}-${timestamp}`;
+}
+
+
+
 export const YoutubeEmbedConfig: PlaygroundEmbedConfig = {
   contentName: 'Youtube Video',
 
@@ -90,8 +109,10 @@ export const VideoEmbedConfig: PlaygroundEmbedConfig = {
   // Icon for display.
   icon: <i className="icon videos" />,
 
-  insertNode: (editor: LexicalEditor, result: EmbedMatchResult) => {
-    editor.dispatchCommand(INSERT_VIDEO_COMMAND, result.url);
+  insertNode: (editor: LexicalEditor, result: any) => {
+    let data = generateUUIDWithTimestamp()
+    result.id  =  String(data)
+    editor.dispatchCommand(INSERT_VIDEO_COMMAND, result);
   },
 
   keywords: ['mp4', 'webm', 'mov', 'avi', 'flv', 'mkv', 'wmv', 'video'],
@@ -126,8 +147,10 @@ export const PdfEmbedConfig: PlaygroundEmbedConfig = {
 
   icon: <i className="icon pdf" />,
 
-  insertNode: (editor: LexicalEditor, result: EmbedMatchResult) => {
-    editor.dispatchCommand(INSERT_PDF_COMMAND, result.url);
+  insertNode: (editor: LexicalEditor, result: any) => {
+    let data = generateUUIDWithTimestamp()
+    result.id  =  String(data)
+    editor.dispatchCommand(INSERT_PDF_COMMAND, result);
   },
 
   keywords: ['pdf'],
@@ -161,8 +184,10 @@ export const OfficeEmbedConfig: PlaygroundEmbedConfig = {
   // Icon for display.
   icon: <i className="icon office" />,
 
-  insertNode: (editor: LexicalEditor, result: EmbedMatchResult) => {
-    editor.dispatchCommand(INSERT_OFFICE_COMMAND, result.url);
+  insertNode: (editor: LexicalEditor, result: any) => {
+    let data = generateUUIDWithTimestamp()
+    result.id  =  String(data)
+    editor.dispatchCommand(INSERT_OFFICE_COMMAND, result);
   },
 
   keywords: ['office', 'xlsx', 'docx', 'pptx', 'csv', 'ods'],

@@ -1,11 +1,3 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
 import type {
   DOMConversionMap,
   DOMConversionOutput,
@@ -25,6 +17,12 @@ import {
 } from '@lexical/react/LexicalDecoratorBlockNode';
 import * as React from 'react';
 
+// Updated types to include id
+type OfficeData = {
+  url: string;
+  id: string;
+};
+
 type OfficeComponentProps = Readonly<{
   className: Readonly<{
     base: string;
@@ -32,23 +30,21 @@ type OfficeComponentProps = Readonly<{
   }>;
   format: ElementFormatType | null;
   nodeKey: NodeKey;
-  url: string;
+  data: OfficeData;
 }>;
 
 function OfficeComponent({
   className,
   format,
   nodeKey,
-  url,
+  data,
 }: OfficeComponentProps) {
-
-  const parts = url?.split('.');
+  const { url, id } = data;
+  const parts = url.split('.');
   const extension = parts[parts.length - 1]?.toLowerCase();
 
-  let videoName = url.split('/').pop() || 'Open Document'; 
-  videoName = videoName.length > 25 ? videoName.slice(0, 25) + '...' +extension : videoName;
-
-  
+  let fileName = url.split('/').pop() || 'Open Document'; 
+  fileName = fileName.length > 25 ? fileName.slice(0, 25) + '...' + extension : fileName;
 
   const buttonStyle = {
     backgroundColor: 'rgb(140, 116, 247)',
@@ -69,49 +65,29 @@ function OfficeComponent({
       format={format}
       nodeKey={nodeKey}>
       <p>
-        <a href={`https://view.officeapps.live.com/op/view.aspx?src=${url}`} target="_blank" rel="noopener noreferrer">
-          <span data-lexical-text="true" style={buttonStyle}>
-            {videoName}
+        <a 
+          href={`https://view.officeapps.live.com/op/view.aspx?src=${url}`} 
+          target="_blank" 
+          rel= {id}
+          title={id}
+        >
+          <span 
+            data-lexical-text="true" 
+            style={buttonStyle}
+            title={id}
+          >
+            {fileName}
           </span>
         </a> &nbsp;
       </p>
     </BlockWithAlignableContents>
   );
-
-  const docName = url.split('/').pop() || 'Open Document'; // Extract Document name from URL
-  
-
-  return (
-    <BlockWithAlignableContents
-      className={className}
-      format={format}
-      nodeKey={nodeKey}
-    >
-      <a href={`https://view.officeapps.live.com/op/view.aspx?src=${url}`} target="_blank" rel="noopener noreferrer" style={buttonStyle}>
-        {docName}
-      </a>
-    </BlockWithAlignableContents>
-  );
-
-
-  return (
-    <BlockWithAlignableContents
-      className={className}
-      format={format}
-      nodeKey={nodeKey}>
-      <iframe
-        width="800"
-        height="500"
-        className="office"
-        src={`https://view.officeapps.live.com/op/embed.aspx?src=${url}`}
-      />
-    </BlockWithAlignableContents>
-  );
 }
 
+// Updated serialized type to include id
 export type SerializedOfficeNode = Spread<
   {
-    url: string;
+    data: OfficeData;
     type: 'office';
     version: 1;
   },
@@ -121,27 +97,28 @@ export type SerializedOfficeNode = Spread<
 function convertOfficeElement(
   domNode: HTMLElement,
 ): null | DOMConversionOutput {
-  const url = domNode.getAttribute('data-lexical-office');
-  if (url) {
-    const node = $createOfficeNode(url);
+  const url = domNode.getAttribute('data-lexical-office-url');
+  const id = domNode.getAttribute('data-lexical-office-id');
+  if (url && id) {
+    const node = $createOfficeNode({ url, id });
     return {node};
   }
   return null;
 }
 
 export class OfficeNode extends DecoratorBlockNode {
-  __url: string;
+  __data: OfficeData;
 
   static getType(): string {
     return 'office';
   }
 
   static clone(node: OfficeNode): OfficeNode {
-    return new OfficeNode(node.__url, node.__format, node.__key);
+    return new OfficeNode(node.__data, node.__format, node.__key);
   }
 
   static importJSON(serializedNode: SerializedOfficeNode): OfficeNode {
-    const node = $createOfficeNode(serializedNode.url);
+    const node = $createOfficeNode(serializedNode.data);
     node.setFormat(serializedNode.format);
     return node;
   }
@@ -150,71 +127,63 @@ export class OfficeNode extends DecoratorBlockNode {
     return {
       ...super.exportJSON(),
       type: 'office',
-      url: this.__url,
+      data: this.__data,
       version: 1,
     };
   }
 
-  constructor(url: string, format?: ElementFormatType, key?: NodeKey) {
+  constructor(data: OfficeData, format?: ElementFormatType, key?: NodeKey) {
     super(format, key);
-    this.__url = url;
+    this.__data = data;
   }
 
   exportDOM(): DOMExportOutput {
+    const { url, id } = this.__data;
+    const a = document.createElement('a');
+    a.href = `https://view.officeapps.live.com/op/view.aspx?src=${url}`;
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', id); 
+    a.setAttribute('data-lexical-office-url', url);
+    a.setAttribute('data-lexical-office-id', id);
+    a.setAttribute('title', id);
+
+
+    const span = document.createElement('span');
+    const parts = url.split('.');
+    const extension = parts[parts.length - 1]?.toLowerCase();
+    let urlPart = url.split('/').pop() || 'Open Document';
+    urlPart = urlPart.length > 25 ? urlPart.slice(0, 25) + '...' + extension : urlPart;
     
+    span.textContent = urlPart;
+    span.setAttribute('title', id);
+    // span.setAttribute('alt', id);
 
+    span.style.backgroundColor = 'rgb(140, 116, 247)';
+    span.style.borderRadius = '8px';
+    span.style.color = 'white';
+    span.style.display = 'inline-block';
+    span.style.fontFamily = 'Arial, sans-serif';
+    span.style.fontSize = '14px';
+    span.style.fontWeight = 'bold';
+    span.style.padding = '6px';
+    span.style.textDecoration = 'none';
+    span.style.width = '250px';
+    span.style.height = '30px';
+    
+    a.appendChild(span);
+    const space = document.createElement('p');
+    space.textContent = ' '
+    const p = document.createElement('p');
+    p.appendChild(a); 
+    p.appendChild(space)
 
-  const a = document.createElement('a');
-  a.href=`https://view.officeapps.live.com/op/view.aspx?src=${this.__url}`;
-
-  a.setAttribute('target', '_blank');
-  a.setAttribute('rel', 'noopener noreferrer'); 
-  a.setAttribute('data-lexical-video', this.__url);
-  a.setAttribute('allowfullscreen', 'true');
-
-  const span = document.createElement('span');
-  
-
-  const parts = this.__url?.split('.');
-  const extension = parts[parts.length - 1]?.toLowerCase();
-  let urlPart  =  this.__url.split('/').pop() || 'Open Document';
-  urlPart = urlPart.length > 25 ? urlPart.slice(0, 25) + '...' +extension : urlPart;
-  span.textContent =  urlPart;
-
-  span.style.backgroundColor = 'rgb(140, 116, 247)';
-  span.style.borderRadius = '8px';
-  span.style.color = 'white';
-  span.style.display = 'inline-block';
-  span.style.fontFamily = 'Arial, sans-serif';
-  span.style.fontSize = '14px';
-  span.style.fontWeight = 'bold';
-  span.style.padding = '6px';
-  span.style.textDecoration = 'none';
-  span.style.width = '250px';
-  span.style.height = '30px';
-  a.appendChild(span);
-  const space = document.createElement('p');
-  space.textContent = ' '
-  const p = document.createElement('p');
-  p.appendChild(a); 
-  p.appendChild(space)
-
-  return { element: p };
-
-
-    const element = document.createElement('iframe');
-    element.setAttribute('data-lexical-office', this.__url);
-    element.setAttribute('width', '800');
-    element.setAttribute('height', '500');
-    element.setAttribute('src', `https://view.officeapps.live.com/op/embed.aspx?src=${this.__url}`);
-    element.setAttribute('class', 'office');
-    return {element};
+    return { element: p };
   }
 
   static importDOM(): DOMConversionMap | null {
     return {
       iframe: (domNode: HTMLElement) => {
-        if (!domNode.hasAttribute('data-lexical-office')) {
+        if (!domNode.hasAttribute('data-lexical-office-url')) {
           return null;
         }
         return {
@@ -230,14 +199,14 @@ export class OfficeNode extends DecoratorBlockNode {
   }
 
   getId(): string {
-    return this.__url;
+    return this.__data.id;
   }
 
   getTextContent(
     _includeInert?: boolean | undefined,
     _includeDirectionless?: false | undefined,
   ): string {
-    return `${this.__url}`;
+    return `${this.__data.url}`;
   }
 
   decorate(_editor: LexicalEditor, config: EditorConfig): JSX.Element {
@@ -246,12 +215,13 @@ export class OfficeNode extends DecoratorBlockNode {
       base: embedBlockTheme.base || '',
       focus: embedBlockTheme.focus || '',
     };
+
     return (
       <OfficeComponent
         className={className}
         format={this.__format}
         nodeKey={this.getKey()}
-        url={this.__url}
+        data={this.__data}
       />
     );
   }
@@ -261,8 +231,9 @@ export class OfficeNode extends DecoratorBlockNode {
   }
 }
 
-export function $createOfficeNode(url: string): OfficeNode {
-  return new OfficeNode(url);
+// Updated create function to accept data object
+export function $createOfficeNode(data: OfficeData): OfficeNode {
+  return new OfficeNode(data);
 }
 
 export function $isOfficeNode(

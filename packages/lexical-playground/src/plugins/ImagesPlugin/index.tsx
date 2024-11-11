@@ -172,11 +172,11 @@ export function InsertImageDialog({
     <>
       {!mode && (
         <DialogButtonsList>
-          <Button
+          {/* <Button
             data-test-id="image-modal-option-url"
             onClick={() => setMode('url')}>
             URL
-          </Button>
+          </Button> */}
           <Button
             data-test-id="image-modal-option-file"
             onClick={() => setMode('file')}>

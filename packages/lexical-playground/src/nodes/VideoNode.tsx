@@ -1,11 +1,3 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
 import type {
   DOMConversionMap,
   DOMConversionOutput,
@@ -25,6 +17,12 @@ import {
 } from '@lexical/react/LexicalDecoratorBlockNode';
 import * as React from 'react';
 
+// Define VideoData type
+type VideoData = {
+  url: string;
+  id: string;
+};
+
 type VideoComponentProps = Readonly<{
   className: Readonly<{
     base: string;
@@ -32,23 +30,21 @@ type VideoComponentProps = Readonly<{
   }>;
   format: ElementFormatType | null;
   nodeKey: NodeKey;
-  url: string;
+  data: VideoData;
 }>;
 
 function VideoComponent({
   className,
   format,
   nodeKey,
-  url,
+  data,
 }: VideoComponentProps) {
-  
+  const { url, id } = data;
   const parts = url?.split('.');
   const extension = parts[parts.length - 1]?.toLowerCase();
 
-  let videoName = url.split('/').pop() || 'Open Video'; 
-  videoName = videoName.length > 25 ? videoName.slice(0, 25) + '...' +extension : videoName;
-
-  
+  let fileName = url.split('/').pop() || 'Open Video'; 
+  fileName = fileName.length > 25 ? fileName.slice(0, 25) + '...' + extension : fileName;
 
   const buttonStyle = {
     backgroundColor: 'rgb(140, 116, 247)',
@@ -69,63 +65,55 @@ function VideoComponent({
       format={format}
       nodeKey={nodeKey}>
       <p>
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          <span data-lexical-text="true" style={buttonStyle}>
-            {videoName}
+        <a href={url} target="_blank" rel={id}>
+          <span 
+            data-lexical-text="true" 
+            style={buttonStyle}
+            title={id}
+            
+          >
+            {fileName}
           </span>
         </a> &nbsp;
       </p>
-    </BlockWithAlignableContents>
-  );
-  return (
-    <BlockWithAlignableContents
-      className={className}
-      format={format}
-      nodeKey={nodeKey}>
-      <iframe
-        width="560"
-        height="315"
-        src={url}
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen={true}
-        title="Video"
-      />
     </BlockWithAlignableContents>
   );
 }
 
 export type SerializedVideoNode = Spread<
   {
-    url: string;
+    data: VideoData;
     type: 'video';
     version: 1;
   },
   SerializedDecoratorBlockNode
 >;
 
-function convertVideoElement(domNode: HTMLElement): null | DOMConversionOutput {
-  const url = domNode.getAttribute('data-lexical-video');
-  if (url) {
-    const node = $createVideoNode(url);
+function convertVideoElement(
+  domNode: HTMLElement,
+): null | DOMConversionOutput {
+  const url = domNode.getAttribute('data-lexical-video-url');
+  const id = domNode.getAttribute('data-lexical-video-id');
+  if (url && id) {
+    const node = $createVideoNode({ url, id });
     return {node};
   }
   return null;
 }
 
 export class VideoNode extends DecoratorBlockNode {
-  __url: string;
+  __data: VideoData;
 
   static getType(): string {
     return 'video';
   }
 
   static clone(node: VideoNode): VideoNode {
-    return new VideoNode(node.__url, node.__format, node.__key);
+    return new VideoNode(node.__data, node.__format, node.__key);
   }
 
   static importJSON(serializedNode: SerializedVideoNode): VideoNode {
-    const node = $createVideoNode(serializedNode.url);
+    const node = $createVideoNode(serializedNode.data);
     node.setFormat(serializedNode.format);
     return node;
   }
@@ -134,75 +122,62 @@ export class VideoNode extends DecoratorBlockNode {
     return {
       ...super.exportJSON(),
       type: 'video',
-      url: this.__url,
+      data: this.__data,
       version: 1,
     };
   }
 
-  constructor(url: string, format?: ElementFormatType, key?: NodeKey) {
+  constructor(data: VideoData, format?: ElementFormatType, key?: NodeKey) {
     super(format, key);
-    this.__url = url;
+    this.__data = data;
   }
 
   exportDOM(): DOMExportOutput {
-
+    const { url, id } = this.__data;
+    const a = document.createElement('a');
+    a.href = url;
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', id); 
+    a.setAttribute('data-lexical-video-url', url);
+    a.setAttribute('data-lexical-video-id', id);
   
-  const a = document.createElement('a');
-  a.href = this.__url; 
-  a.setAttribute('target', '_blank');
-  a.setAttribute('rel', 'noopener noreferrer'); 
-  a.setAttribute('data-lexical-video', this.__url);
-  a.setAttribute('allowfullscreen', 'true');
-
-  const span = document.createElement('span');
+    const span = document.createElement('span');
+    
+    const parts = url?.split('.');
+    const extension = parts[parts.length - 1]?.toLowerCase();
+    let urlPart = url.split('/').pop() || 'Open Video';
+    urlPart = urlPart.length > 25 ? urlPart.slice(0, 25) + '...' + extension : urlPart;
+    
+    span.textContent = urlPart;
+    span.setAttribute('title', id);
+    span.setAttribute('alt', id);
   
-
-  const parts = this.__url?.split('.');
-  const extension = parts[parts.length - 1]?.toLowerCase();
-  let urlPart  =  this.__url.split('/').pop() || 'Open Video';
-  urlPart = urlPart.length > 25 ? urlPart.slice(0, 25) + '...' +extension : urlPart;
-  span.textContent =  urlPart;
-
-  span.style.backgroundColor = 'rgb(140, 116, 247)';
-  span.style.borderRadius = '8px';
-  span.style.color = 'white';
-  span.style.display = 'inline-block';
-  span.style.fontFamily = 'Arial, sans-serif';
-  span.style.fontSize = '14px';
-  span.style.fontWeight = 'bold';
-  span.style.padding = '6px';
-  span.style.textDecoration = 'none';
-  span.style.width = '250px';
-  span.style.height = '30px';
-  a.appendChild(span);
-  const space = document.createElement('p');
-  space.textContent = ' '
-  const p = document.createElement('p');
-  p.appendChild(a); 
-  p.appendChild(space)
-
-  return { element: p };
-
-
-    const element = document.createElement('iframe');
-    element.setAttribute('data-lexical-video', this.__url);
-    element.setAttribute('width', '560');
-    element.setAttribute('height', '315');
-    element.setAttribute('src', `${this.__url}`);
-    element.setAttribute('frameborder', '0');
-    element.setAttribute(
-      'allow',
-      'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
-    );
-    element.setAttribute('allowfullscreen', 'true');
-    element.setAttribute('title', 'Video');
-    return {element};
+    span.style.backgroundColor = 'rgb(140, 116, 247)';
+    span.style.borderRadius = '8px';
+    span.style.color = 'white';
+    span.style.display = 'inline-block';
+    span.style.fontFamily = 'Arial, sans-serif';
+    span.style.fontSize = '14px';
+    span.style.fontWeight = 'bold';
+    span.style.padding = '6px';
+    span.style.textDecoration = 'none';
+    span.style.width = '250px';
+    span.style.height = '30px';
+    
+    a.appendChild(span);
+    const space = document.createElement('p');
+    space.textContent = ' '
+    const p = document.createElement('p');
+    p.appendChild(a); 
+    p.appendChild(space)
+  
+    return { element: p };
   }
 
   static importDOM(): DOMConversionMap | null {
     return {
       iframe: (domNode: HTMLElement) => {
-        if (!domNode.hasAttribute('data-lexical-video')) {
+        if (!domNode.hasAttribute('data-lexical-video-url')) {
           return null;
         }
         return {
@@ -218,14 +193,14 @@ export class VideoNode extends DecoratorBlockNode {
   }
 
   getId(): string {
-    return this.__url;
+    return this.__data.id;
   }
 
   getTextContent(
     _includeInert?: boolean | undefined,
     _includeDirectionless?: false | undefined,
   ): string {
-    return `${this.__url}`;
+    return `${this.__data.url}`;
   }
 
   decorate(_editor: LexicalEditor, config: EditorConfig): JSX.Element {
@@ -239,7 +214,7 @@ export class VideoNode extends DecoratorBlockNode {
         className={className}
         format={this.__format}
         nodeKey={this.getKey()}
-        url={this.__url}
+        data={this.__data}
       />
     );
   }
@@ -249,8 +224,8 @@ export class VideoNode extends DecoratorBlockNode {
   }
 }
 
-export function $createVideoNode(url: string): VideoNode {
-  return new VideoNode(url);
+export function $createVideoNode(data: VideoData): VideoNode {
+  return new VideoNode(data);
 }
 
 export function $isVideoNode(

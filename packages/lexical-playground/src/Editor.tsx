@@ -201,8 +201,9 @@ export default function Editor({
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       if (onDataSend) {
-        onDataSend(selectedFile).then((res: any) => {
-          const parts = res?.split('.');
+        onDataSend(selectedFile).then((res: any) => {          
+          
+          const parts = res?.url?.split('.');
           const extension = parts[parts.length - 1]?.toLowerCase();
           const validVideoTypes = [
             'mp4',

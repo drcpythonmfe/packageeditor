@@ -1,11 +1,3 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
 import type {
   DOMConversionMap,
   DOMConversionOutput,
@@ -25,6 +17,12 @@ import {
 } from '@lexical/react/LexicalDecoratorBlockNode';
 import * as React from 'react';
 
+// Define PdfData type
+type PdfData = {
+  url: string;
+  id: string;
+};
+
 type PdfComponentProps = Readonly<{
   className: Readonly<{
     base: string;
@@ -32,22 +30,21 @@ type PdfComponentProps = Readonly<{
   }>;
   format: ElementFormatType | null;
   nodeKey: NodeKey;
-  url: string;
+  data: PdfData;
 }>;
 
 function PdfComponent({
   className,
   format,
   nodeKey,
-  url,
+  data,
 }: PdfComponentProps) {
+  const { url, id } = data;
   const parts = url?.split('.');
   const extension = parts[parts.length - 1]?.toLowerCase();
 
-  let videoName = url.split('/').pop() || 'Open Pdf'; 
-  videoName = videoName.length > 25 ? videoName.slice(0, 25) + '...' +extension : videoName;
-
-  
+  let fileName = url.split('/').pop() || 'Open Pdf'; 
+  fileName = fileName.length > 25 ? fileName.slice(0, 25) + '...' + extension : fileName;
 
   const buttonStyle = {
     backgroundColor: 'rgb(140, 116, 247)',
@@ -68,9 +65,13 @@ function PdfComponent({
       format={format}
       nodeKey={nodeKey}>
       <p>
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          <span data-lexical-text="true" style={buttonStyle}>
-            {videoName}
+          <a href={url} target="_blank" rel={id} >
+          <span 
+            data-lexical-text="true" 
+            style={buttonStyle}
+            title={id}
+          >
+            {fileName}
           </span>
         </a> &nbsp;
       </p>
@@ -80,7 +81,7 @@ function PdfComponent({
 
 export type SerializedPdfNode = Spread<
   {
-    url: string;
+    data: PdfData;
     type: 'pdf';
     version: 1;
   },
@@ -90,27 +91,28 @@ export type SerializedPdfNode = Spread<
 function convertPdfElement(
   domNode: HTMLElement,
 ): null | DOMConversionOutput {
-  const url = domNode.getAttribute('data-lexical-pdf');
-  if (url) {
-    const node = $createPdfNode(url);
+  const url = domNode.getAttribute('data-lexical-pdf-url');
+  const id = domNode.getAttribute('data-lexical-pdf-id');
+  if (url && id) {
+    const node = $createPdfNode({ url, id });
     return {node};
   }
   return null;
 }
 
 export class PdfNode extends DecoratorBlockNode {
-  __url: string;
+  __data: PdfData;
 
   static getType(): string {
     return 'pdf';
   }
 
   static clone(node: PdfNode): PdfNode {
-    return new PdfNode(node.__url, node.__format, node.__key);
+    return new PdfNode(node.__data, node.__format, node.__key);
   }
 
   static importJSON(serializedNode: SerializedPdfNode): PdfNode {
-    const node = $createPdfNode(serializedNode.url);
+    const node = $createPdfNode(serializedNode.data);
     node.setFormat(serializedNode.format);
     return node;
   }
@@ -119,33 +121,35 @@ export class PdfNode extends DecoratorBlockNode {
     return {
       ...super.exportJSON(),
       type: 'pdf',
-      url: this.__url,
+      data: this.__data,
       version: 1,
     };
   }
 
-  constructor(url: string, format?: ElementFormatType, key?: NodeKey) {
+  constructor(data: PdfData, format?: ElementFormatType, key?: NodeKey) {
     super(format, key);
-    this.__url = url;
+    this.__data = data;
   }
 
   exportDOM(): DOMExportOutput {
-    
+    const { url, id } = this.__data;
     const a = document.createElement('a');
-    a.href = this.__url; 
+    a.href = url;
     a.setAttribute('target', '_blank');
-    a.setAttribute('rel', 'noopener noreferrer'); 
-    a.setAttribute('data-lexical-video', this.__url);
-    a.setAttribute('allowfullscreen', 'true');
+    a.setAttribute('rel', id); 
+    a.setAttribute('data-lexical-pdf-url', url);
+    a.setAttribute('data-lexical-pdf-id', id);
   
     const span = document.createElement('span');
     
-  
-    const parts = this.__url?.split('.');
+    const parts = url?.split('.');
     const extension = parts[parts.length - 1]?.toLowerCase();
-    let urlPart  =  this.__url.split('/').pop() || 'Open pdf';
-    urlPart = urlPart.length > 25 ? urlPart.slice(0, 25) + '...' +extension : urlPart;
-    span.textContent =  urlPart;
+    let urlPart = url.split('/').pop() || 'Open pdf';
+    urlPart = urlPart.length > 25 ? urlPart.slice(0, 25) + '...' + extension : urlPart;
+    
+    span.textContent = urlPart;
+    span.setAttribute('title', id);
+    span.setAttribute('alt', id);
   
     span.style.backgroundColor = 'rgb(140, 116, 247)';
     span.style.borderRadius = '8px';
@@ -158,6 +162,7 @@ export class PdfNode extends DecoratorBlockNode {
     span.style.textDecoration = 'none';
     span.style.width = '250px';
     span.style.height = '30px';
+    
     a.appendChild(span);
     const space = document.createElement('p');
     space.textContent = ' '
@@ -166,14 +171,12 @@ export class PdfNode extends DecoratorBlockNode {
     p.appendChild(space)
   
     return { element: p };
-
-
   }
 
   static importDOM(): DOMConversionMap | null {
     return {
       iframe: (domNode: HTMLElement) => {
-        if (!domNode.hasAttribute('data-lexical-pdf')) {
+        if (!domNode.hasAttribute('data-lexical-pdf-url')) {
           return null;
         }
         return {
@@ -189,14 +192,14 @@ export class PdfNode extends DecoratorBlockNode {
   }
 
   getId(): string {
-    return this.__url;
+    return this.__data.id;
   }
 
   getTextContent(
     _includeInert?: boolean | undefined,
     _includeDirectionless?: false | undefined,
   ): string {
-    return `${this.__url}`;
+    return `${this.__data.url}`;
   }
 
   decorate(_editor: LexicalEditor, config: EditorConfig): JSX.Element {
@@ -210,7 +213,7 @@ export class PdfNode extends DecoratorBlockNode {
         className={className}
         format={this.__format}
         nodeKey={this.getKey()}
-        url={this.__url}
+        data={this.__data}
       />
     );
   }
@@ -220,8 +223,8 @@ export class PdfNode extends DecoratorBlockNode {
   }
 }
 
-export function $createPdfNode(url: string): PdfNode {
-  return new PdfNode(url);
+export function $createPdfNode(data: PdfData): PdfNode {
+  return new PdfNode(data);
 }
 
 export function $isPdfNode(
