@@ -12,7 +12,7 @@ import {useEffect} from 'react';
 
 import {$isImageNode, ImageNode} from '../../nodes/ImageNode';
 
-export type OnImageUpload = (img: File, altText: string) => Promise<string>;
+export type OnImageUpload = (img: File, altText: string) => Promise<{ url: string; id: number }>;
 
 export type DragDropPasteProps = {
   onUpload?: OnImageUpload;
@@ -48,8 +48,10 @@ export default function OnImageUploadPlugin({
                   (async () => {
                     try {
                       const imgUrl = await onUpload(file, altText);
-                      if(imgUrl){
-                        const parts = imgUrl.split('.');
+
+                      console.log(imgUrl)
+                      if(imgUrl.url){
+                        const parts = imgUrl.url.split('.');
                         const extension = parts[parts.length - 1].toLowerCase();
                         const validImageTypes = ['jpg', 'jpeg', 'png'];                        
                         if (validImageTypes.includes(extension)) {
@@ -57,15 +59,14 @@ export default function OnImageUploadPlugin({
                           preloadImage.onload = () => {
                             editor.update(() => {
                               imageNode.setFile(undefined);
-                              imageNode.setSrc(imgUrl);
-                              imageNode.settext("img");
+                              imageNode.setSrc(imgUrl.url);
+                              imageNode.settext(String(imgUrl.id));
                             });
                           };
                           preloadImage.onerror = () => {
-                            console.log(editor ,imageNode)
                             removeNode(editor, imageNode);
                           };
-                          preloadImage.src = imgUrl;
+                          preloadImage.src = imgUrl.url;
   
                           return ;
                         } 
