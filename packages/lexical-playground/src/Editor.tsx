@@ -135,6 +135,7 @@ const defaultToolbarConfig: ToolbarConfig = {
   alignCenter: true,
   alignRight: true,
   alignJustify: true,
+  editorshow:true,
 };
 
 export default function Editor({

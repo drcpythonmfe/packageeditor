@@ -69,8 +69,8 @@ const toolbarConfig ={
   alignCenter: false,
   alignRight: false,
   alignJustify: false,
+  editorshow:true,
 }
-
 
 function App({
   html,
