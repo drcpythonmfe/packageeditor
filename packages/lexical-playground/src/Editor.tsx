@@ -98,7 +98,7 @@ export type EditorProps = {
   onChangeMode?: 'html' | 'json';
   toolbarConfig?: ToolbarConfig;
   onUpload?: OnImageUpload;
-  onDataSend?: ((data: any) => void | undefined | any) | undefined;
+  onDataSend?: (img: File) => Promise<{url: string; id: number}> ;
   rootClassName?: string;
   containerClassName?: string;
   dummyMentionsDatas?: string[];
@@ -130,12 +130,12 @@ const defaultToolbarConfig: ToolbarConfig = {
   embedPdf: true,
   embedOffice: true,
   UploadDocuments: true,
-  alignments:true,
+  alignments: true,
   alignLeft: true,
   alignCenter: true,
   alignRight: true,
   alignJustify: true,
-  editorshow:true,
+  editorshow: true,
 };
 
 export default function Editor({
@@ -198,14 +198,15 @@ export default function Editor({
     };
   }, [isSmallWidthViewport]);
 
-  const handleClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.[0];
-    if (selectedFile) {
+
+  const handleFileUpload = async (file: File) => {
+    if (file) {
       if (onDataSend) {
-        onDataSend(selectedFile).then((res: any) => {          
-          
-          const parts = res?.url?.split('.');
-          const extension = parts[parts.length - 1]?.toLowerCase();
+        try {
+          const res = await onDataSend(file);
+
+          const urlParts = res?.url?.split('.');
+          const extension = urlParts?.pop()?.toLowerCase();
           const validVideoTypes = [
             'mp4',
             'webm',
@@ -215,37 +216,35 @@ export default function Editor({
             'mkv',
             'wmv',
           ];
+          const validPdfTypes = ['pdf'];
+          const validOfficeTypes = ['xlsx', 'docx', 'pptx', 'csv', 'ods'];
 
-          const validPdfTypes = [
-            'pdf'
-          ]
+          let dataPayload = {
+            url: res?.url,
+            id: String(res?.id),
+          };
 
-          const validOfficeTypes = [
-            'xlsx',
-            'docx',
-            'pptx',
-            'csv',
-            'ods',
-          ]
-
-          if (validVideoTypes.includes(extension)) {
-            editor.dispatchCommand(INSERT_VIDEO_COMMAND, res);
-            return;
+          if (extension) {
+            if (validVideoTypes.includes(extension)) {
+              editor.dispatchCommand(INSERT_VIDEO_COMMAND, dataPayload);
+            } else if (validPdfTypes.includes(extension)) {
+              editor.dispatchCommand(INSERT_PDF_COMMAND, dataPayload);
+            } else if (validOfficeTypes.includes(extension)) {
+              editor.dispatchCommand(INSERT_OFFICE_COMMAND, dataPayload);
+            } else {
+              console.error('Unsupported file type.');
+            }
+          } else {
+            console.error('File extension could not be determined.');
           }
-
-          if (validPdfTypes.includes(extension)) {
-            editor.dispatchCommand(INSERT_PDF_COMMAND, res);
-            return;
-          }
-
-          if (validOfficeTypes.includes(extension)) {
-            editor.dispatchCommand(INSERT_OFFICE_COMMAND, res);
-            return;
-          }
-        });
+        } catch (error) {
+          console.error('Error uploading file:', error);
+        }
       } else {
         console.error('onDataSend function is not defined');
       }
+    } else {
+      console.error('No file provided.');
     }
   };
 
@@ -260,7 +259,7 @@ export default function Editor({
         <AutoFocusPlugin />
         <ClearEditorPlugin />
         <CommentPlugin />
-        <ComponentPickerPlugin config={normToolbarConfig}  />
+        <ComponentPickerPlugin  handleClickUpload={handleFileUpload} config={normToolbarConfig} />
         <EmojiPickerPlugin />
         <AutoEmbedPlugin />
         <MentionsPlugin dummyMentionsDatas={dummyMentionsDatas} />
@@ -341,7 +340,7 @@ export default function Editor({
                   anchorElem={floatingAnchorElem}
                   config={normToolbarConfig}
                   isRichText={isRichText}
-                   handleClick={handleClick}
+                  handleClick={handleFileUpload}
                 />
               </>
             )}
@@ -369,7 +368,13 @@ export default function Editor({
         <div>{showTableOfContents && <TableOfContentsPlugin />}</div>
         <ActionsPlugin isRichText={isRichText} />
       </div>
-      {isRichText && <ToolbarPlugin config={normToolbarConfig} handleClick={handleClick} floatingText={false} />}
+      {isRichText && (
+        <ToolbarPlugin
+          config={normToolbarConfig}
+          handleClick={handleFileUpload}
+          floatingText={false}
+        />
+      )}
       {showTreeView && <TreeViewPlugin />}
     </div>
   );

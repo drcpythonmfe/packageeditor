@@ -145,9 +145,11 @@ export function InsertImageUploadedDialogBody({
 export function InsertImageDialog({
   activeEditor,
   onClose,
+  handleClick,
 }: {
   activeEditor: LexicalEditor;
   onClose: () => void;
+  handleClick?: ((data: any) => void | undefined | any) | undefined;
 }): JSX.Element {
   const [mode, setMode] = useState<null | 'url' | 'file'>(null);
   const hasModifier = useRef(false);
@@ -164,7 +166,26 @@ export function InsertImageDialog({
   }, [activeEditor]);
 
   const onClick = (payload: InsertImagePayload) => {
-    activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
+    if (!payload.file) {
+      console.log('No file provided.');
+      return;
+    }
+
+    const validImageTypes = ['jpg', 'jpeg', 'png'];
+    const fileExtension =
+      payload.file.name.split('.').pop()?.toLowerCase() ?? '';
+
+    if (validImageTypes.includes(fileExtension)) {
+      activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
+      onClose();
+    } else {
+      if (handleClick) {
+        if (payload.file) {
+          handleClick(payload.file);
+          onClose();
+        }
+      }
+    }
     onClose();
   };
 

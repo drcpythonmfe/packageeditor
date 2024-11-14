@@ -27,11 +27,10 @@ const dummyMentionsData = [
 
 const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
-const uploadImg = async (file: File, altText: string) => {
-  console.log("file",file)
+const uploadImg = async (file: File) => {
   await delay(500);
   let data = {
-    url : `http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`,
+    url : `https://media.stage.truflux.drcsystems.ooo/uploads/project/372/DRC-logo.png`,
     id :  126548545485465 
   }
   return data
@@ -88,6 +87,7 @@ function App({
       isRichText={true}
       onChange={setHtml}
       onUpload={uploadImg}
+      onDataSend={uploadImg}
       onChangeMode="html"
       toolbarConfig={toolbarConfig}
       dummyMentionsDatas={userList || []}

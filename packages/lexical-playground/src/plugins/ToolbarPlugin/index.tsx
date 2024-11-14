@@ -645,7 +645,6 @@ export default function ToolbarPlugin({
     [activeEditor, selectedElementKey],
   );
 
-
   return (
     <div className="toolbar">
       {floatingText ? (
@@ -1229,24 +1228,6 @@ export default function ToolbarPlugin({
                 </DropDown>
               )}
 
-              {/* {handleClick && (
-    <>
-      <button type="button" className="toolbar-item spaced">
-        <div className="toolbar-item spaced">
-          <label htmlFor="file-upload" className="custom-file-uploads">
-            <SvgIcon />
-          </label>
-          <input
-            id="file-upload"
-            onChange={handleClick}
-            className="textfileupload"
-            type="file"
-            accept="video/*, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, text/csv"
-          />
-        </div>
-      </button>
-    </>
-  )} */}
               {config.fontSizeOptions && (
                 <FontDropDown
                   disabled={!isEditable}
@@ -1275,19 +1256,24 @@ export default function ToolbarPlugin({
                 <i className="icon horizontal-rule" />
                 <span className="text">Horizontal Rule</span>
               </DropDownItem> */}
-                  <DropDownItem
-                    onClick={() => {
-                      showModal('Insert Image', (onClose) => (
-                        <InsertImageDialog
-                          activeEditor={activeEditor}
-                          onClose={onClose}
-                        />
-                      ));
-                    }}
-                    className="item">
-                    <i className="icon image" />
-                    <span className="text">Upload Document</span>
-                  </DropDownItem>
+                  {handleClick && (
+                    <>
+                      <DropDownItem
+                        onClick={() => {
+                          showModal('Insert Image', (onClose) => (
+                            <InsertImageDialog
+                              activeEditor={activeEditor}
+                              onClose={onClose}
+                              handleClick={handleClick}
+                            />
+                          ));
+                        }}
+                        className="item">
+                        <i className="icon image" />
+                        <span className="text">Upload Document</span>
+                      </DropDownItem>
+                    </>
+                  )}
 
                   <DropDownItem
                     onClick={() => {

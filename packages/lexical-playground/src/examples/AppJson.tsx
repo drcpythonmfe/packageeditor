@@ -49,7 +49,6 @@ const uploadImg = async (file: File, altText: string) => {
 
 
 const onDataSend = async (file: File) => {
-  console.log(file)
   await delay(500);
 
   let data = {
@@ -78,7 +77,7 @@ function App({
     setJson(editorState.toJSON());
   };
 
-  return <Editor isRichText={true} onChange={handleOnChange} onDataSend={onDataSend}
+  return <Editor isRichText={true} onChange={handleOnChange} onDataSend={onDataSend} 
   dummyMentionsDatas={userList || []} onUpload={uploadImg} />;
 }
 

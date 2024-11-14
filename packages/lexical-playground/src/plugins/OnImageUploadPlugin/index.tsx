@@ -59,46 +59,7 @@ export default function OnImageUploadPlugin({
 
                         const validImageTypes = ['jpg', 'jpeg', 'png'];
 
-                        const validVideoTypes = [
-                          'mp4',
-                          'webm',
-                          'mov',
-                          'avi',
-                          'flv',
-                          'mkv',
-                          'wmv',
-                        ];
-
-                        const validPdfTypes = ['pdf'];
-
-                        const validOfficeTypes = [
-                          'xlsx',
-                          'docx',
-                          'pptx',
-                          'csv',
-                          'ods',
-                        ];
-
-                        let dataPayload = {
-                          url: imgUrl.url,
-                          id: String(imgUrl.id),
-                        };
-
-                        if (validVideoTypes.includes(extension)) {
-                          editor.dispatchCommand(INSERT_VIDEO_COMMAND, dataPayload);
-                          return;
-                        }
-
-                        if (validPdfTypes.includes(extension)) {
-                          editor.dispatchCommand(INSERT_PDF_COMMAND, dataPayload);
-                          return;
-                        }
-
-                        if (validOfficeTypes.includes(extension)) {
-                          editor.dispatchCommand(INSERT_OFFICE_COMMAND, dataPayload);
-                          return;
-                        }
-
+                       
                         if (validImageTypes.includes(extension)) {
                           const preloadImage = new Image();
                           preloadImage.onload = () => {

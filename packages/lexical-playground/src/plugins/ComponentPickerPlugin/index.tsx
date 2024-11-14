@@ -110,7 +110,6 @@ function ComponentPickerMenuItem({
       ]);
   }
 
-
   return (
     <>
       {Object.fromEntries(data)?.show && (
@@ -132,10 +131,24 @@ function ComponentPickerMenuItem({
   );
 }
 
-export default function ComponentPickerMenuPlugin(config: any): JSX.Element {
+interface ComponentPickerMenuPluginProps {
+  config: any;
+  handleClickUpload?: ((data: any) => void | undefined | any) | undefined;
+}
+
+export default function ComponentPickerMenuPlugin({
+  config,
+  handleClickUpload,
+}: ComponentPickerMenuPluginProps): JSX.Element {
   const [editor] = useLexicalComposerContext();
   const [modal, showModal] = useModal();
   const [queryString, setQueryString] = useState<string | null>(null);
+
+  const uploadData = (data :any) => {
+    if (typeof handleClickUpload === 'function') {
+      handleClickUpload(data);
+    }
+  };
 
   const checkForTriggerMatch = useBasicTypeaheadTriggerMatch('/', {
     minLength: 0,
@@ -329,10 +342,26 @@ export default function ComponentPickerMenuPlugin(config: any): JSX.Element {
       // }),
       new ComponentPickerOption('Upload Documents', {
         icon: <i className="icon image" />,
-        keywords: ['image', 'photo', 'picture', 'file' ,'ppt' ,'mp4' , 'pdf' ,'docux' ,'word file'],
+        keywords: [
+          'image',
+          'photo',
+          'picture',
+          'file',
+          'ppt',
+          'mp4',
+          'pdf',
+          'docux',
+          'word file',
+          'Upload Document',
+          'Document'
+        ],
         onSelect: () =>
           showModal('Upload Document', (onClose) => (
-            <InsertImageDialog activeEditor={editor} onClose={onClose} />
+            <InsertImageDialog
+              activeEditor={editor}
+              onClose={onClose}
+             handleClick={uploadData}
+            />
           )),
       }),
       // new ComponentPickerOption('Collapsible', {
@@ -409,7 +438,7 @@ export default function ComponentPickerMenuPlugin(config: any): JSX.Element {
                         <ComponentPickerMenuItem
                           index={i}
                           isSelected={selectedIndex === i}
-                          dynamicOptions={config?.config}
+                          dynamicOptions={config}
                           onClick={() => {
                             setHighlightedIndex(i);
                             selectOptionAndCleanUp(option);
