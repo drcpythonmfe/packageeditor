@@ -201,47 +201,71 @@ export default function ComponentPickerMenuPlugin({
     return options;
   }, [editor, queryString]);
 
+
   const options = useMemo(() => {
     const baseOptions = [
-      new ComponentPickerOption('Paragraph', {
-        icon: <i className="icon paragraph" />,
-        keywords: ['normal', 'paragraph', 'p', 'text'],
-        onSelect: () =>
-          editor.update(() => {
-            const selection = $getSelection();
-            if ($isRangeSelection(selection)) {
-              $setBlocksType_experimental(selection, () =>
-                $createParagraphNode(),
-              );
-            }
-          }),
-      }),
-      ...Array.from({length: 3}, (_, i) => i + 1).map(
-        (n) =>
-          new ComponentPickerOption(`Heading ${n}`, {
-            icon: <i className={`icon h${n}`} />,
-            keywords: ['heading', 'header', `h${n}`],
-            onSelect: () =>
-              editor.update(() => {
-                const selection = $getSelection();
-                if ($isRangeSelection(selection)) {
-                  $setBlocksType_experimental(selection, () =>
-                    // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
-                    $createHeadingNode(`h${n}`),
-                  );
-                }
-              }),
-          }),
+      ...(config.paragraph ? [
+        new ComponentPickerOption('Paragraph', {
+          icon: <i className="icon paragraph" />,
+          keywords: ['normal', 'paragraph', 'p', 'text'],
+          onSelect: () =>
+            editor.update(() => {
+              const selection = $getSelection();
+              if ($isRangeSelection(selection)) {
+                $setBlocksType_experimental(selection, () =>
+                  $createParagraphNode(),
+                );
+              }
+            }),
+        })
+      ] : []),
+
+
+      ...(config.heading1 || config.heading2 || config.heading3 ? 
+        Array.from({length: 3}, (_, i) => i + 1)
+          .filter(n => config[`heading${n}`])
+          .map(n =>
+            new ComponentPickerOption(`Heading ${n}`, {
+              icon: <i className={`icon h${n}`} />,
+              keywords: ['heading', 'header', `h${n}`],
+              onSelect: () =>
+                editor.update(() => {
+                  const selection = $getSelection();
+                  if ($isRangeSelection(selection)) {
+                    $setBlocksType_experimental(selection, () =>
+                      $createHeadingNode(`h${n}`),
+                    );
+                  }
+                }),
+            })
+          ) : []
       ),
 
-      new ComponentPickerOption('Table', {
-        icon: <i className="icon table" />,
-        keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
-        onSelect: () =>
-          showModal('Insert Table', (onClose) => (
-            <InsertTableDialog activeEditor={editor} onClose={onClose} />
-          )),
-      }),
+
+
+
+      ...(config.table ? [
+        new ComponentPickerOption('Table', {
+          icon: <i className="icon table" />,
+          keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
+          onSelect: () =>
+            editor.dispatchCommand(INSERT_TABLE_COMMAND, {
+              columns: 3,
+              rows: 3
+            }),
+        })
+      ] : []),
+
+
+      // new ComponentPickerOption('Table', {
+      //   icon: <i className="icon table" />,
+      //   keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
+      //   onSelect: () =>
+      //     showModal('Insert Table', (onClose) => (
+      //       <InsertTableDialog activeEditor={editor} onClose={onClose} />
+      //     )),
+      // }),
+
       // new ComponentPickerOption('Table (Experimental)', {
       //   icon: <i className="icon table" />,
       //   keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
@@ -250,24 +274,38 @@ export default function ComponentPickerMenuPlugin({
       //       <InsertNewTableDialog activeEditor={editor} onClose={onClose} />
       //     )),
       // }),
-      new ComponentPickerOption('Numbered List', {
-        icon: <i className="icon number" />,
-        keywords: ['numbered list', 'ordered list', 'ol'],
-        onSelect: () =>
-          editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined),
-      }),
+
+
+
+      ...(config.numberedList ? [
+        new ComponentPickerOption('Numbered List', {
+          icon: <i className="icon number" />,
+          keywords: ['numbered list', 'ordered list', 'ol'],
+          onSelect: () =>
+            editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined),
+        })
+      ] : []),
+
+
+      ...(config.bulletedList ? [
       new ComponentPickerOption('Bulleted List', {
         icon: <i className="icon bullet" />,
         keywords: ['bulleted list', 'unordered list', 'ul'],
         onSelect: () =>
           editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined),
-      }),
+      })
+    ] : []),
+
+     ...(config.checkList ? [
       new ComponentPickerOption('Check List', {
         icon: <i className="icon check" />,
         keywords: ['check list', 'todo list'],
         onSelect: () =>
           editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined),
-      }),
+      })
+    ] : []),
+
+    
       // new ComponentPickerOption('Quote', {
       //   icon: <i className="icon quote" />,
       //   keywords: ['block quote'],
@@ -314,15 +352,21 @@ export default function ComponentPickerMenuPlugin({
       //       <InsertPollDialog activeEditor={editor} onClose={onClose} />
       //     )),
       // }),
-      ...EmbedConfigs.map(
-        (embedConfig) =>
-          new ComponentPickerOption(`Embed ${embedConfig.contentName}`, {
-            icon: embedConfig.icon,
-            keywords: [...embedConfig.keywords, 'embed'],
-            onSelect: () =>
-              editor.dispatchCommand(INSERT_EMBED_COMMAND, embedConfig.type),
-          }),
+      ...EmbedConfigs.filter(config => 
+        config.type === 'youtube' ? config.embedYoutubeVideo :
+        config.type === 'video' ? config.embedVideo :
+        config.type === 'pdf' ? config.embedPdf :
+        config.type === 'office' ? config.embedOffice : 
+        false
+      ).map(embedConfig =>
+        new ComponentPickerOption(`Embed ${embedConfig.contentName}`, {
+          icon: embedConfig.icon,
+          keywords: [...embedConfig.keywords, 'embed'],
+          onSelect: () =>
+            editor.dispatchCommand(INSERT_EMBED_COMMAND, embedConfig.type),
+        })
       ),
+    
       // new ComponentPickerOption('Equation', {
       //   icon: <i className="icon equation" />,
       //   keywords: ['equation', 'latex', 'math'],
@@ -340,46 +384,42 @@ export default function ComponentPickerMenuPlugin({
       //       src: '',
       //     }),
       // }),
-      new ComponentPickerOption('Upload Documents', {
-        icon: <i className="icon image" />,
-        keywords: [
-          'image',
-          'photo',
-          'picture',
-          'file',
-          'ppt',
-          'mp4',
-          'pdf',
-          'docux',
-          'word file',
-          'Upload Document',
-          'Document'
-        ],
-        onSelect: () =>
-          showModal('Upload Document', (onClose) => (
-            <InsertImageDialog
-              activeEditor={editor}
-              onClose={onClose}
-             handleClick={uploadData}
-            />
-          )),
-      }),
+      ...(config.UploadDocuments ? [
+        new ComponentPickerOption('Upload Documents', {
+          icon: <i className="icon image" />,
+          keywords: [
+            'image', 'photo', 'picture', 'file', 'ppt', 'mp4', 'pdf',
+            'docux', 'word file', 'Upload Document', 'Document'
+          ],
+          onSelect: () =>
+            showModal('Upload Document', (onClose) => (
+              <InsertImageDialog
+                activeEditor={editor}
+                onClose={onClose}
+                handleClick={uploadData}
+              />
+            )),
+        })
+      ] : []),
       // new ComponentPickerOption('Collapsible', {
       //   icon: <i className="icon caret-right" />,
       //   keywords: ['collapse', 'collapsible', 'toggle'],
       //   onSelect: () =>
       //     editor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, undefined),
       // }),
-      ...['left', 'center', 'right', 'justify'].map(
-        (alignment) =>
-          new ComponentPickerOption(`Align ${alignment}`, {
-            icon: <i className={`icon ${alignment}-align`} />,
-            keywords: ['align', 'justify', alignment],
-            onSelect: () =>
-              // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
-              editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, alignment),
-          }),
+      ...(config.alignments ? 
+        ['left', 'center', 'right', 'justify']
+          .filter(alignment => config[`align${alignment.charAt(0).toUpperCase() + alignment.slice(1)}`])
+          .map(alignment =>
+            new ComponentPickerOption(`Align ${alignment}`, {
+              icon: <i className={`icon ${alignment}-align`} />,
+              keywords: ['align', 'justify', alignment],
+              onSelect: () =>
+                editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, alignment),
+            })
+          ) : []
       ),
+  
     ];
 
     const dynamicOptions = getDynamicOptions();
@@ -416,6 +456,10 @@ export default function ComponentPickerMenuPlugin({
     },
     [editor],
   );
+
+
+  console.log(config ,options)
+
 
   return (
     <>

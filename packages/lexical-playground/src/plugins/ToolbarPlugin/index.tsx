@@ -84,6 +84,7 @@ import {INSERT_COLLAPSIBLE_COMMAND} from '../CollapsiblePlugin';
 import {InsertImageDialog} from '../ImagesPlugin';
 import {InsertPollDialog} from '../PollPlugin';
 import {InsertTableDialog} from '../TablePlugin';
+import { INSERT_TABLE_COMMAND } from 'packages/lexical-table/src';
 
 const SvgIcon: React.FC = () => {
   const bodyElement = document.querySelector('body');
@@ -444,6 +445,8 @@ export default function ToolbarPlugin({
   const [isRTL, setIsRTL] = useState(false);
   const [codeLanguage, setCodeLanguage] = useState<string>('');
   const [isEditable, setIsEditable] = useState(() => editor.isEditable());
+  const [rows, setRows] = useState('5');
+  const [columns, setColumns] = useState('5');
 
   const editorContext = useEditorComposerContext();
 
@@ -1275,6 +1278,8 @@ export default function ToolbarPlugin({
                     </>
                   )}
 
+                 
+                  {/* 
                   <DropDownItem
                     onClick={() => {
                       showModal('Insert Table', (onClose) => (
@@ -1287,7 +1292,8 @@ export default function ToolbarPlugin({
                     className="item">
                     <i className="icon table" />
                     <span className="text">Table</span>
-                  </DropDownItem>
+                  </DropDownItem> */}
+
                   {/* <DropDownItem
                 onClick={() => {
                   showModal('Insert Poll', (onClose) => (

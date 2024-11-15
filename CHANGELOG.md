@@ -1077,3 +1077,16 @@ Playground
 
 - `Lexical{Plain/Rich}TextPlugin` and `DEPRECATED_use{Plain/Rich}TextPlugin` no longer create a ParagraphNode for you. This logic has been decoupled into a separate plugin <BootstrapPlugin />. The Bootstrap plugin also accepts an initialPayloadFn and clearEditorFn for custom initialization (i.e. edit behavior from server data). `<BootstrapPlugin /> <RichTextPlugin .. />`. If you're using the `DEPRECATED_{Plain/Rich}Text` version you may also want to copy-paste this hook and run it before the RichText initialization - https://github.com/facebook/lexical/blob/main/packages/lexical/src/__tests__/utils/DEPRECATED__useLexicalBootstrap.js
 - Bugfixes.
+
+
+TS - 25291  :  User should not able to add blank comments
+TS - 25326  : When user add some space using enter key or space key and again edit the text at that time added space is removed
+TS - 25401  : Table > Dark mode > change the text color
+TS - 25551  : The project users list should be displayed when the user writes only @
+TS - 25672  : When user access with key board arrow keys at that time list should be scroll
+TS - 26394   : When user add table into table at that time UI not displayed properly
+TS - 26406 : When user scroll the page at that time tooltip dropdown should be scroll with tooltip or it should be closed
+TS - 26550 :When the user presses the tab key at that time space should not be added from the starts
+TS - 27231 :" / " >only displayed 3 options and the user pressed the random arrow keys and pressed enter at that time disabled options were displayed and the user able to add
+TS - 26539 Insert table > Users are not able to add more than 5 rows and columns
+TS - 27230 :Remove extra speace in dark mode
