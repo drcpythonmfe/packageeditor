@@ -177,7 +177,7 @@ export class OfficeNode extends DecoratorBlockNode {
     p.appendChild(a); 
     p.appendChild(space)
 
-    return { element: p };
+    return { element: a };
   }
 
   static importDOM(): DOMConversionMap | null {

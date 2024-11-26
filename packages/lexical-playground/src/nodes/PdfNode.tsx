@@ -166,11 +166,12 @@ export class PdfNode extends DecoratorBlockNode {
     a.appendChild(span);
     const space = document.createElement('p');
     space.textContent = ' '
+
     const p = document.createElement('p');
     p.appendChild(a); 
     p.appendChild(space)
   
-    return { element: p };
+    return { element: a };
   }
 
   static importDOM(): DOMConversionMap | null {

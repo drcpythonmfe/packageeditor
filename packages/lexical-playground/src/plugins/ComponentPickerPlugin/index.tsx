@@ -457,10 +457,6 @@ export default function ComponentPickerMenuPlugin({
     [editor],
   );
 
-
-  console.log(config ,options)
-
-
   return (
     <>
       {modal}
