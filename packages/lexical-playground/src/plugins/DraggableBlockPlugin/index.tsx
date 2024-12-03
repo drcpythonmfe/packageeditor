@@ -347,6 +347,7 @@ function useDraggableBlockMenu(
       <div
         className="icon draggable-block-menu"
         ref={menuRef}
+        id="icon draggable-block-menus"
         draggable={true}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}>

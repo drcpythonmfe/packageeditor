@@ -116,6 +116,33 @@ function TextFormatFloatingToolbar({
     };
   }, [editor, updateTextFormatFloatingToolbar, anchorElem]);
 
+
+  useEffect(() => {
+    const scrollerElem = anchorElem.parentElement;
+  
+    const update = () => {
+      const scrollPosition = scrollerElem?.scrollTop || 0;
+      console.log('Current scroll position:', scrollPosition);
+      localStorage.setItem("Currentscroll",String(scrollPosition))
+  
+      editor.getEditorState().read(() => {
+        updateTextFormatFloatingToolbar();
+      });
+    };
+  
+    window.addEventListener('resize', update);
+    if (scrollerElem) {
+      scrollerElem.addEventListener('scroll', update);
+    }
+  
+    return () => {
+      window.removeEventListener('resize', update);
+      if (scrollerElem) {
+        scrollerElem.removeEventListener('scroll', update);
+      }
+    };
+  }, [editor, updateTextFormatFloatingToolbar, anchorElem]);
+  
   useEffect(() => {
     editor.getEditorState().read(() => {
       updateTextFormatFloatingToolbar();
@@ -140,8 +167,8 @@ function TextFormatFloatingToolbar({
 
   return (
     <div>
- <div ref={popupCharStylesEditorRef} className="floating-text-format-popup">
-            {isRichText && <ToolbarPlugin config={config} handleClick={handleClick} floatingText={true} />}
+ <div ref={popupCharStylesEditorRef}  id="floating-text-format-popups" className="floating-text-format-popup">
+            {isRichText && <ToolbarPlugin  config={config} handleClick={handleClick} floatingText={true} />}
 
       {/* {config.biu && (
         <>
