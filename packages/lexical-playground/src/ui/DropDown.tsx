@@ -66,10 +66,12 @@ function DropDownItems({
   children,
   dropDownRef,
   onClose,
+  showDropDown,
 }: {
   children: React.ReactNode;
   dropDownRef: React.Ref<HTMLDivElement>;
   onClose: () => void;
+  showDropDown?: boolean;
 }) {
   const [items, setItems] = useState<React.RefObject<HTMLButtonElement>[]>();
   const [highlightedItem, setHighlightedItem] =
@@ -126,9 +128,16 @@ function DropDownItems({
 
   return (
     <DropDownContext.Provider value={contextValue}>
-      <div className="dropdowns all_dropdown" ref={dropDownRef} onKeyDown={handleKeyDown}>
-        {children}
-      </div>
+      {showDropDown && (
+        <>
+          <div
+            className="dropdowns all_dropdown"
+            ref={dropDownRef}
+            onKeyDown={handleKeyDown}>
+            {children}
+          </div>
+        </>
+      )}
     </DropDownContext.Provider>
   );
 }
@@ -141,6 +150,7 @@ export default function DropDown({
   buttonIconClassName,
   children,
   stopCloseOnClickSelf,
+  anchorElem = document.body,
 }: {
   disabled?: boolean;
   buttonAriaLabel?: string;
@@ -149,6 +159,7 @@ export default function DropDown({
   buttonLabel?: string;
   children: ReactNode;
   stopCloseOnClickSelf?: boolean;
+  anchorElem?: HTMLElement;
 }): JSX.Element {
   const dropDownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -217,14 +228,39 @@ export default function DropDown({
     }
   }, [dropDownRef, buttonRef, showDropDown, stopCloseOnClickSelf]);
 
+  useEffect(() => {
+    const scrollerElem = anchorElem.parentElement;
+
+    const update = () => {
+      const scrollPosition = scrollerElem?.scrollTop || 0;
+      setShowDropDown(false);
+    };
+
+    window.addEventListener('resize', update);
+    if (scrollerElem) {
+      scrollerElem.addEventListener('scroll', update);
+    }
+
+    return () => {
+      window.removeEventListener('resize', update);
+      if (scrollerElem) {
+        scrollerElem.removeEventListener('scroll', update);
+      }
+    };
+  }, [
+    anchorElem?.parentElement?.scrollTop,
+    buttonRef,
+    setShowDropDown,
+    showDropDown,
+  ]);
 
   return (
     <>
-      <button 
+      <button
         disabled={disabled}
         aria-label={buttonAriaLabel || buttonLabel}
         className={buttonClassName}
-        type='button'
+        type="button"
         onClick={() => setShowDropDown(!showDropDown)}
         ref={buttonRef}>
         {buttonIconClassName && <span className={buttonIconClassName} />}
@@ -236,7 +272,10 @@ export default function DropDown({
 
       {showDropDown &&
         createPortal(
-          <DropDownItems dropDownRef={dropDownRef} onClose={handleClose}>
+          <DropDownItems
+            showDropDown={showDropDown}
+            dropDownRef={dropDownRef}
+            onClose={handleClose}>
             {children}
           </DropDownItems>,
           document.body,

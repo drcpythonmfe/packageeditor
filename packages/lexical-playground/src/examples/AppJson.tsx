@@ -13,24 +13,16 @@ import PlaygroundApp1 from './AppHtml';
 
 
 const dummyMentionsData = [
-  'Aayla Secura',
-  'Adi Gallia',
-  'Admiral Dodd Rancit',
-  'Admiral Firmus Piett',
-  'Admiral Gial Ackbar',
-  'Admiral Ozzel',
-  'Admiral Raddus',
-  'Admiral Terrinald Screed',
-  'Admiral Trench',
-  'Walrus Man',
-  'Warok',
-  'Wat Tambor',
-  'Watto',
-  'Wedge Antilles',
-  'Wes Janson',
-  'Wicket W. Warrick',
-  'Wilhuff Tarkin',
-];
+  {
+    name: 'Aayla Secura',
+    email: 'aayla.secura@example.com',
+  },
+  {
+    name: 'Adi Gallia',
+    email: 'adi.gallia@example.com',
+  },
+]
+
 
 const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 

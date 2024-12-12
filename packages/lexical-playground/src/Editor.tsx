@@ -101,7 +101,7 @@ export type EditorProps = {
   onDataSend?: (img: File) => Promise<{url: string; id: number}> ;
   rootClassName?: string;
   containerClassName?: string;
-  dummyMentionsDatas?: string[];
+  dummyMentionsDatas?: [{name :string ,email :string}];
 };
 
 const defaultToolbarConfig: ToolbarConfig = {
@@ -368,11 +368,13 @@ export default function Editor({
         <div>{showTableOfContents && <TableOfContentsPlugin />}</div>
         <ActionsPlugin isRichText={isRichText} />
       </div>
-      {isRichText && (
+      
+      {floatingAnchorElem && !isSmallWidthViewport && isRichText && (
         <ToolbarPlugin
           config={normToolbarConfig}
           handleClick={handleFileUpload}
           floatingText={false}
+          anchorElem={floatingAnchorElem}
         />
       )}
       {showTreeView && <TreeViewPlugin />}

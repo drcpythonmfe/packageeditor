@@ -11,7 +11,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import {$createMentionNode} from '../../nodes/MentionNode';
-
 const PUNCTUATION =
   '\\.,\\+\\*\\?\\$\\@\\|#{}\\(\\)\\^\\-\\[\\]\\\\/!%\'"~=<>_:;';
 const NAME = '\\b[A-Z][^\\s' + PUNCTUATION + ']';
@@ -81,17 +80,20 @@ const SUGGESTION_LIST_LENGTH_LIMIT = 5;
 
 const mentionsCache = new Map();
 
-function useMentionLookupService(dummyMentionsData: Array<string> | [], mentionString: string | null) {
-  const [results, setResults] = useState<Array<string>>([]);
+function useMentionLookupService(
+  dummyMentionsData: Array<{name: string, email: string}> | [], 
+  mentionString: string | null
+) {
+  const [results, setResults] = useState<Array<{name: string, email: string}>>([]);
 
   const dummyLookupService = {
-    search(string: string | null, callback: (results: Array<string>) => void): void {
+    search(string: string | null, callback: (results: Array<{name: string, email: string}>) => void): void {
       setTimeout(() => {
         // If no search string (just '@'), return all users
         const results = string === null 
           ? dummyMentionsData 
           : dummyMentionsData.filter((mention) =>
-              mention.toLowerCase().includes(string.toLowerCase())
+              mention.name.toLowerCase().includes(string.toLowerCase())
             );
         callback(results);
       }, 500);
@@ -163,11 +165,13 @@ function getPossibleQueryMatch(text: string): QueryMatch | null {
 
 class MentionTypeaheadOption extends TypeaheadOption {
   name: string;
+  email: string;
   picture: JSX.Element;
 
-  constructor(name: string, picture: JSX.Element) {
+  constructor(name: string, email: string, picture: JSX.Element) {
     super(name);
     this.name = name;
+    this.email = email;
     this.picture = picture;
   }
 }
@@ -202,6 +206,7 @@ function MentionsTypeaheadMenuItem({
       onClick={onClick}>
       {option.picture}
       <span className="text">{option.name}</span>
+      <span className="email">{option.email}</span>
     </li>
   );
 }
@@ -210,7 +215,7 @@ export default function MentionsPlugin({ dummyMentionsDatas }: any): JSX.Element
   const [editor] = useLexicalComposerContext();
 
   const [queryString, setQueryString] = useState<string | null>(null);
-  const [userData, setUserData] = useState<Array<string>>([]);
+  const [userData, setUserData] = useState<Array<{name: string, email: string}>>([]);
 
   const results = useMentionLookupService(userData, queryString);
 
@@ -219,7 +224,11 @@ export default function MentionsPlugin({ dummyMentionsDatas }: any): JSX.Element
       results
         .map(
           (result) =>
-            new MentionTypeaheadOption(result, <i className="icon user" />),
+            new MentionTypeaheadOption(
+              result.name, 
+              result.email,
+              <i className="icon user" data-email={result.email} />
+            ),
         )
         .slice(0, SUGGESTION_LIST_LENGTH_LIMIT),
     [results],
@@ -232,7 +241,7 @@ export default function MentionsPlugin({ dummyMentionsDatas }: any): JSX.Element
       closeMenu: () => void,
     ) => {
       editor.update(() => {
-        const mentionNode = $createMentionNode(selectedOption.name);
+        const mentionNode = $createMentionNode(selectedOption.name ,selectedOption?.email); //selectedOption?.email
         if (nodeToReplace) {
           nodeToReplace.replace(mentionNode);
         }

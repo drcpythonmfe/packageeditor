@@ -6,24 +6,16 @@ import {Editor, EditorComposer, useSyncWithInputHtml} from '../index';
 
 
 const dummyMentionsData = [
-  'Aayla Secura',
-  'Adi Gallia',
-  'Admiral Dodd Rancit',
-  'Admiral Firmus Piett',
-  'Admiral Gial Ackbar',
-  'Admiral Ozzel',
-  'Admiral Raddus',
-  'Admiral Terrinald Screed',
-  'Admiral Trench',
-  'Walrus Man',
-  'Warok',
-  'Wat Tambor',
-  'Watto',
-  'Wedge Antilles',
-  'Wes Janson',
-  'Wicket W. Warrick',
-  'Wilhuff Tarkin',
-];
+  {
+    name: 'Aayla Secura',
+    email: 'aayla.secura@example.com',
+  },
+  {
+    name: 'Adi Gallia',
+    email: 'adi.gallia@example.com',
+  },
+]
+
 
 const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -97,7 +89,7 @@ function App({
 
 export default function PlaygroundApp1(): JSX.Element {
  
-  const [html, setHtml] = useState(``);
+  const [html, setHtml] = useState(`<p class="TextEditor__paragraph"><span id="adi.gallia@example.com" data-lexical-mention="adi.gallia@example.com" uemail="adi.gallia@example.com">Adi Gallia</span></p>`);
   
   return (
     <>

@@ -408,11 +408,14 @@ export type ToolbarPluginProps = {
   config: ToolbarConfig;
   handleClick?: ((data: any) => void | undefined | any) | undefined;
   floatingText?: boolean;
+  anchorElem?: HTMLElement;
 };
+
 
 export default function ToolbarPlugin({
   config,
   handleClick,
+  anchorElem = document.body,
   floatingText,
 }: ToolbarPluginProps): JSX.Element {
   const normFontFamilyOption = Array.isArray(config.fontFamilyOptions)
@@ -654,7 +657,8 @@ export default function ToolbarPlugin({
         <>
           {blockType === 'code' ? (
             <>
-              <DropDown
+              <DropDown 
+                anchorElem={anchorElem}
                 disabled={!isEditable}
                 buttonClassName="toolbar-item code-language"
                 buttonLabel={getLanguageFriendlyName(codeLanguage)}
@@ -806,6 +810,7 @@ export default function ToolbarPlugin({
           {config.align && (
             <DropDown
               disabled={!isEditable}
+              anchorElem={anchorElem}
               // buttonLabel="Align"
               buttonIconClassName="icon left-align"
               buttonClassName="toolbar-item spaced alignment"
@@ -904,6 +909,7 @@ export default function ToolbarPlugin({
 
           {config.formatTextOptions && (
             <DropDown
+            anchorElem={anchorElem}
               disabled={!isEditable}
               buttonClassName="toolbar-item spaced"
               buttonLabel=""
@@ -993,7 +999,8 @@ export default function ToolbarPlugin({
             <>
               {blockType === 'code' ? (
                 <>
-                  <DropDown
+                  <DropDown 
+                   anchorElem={anchorElem}
                     disabled={!isEditable}
                     buttonClassName="toolbar-item code-language"
                     buttonLabel={getLanguageFriendlyName(codeLanguage)}
@@ -1156,6 +1163,7 @@ export default function ToolbarPlugin({
               {/* <Divider /> */}
               {config.align && (
                 <DropDown
+                anchorElem={anchorElem}
                   disabled={!isEditable}
                   // buttonLabel="Align"
                   buttonIconClassName="icon left-align"
@@ -1243,6 +1251,7 @@ export default function ToolbarPlugin({
 
               {config?.insertOptions && (
                 <DropDown
+                anchorElem={anchorElem}
                   disabled={!isEditable}
                   buttonClassName="toolbar-item spaced"
                   // buttonLabel="Insert"
@@ -1355,6 +1364,7 @@ export default function ToolbarPlugin({
 
               {config.formatTextOptions && (
                 <DropDown
+                anchorElem={anchorElem}
                   disabled={!isEditable}
                   buttonClassName="toolbar-item spaced"
                   buttonLabel=""

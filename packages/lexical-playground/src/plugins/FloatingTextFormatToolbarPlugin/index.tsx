@@ -122,7 +122,6 @@ function TextFormatFloatingToolbar({
   
     const update = () => {
       const scrollPosition = scrollerElem?.scrollTop || 0;
-      console.log('Current scroll position:', scrollPosition);
       localStorage.setItem("Currentscroll",String(scrollPosition))
   
       editor.getEditorState().read(() => {
