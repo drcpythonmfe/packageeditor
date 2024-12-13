@@ -3,7 +3,6 @@
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- *
  */
 
 import {WebsocketProvider} from 'y-websocket';
@@ -11,8 +10,12 @@ import {Doc} from 'yjs';
 
 const url = new URL(window.location.href);
 const params = new URLSearchParams(url.search);
-const WEBSOCKET_ENDPOINT =
-  params.get('collabEndpoint') || 'ws://localhost:1234';
+
+// Updated WebSocket endpoint for Truflux stage environment
+const WEBSOCKET_ENDPOINT = params.get('collabEndpoint') || 'wss://stage.truflux.drcsystems.ooo/ws';
+
+
+//'ws://localhost:1234';
 const WEBSOCKET_SLUG = 'playground';
 const WEBSOCKET_ID = params.get('collabId') || '0';
 
