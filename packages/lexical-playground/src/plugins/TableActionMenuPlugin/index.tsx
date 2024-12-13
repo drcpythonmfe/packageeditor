@@ -24,7 +24,7 @@ import {
   HTMLTableElementWithWithTableSelectionState,
   TableCellHeaderStates,
   TableCellNode,
-} from '@lexical/table';
+} from '../../nodes/TableNode/index';
 import {
   $getRoot,
   $getSelection,

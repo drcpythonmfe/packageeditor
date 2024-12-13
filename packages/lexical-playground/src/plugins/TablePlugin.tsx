@@ -7,7 +7,7 @@
  */
 
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import {INSERT_TABLE_COMMAND} from '@lexical/table';
+import {INSERT_TABLE_COMMAND} from '../nodes/TableNode/index';
 import {
   $createNodeSelection,
   $createParagraphNode,

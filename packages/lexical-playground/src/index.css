@@ -1914,3 +1914,8 @@ span[data-lexical-mention="true"] {
   padding: 10px 5px;
   cursor: pointer;
 }
+
+
+.typeahead-popovers ul {
+  grid-template-columns: repeat(1, 1fr) !important;
+}
