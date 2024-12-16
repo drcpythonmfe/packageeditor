@@ -87,16 +87,58 @@ function App({
   );
 }
 
+function validateParagraphs(htmlText: string): boolean {
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = htmlText.trim();
+
+  if (tempDiv.querySelectorAll('img').length > 0) {
+    return false;
+  }
+
+  const paragraphs = tempDiv.querySelectorAll('p');
+
+  if (paragraphs.length === 0) {
+      return false;
+  }
+
+  let nonEmptyTextCount = 0;
+
+  for (const paragraph of Array.from(paragraphs)) {
+      const directTextContent = Array.from(paragraph.childNodes)
+          .filter(node => node.nodeType === Node.TEXT_NODE)
+          .map(node => node.textContent?.trim())
+          .filter(text => text && text !== '');
+
+      if (directTextContent.length > 0) {
+          nonEmptyTextCount++;
+      }
+
+      const childTextContent = paragraph.textContent?.trim() || '';
+
+      if (childTextContent !== '') {
+          nonEmptyTextCount++;
+      }
+  }
+
+  return nonEmptyTextCount <= 0;
+}
+
+
 export default function PlaygroundApp1(): JSX.Element {
  
   const [html, setHtml] = useState(`<p class="TextEditor__paragraph"><span id="adi.gallia@example.com" data-lexical-mention="adi.gallia@example.com" uemail="adi.gallia@example.com">Adi Gallia</span></p>`);
+  
+   React.useEffect(()=>{
+    // button hide show
+    validateParagraphs(html)
+   },[html])
   
   return (
     <>
     <EditorComposer>
         <App html={html}  setHtml={setHtml}   userList={dummyMentionsData} />
       </EditorComposer>
-      <div dangerouslySetInnerHTML={{__html: html}} />
+    <div dangerouslySetInnerHTML={{__html: html}} />
     </>
   );
 }
