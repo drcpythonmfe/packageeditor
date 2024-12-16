@@ -12,7 +12,7 @@ const url = new URL(window.location.href);
 const params = new URLSearchParams(url.search);
 
 // Updated WebSocket endpoint for Truflux stage environment
-const WEBSOCKET_ENDPOINT = params.get('collabEndpoint') || 'wss://stage.truflux.drcsystems.ooo/ws';
+const WEBSOCKET_ENDPOINT = params.get('collabEndpoint') || 'ws://localhost:1234';
 
 
 //'ws://localhost:1234';

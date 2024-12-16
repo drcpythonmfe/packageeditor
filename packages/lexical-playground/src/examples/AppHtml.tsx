@@ -4,7 +4,6 @@ import {useState} from 'react';
 
 import {Editor, EditorComposer, useSyncWithInputHtml} from '../index';
 
-
 const dummyMentionsData = [
   {
     name: 'Aayla Secura',
@@ -14,23 +13,21 @@ const dummyMentionsData = [
     name: 'Adi Gallia',
     email: 'adi.gallia@example.com',
   },
-]
+];
 
-
-const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
+const delay = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 const uploadImg = async (file: File) => {
   await delay(500);
   let data = {
-    url : `https://media.stage.truflux.drcsystems.ooo/uploads/project/372/DRC-logo.png`,
-    id :  126548545485465 
-  }
-  return data
+    url: `https://media.stage.truflux.drcsystems.ooo/uploads/project/372/DRC-logo.png`,
+    id: 126548545485465,
+  };
+  return data;
 };
 
-
-
-const toolbarConfig ={
+const toolbarConfig = {
   align: true,
   bgColorPicker: true,
   biu: true,
@@ -43,7 +40,7 @@ const toolbarConfig ={
   link: true,
   textColorPicker: true,
   undoRedo: true,
-  paragraph: false,      //   / type data 
+  paragraph: false, //   / type data
   heading1: false,
   heading2: false,
   heading3: false,
@@ -60,17 +57,17 @@ const toolbarConfig ={
   alignCenter: false,
   alignRight: false,
   alignJustify: false,
-  editorshow:true,
-}
+  editorshow: true,
+};
 
 function App({
   html,
   setHtml,
-  userList
+  userList,
 }: {
   html: string;
   setHtml: (newHtml: string) => void;
-  userList:any;
+  userList: any;
 }): JSX.Element {
   useSyncWithInputHtml(html);
 
@@ -87,16 +84,34 @@ function App({
   );
 }
 
+const addTextData = (html: any) => {
+  const JSONDATA =
+    JSON.stringify(html) ==
+    JSON.stringify(`<p class="TextEditor__paragraph"><br></p>`);
+  if (JSONDATA) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export default function PlaygroundApp1(): JSX.Element {
- 
-  const [html, setHtml] = useState(`<p class="TextEditor__paragraph"><span id="adi.gallia@example.com" data-lexical-mention="adi.gallia@example.com" uemail="adi.gallia@example.com">Adi Gallia</span></p>`);
-  
+  const [html, setHtml] = useState(``);
+  const [bit ,setBit] =useState(true)
+
+  React.useEffect(() => {
+    console.log("html",html)
+    console.log(addTextData(html));
+    setBit(addTextData(html))
+  }, [html]);
+
   return (
     <>
-    <EditorComposer>
-        <App html={html}  setHtml={setHtml}   userList={dummyMentionsData} />
+      <EditorComposer>
+        <App html={html} setHtml={setHtml} userList={dummyMentionsData} />
       </EditorComposer>
       <div dangerouslySetInnerHTML={{__html: html}} />
+      <button disabled={bit}>hello js</button>
     </>
   );
 }
