@@ -67,11 +67,13 @@ function DropDownItems({
   dropDownRef,
   onClose,
   showDropDown,
+  anchorElem = document.body,
 }: {
   children: React.ReactNode;
   dropDownRef: React.Ref<HTMLDivElement>;
   onClose: () => void;
   showDropDown?: boolean;
+  anchorElem?: HTMLElement;
 }) {
   const [items, setItems] = useState<React.RefObject<HTMLButtonElement>[]>();
   const [highlightedItem, setHighlightedItem] =
@@ -124,7 +126,7 @@ function DropDownItems({
     if (highlightedItem && highlightedItem.current) {
       highlightedItem.current.focus();
     }
-  }, [items, highlightedItem]);
+  }, [items, highlightedItem ,anchorElem]);
 
   return (
     <DropDownContext.Provider value={contextValue}>
@@ -201,7 +203,7 @@ export default function DropDown({
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [dropDownRef, buttonRef, showDropDown]);
+  }, [dropDownRef, buttonRef, anchorElem.parentElement?.scrollTop ,showDropDown]);
 
   useEffect(() => {
     const button = buttonRef.current;
@@ -226,14 +228,17 @@ export default function DropDown({
         document.removeEventListener('click', handle);
       };
     }
-  }, [dropDownRef, buttonRef, showDropDown, stopCloseOnClickSelf]);
+  }, [dropDownRef, buttonRef, showDropDown, anchorElem.parentElement?.scrollTop ,stopCloseOnClickSelf]);
 
   useEffect(() => {
     const scrollerElem = anchorElem.parentElement;
 
     const update = () => {
-      const scrollPosition = scrollerElem?.scrollTop || 0;
-      setShowDropDown(false);
+      const scrollPosition = scrollerElem?.scrollTop;
+      if(scrollerElem?.scrollTop){
+        console.log("hiiii")
+        
+      }
     };
 
     window.addEventListener('resize', update);
@@ -275,6 +280,7 @@ export default function DropDown({
           <DropDownItems
             showDropDown={showDropDown}
             dropDownRef={dropDownRef}
+            anchorElem={anchorElem}
             onClose={handleClose}>
             {children}
           </DropDownItems>,

@@ -1272,7 +1272,7 @@ export default function ToolbarPlugin({
                     <>
                       <DropDownItem
                         onClick={() => {
-                          showModal('Insert Image', (onClose) => (
+                          showModal('Upload Document', (onClose) => (
                             <InsertImageDialog
                               activeEditor={activeEditor}
                               onClose={onClose}

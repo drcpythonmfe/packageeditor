@@ -22,7 +22,7 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout
 const uploadImg = async (file: File) => {
   await delay(500);
   let data = {
-    url : `https://media.stage.truflux.drcsystems.ooo/uploads/project/372/DRC-logo.png`,
+    url : `https://media.truflux.drcsystems.com/uploads/project/117/comment/19532/REC-20241209101112.mp4`,
     id :  126548545485465 
   }
   return data
@@ -126,10 +126,11 @@ function validateParagraphs(htmlText: string): boolean {
 
 export default function PlaygroundApp1(): JSX.Element {
  
-  const [html, setHtml] = useState(`<p class="TextEditor__paragraph"><span id="adi.gallia@example.com" data-lexical-mention="adi.gallia@example.com" uemail="adi.gallia@example.com">Adi Gallia</span></p>`);
+  const [html, setHtml] = useState(`<p class="TextEditor__paragraph"><br></p><p><a href="https://media.truflux.drcsystems.com/uploads/project/117/comment/19532/REC-20241209101112.mp4" target="_blank" rel="126548545485465" data-lexical-video-url="https://media.truflux.drcsystems.com/uploads/project/117/comment/19532/REC-20241209101112.mp4" data-lexical-video-id="126548545485465"><span title="126548545485465" alt="126548545485465" style="background-color: rgb(140, 116, 247); border-radius: 8px; color: white; display: inline-block; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; padding: 6px; text-decoration: none; width: 250px; height: 30px;">REC-20241209101112.mp4</span></a><p> </p></p><p class="TextEditor__paragraph"><br></p>`);
   
    React.useEffect(()=>{
     // button hide show
+    console.log(html)
     validateParagraphs(html)
    },[html])
   
