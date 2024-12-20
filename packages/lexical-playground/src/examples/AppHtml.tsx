@@ -139,6 +139,7 @@ export default function PlaygroundApp1(): JSX.Element {
     <EditorComposer>
         <App html={html}  setHtml={setHtml}   userList={dummyMentionsData} />
       </EditorComposer>
+      <button disabled={ validateParagraphs(html)}> Button </button>
     <div dangerouslySetInnerHTML={{__html: html}} />
     </>
   );
