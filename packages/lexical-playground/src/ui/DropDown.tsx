@@ -184,20 +184,20 @@ export default function DropDown({
       if (showDropDown && button !== null && dropDown !== null) {
         const {top, left} = button.getBoundingClientRect();
         dropDown.style.top = `43px`;
-        dropDown.style.left = `${Math.min(
-          left,
-          window.innerWidth - dropDown.offsetWidth,
-        )}px`;
+        // dropDown.style.left = `${Math.min(
+        //   left,
+        //   window.innerWidth - dropDown.offsetWidth,
+        // )}px`;
       }
 
       const handleScroll = () => {
         if (showDropDown && button !== null && dropDown !== null) {
           const {top, left} = button.getBoundingClientRect();
           dropDown.style.top = `43px`;
-          dropDown.style.left = `${Math.min(
-            left,
-            window.innerWidth - dropDown.offsetWidth,
-          )}px`;
+          // dropDown.style.left = `${Math.min(
+          //   left,
+          //   window.innerWidth - dropDown.offsetWidth,
+          // )}px`;
         }
       };
 
@@ -329,26 +329,18 @@ export default function DropDown({
             </DropDownItems>
           )
         : showDropDown &&
-            <DropDownItems
-              showDropDown={showDropDown}
-              dropDownRef={dropDownRef}
-              anchorElem={anchorElem}
-              onClose={handleClose}>
-              {children}
-            </DropDownItems>
-          }
+        createPortal(
+          <DropDownItems
+            showDropDown={showDropDown}
+            dropDownRef={dropDownRef}
+            anchorElem={anchorElem}
+            onClose={handleClose}>
+            {children}
+          </DropDownItems>,
+          document.body,
+        )}
     </>
   );
 }
 
-// showDropDown &&
-//           createPortal(
-//             <DropDownItems
-//               showDropDown={showDropDown}
-//               dropDownRef={dropDownRef}
-//               anchorElem={anchorElem}
-//               onClose={handleClose}>
-//               {children}
-//             </DropDownItems>,
-//             document.body,
-//           )
+

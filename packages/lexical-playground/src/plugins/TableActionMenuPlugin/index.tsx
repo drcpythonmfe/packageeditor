@@ -97,9 +97,9 @@ function TableActionMenu({
         //   menuButtonRect.left + menuButtonRect.width + window.pageXOffset + 5
         // }px`;
 
-        dropDownElement.style.top = `${
-          menuButtonRect.top + window.pageYOffset - 48       // -50
-        }px`;
+        // dropDownElement.style.top = `${
+        //   menuButtonRect.top + window.pageYOffset       
+        // }px`;
       }
     };
 
