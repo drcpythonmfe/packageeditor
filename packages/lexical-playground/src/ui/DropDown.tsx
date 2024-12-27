@@ -126,7 +126,7 @@ function DropDownItems({
     if (highlightedItem && highlightedItem.current) {
       highlightedItem.current.focus();
     }
-  }, [items, highlightedItem ,anchorElem]);
+  }, [items, highlightedItem, anchorElem]);
 
   return (
     <DropDownContext.Provider value={contextValue}>
@@ -153,6 +153,7 @@ export default function DropDown({
   children,
   stopCloseOnClickSelf,
   anchorElem = document.body,
+  bit = false,
 }: {
   disabled?: boolean;
   buttonAriaLabel?: string;
@@ -162,6 +163,7 @@ export default function DropDown({
   children: ReactNode;
   stopCloseOnClickSelf?: boolean;
   anchorElem?: HTMLElement;
+  bit?: boolean;
 }): JSX.Element {
   const dropDownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -175,19 +177,39 @@ export default function DropDown({
   };
 
   useEffect(() => {
-    const button = buttonRef.current;
-    const dropDown = dropDownRef.current;
+    if (bit) {
+      const button = buttonRef.current;
+      const dropDown = dropDownRef.current;
 
-    if (showDropDown && button !== null && dropDown !== null) {
-      const {top, left} = button.getBoundingClientRect();
-      dropDown.style.top = `${top + 40}px`;
-      dropDown.style.left = `${Math.min(
-        left,
-        window.innerWidth - dropDown.offsetWidth - 20,
-      )}px`;
-    }
+      if (showDropDown && button !== null && dropDown !== null) {
+        const {top, left} = button.getBoundingClientRect();
+        dropDown.style.top = `43px`;
+        dropDown.style.left = `${Math.min(
+          left,
+          window.innerWidth - dropDown.offsetWidth,
+        )}px`;
+      }
 
-    const handleScroll = () => {
+      const handleScroll = () => {
+        if (showDropDown && button !== null && dropDown !== null) {
+          const {top, left} = button.getBoundingClientRect();
+          dropDown.style.top = `43px`;
+          dropDown.style.left = `${Math.min(
+            left,
+            window.innerWidth - dropDown.offsetWidth,
+          )}px`;
+        }
+      };
+
+      window.addEventListener('scroll', handleScroll);
+
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    } else {
+      const button = buttonRef.current;
+      const dropDown = dropDownRef.current;
+
       if (showDropDown && button !== null && dropDown !== null) {
         const {top, left} = button.getBoundingClientRect();
         dropDown.style.top = `${top + 40}px`;
@@ -196,14 +218,30 @@ export default function DropDown({
           window.innerWidth - dropDown.offsetWidth - 20,
         )}px`;
       }
-    };
 
-    window.addEventListener('scroll', handleScroll);
+      const handleScroll = () => {
+        if (showDropDown && button !== null && dropDown !== null) {
+          const {top, left} = button.getBoundingClientRect();
+          dropDown.style.top = `${top + 40}px`;
+          dropDown.style.left = `${Math.min(
+            left,
+            window.innerWidth - dropDown.offsetWidth - 20,
+          )}px`;
+        }
+      };
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [dropDownRef, buttonRef, anchorElem.parentElement?.scrollTop ,showDropDown]);
+      window.addEventListener('scroll', handleScroll);
+
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [
+    dropDownRef,
+    buttonRef,
+    anchorElem.parentElement?.scrollTop,
+    showDropDown,
+  ]);
 
   useEffect(() => {
     const button = buttonRef.current;
@@ -228,16 +266,21 @@ export default function DropDown({
         document.removeEventListener('click', handle);
       };
     }
-  }, [dropDownRef, buttonRef, showDropDown, anchorElem.parentElement?.scrollTop ,stopCloseOnClickSelf]);
+  }, [
+    dropDownRef,
+    buttonRef,
+    showDropDown,
+    anchorElem.parentElement?.scrollTop,
+    stopCloseOnClickSelf,
+  ]);
 
   useEffect(() => {
     const scrollerElem = anchorElem.parentElement;
 
     const update = () => {
       const scrollPosition = scrollerElem?.scrollTop;
-      if(scrollerElem?.scrollTop){
-        console.log("hiiii")
-        
+      if (scrollerElem?.scrollTop) {
+        console.log('hiiii');
       }
     };
 
@@ -275,17 +318,37 @@ export default function DropDown({
         <i className="chevron-down" />
       </button>
 
-      {showDropDown &&
-        createPortal(
-          <DropDownItems
-            showDropDown={showDropDown}
-            dropDownRef={dropDownRef}
-            anchorElem={anchorElem}
-            onClose={handleClose}>
-            {children}
-          </DropDownItems>,
-          document.body,
-        )}
+      {bit
+        ? showDropDown && (
+            <DropDownItems
+              showDropDown={showDropDown}
+              dropDownRef={dropDownRef}
+              anchorElem={anchorElem}
+              onClose={handleClose}>
+              {children}
+            </DropDownItems>
+          )
+        : showDropDown &&
+            <DropDownItems
+              showDropDown={showDropDown}
+              dropDownRef={dropDownRef}
+              anchorElem={anchorElem}
+              onClose={handleClose}>
+              {children}
+            </DropDownItems>
+          }
     </>
   );
 }
+
+// showDropDown &&
+//           createPortal(
+//             <DropDownItems
+//               showDropDown={showDropDown}
+//               dropDownRef={dropDownRef}
+//               anchorElem={anchorElem}
+//               onClose={handleClose}>
+//               {children}
+//             </DropDownItems>,
+//             document.body,
+//           )

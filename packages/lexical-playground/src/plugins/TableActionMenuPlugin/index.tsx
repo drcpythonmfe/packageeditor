@@ -87,36 +87,34 @@ function TableActionMenu({
   useEffect(() => {
     const menuButtonElement = contextRef.current;
     const dropDownElement = dropDownRef.current;
-  
+
     const updateDropdownPosition = () => {
       if (menuButtonElement && dropDownElement) {
         const menuButtonRect = menuButtonElement.getBoundingClientRect();
         dropDownElement.style.opacity = '1';
-  
-        dropDownElement.style.left = `${
-          menuButtonRect.left + menuButtonRect.width + window.pageXOffset + 5
-        }px`;
-  
+
+        // dropDownElement.style.left = `${
+        //   menuButtonRect.left + menuButtonRect.width + window.pageXOffset + 5
+        // }px`;
+
         dropDownElement.style.top = `${
-          menuButtonRect.top + window.pageYOffset
+          menuButtonRect.top + window.pageYOffset - 48       // -50
         }px`;
       }
     };
-  
 
     updateDropdownPosition();
-  
+
     const handleScroll = () => {
       updateDropdownPosition();
     };
-  
+
     window.addEventListener('scroll', handleScroll);
-  
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [contextRef, dropDownRef]);
-  
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -343,6 +341,112 @@ function TableActionMenu({
     });
   }, [editor, tableCellNode, clearTableSelection, onClose]);
 
+  return (
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <>
+      <div
+        className="dropdowns dropdown1"
+        ref={dropDownRef}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}>
+        <button
+          type="button"
+          className="item"
+          onClick={() => insertTableRowAtSelection(false)}>
+          <span className="text">
+            Insert{' '}
+            {selectionCounts.rows === 1
+              ? 'row'
+              : `${selectionCounts.rows} rows`}{' '}
+            above
+          </span>
+        </button>
+        <button
+          type="button"
+          className="item"
+          onClick={() => insertTableRowAtSelection(true)}>
+          <span className="text">
+            Insert{' '}
+            {selectionCounts.rows === 1
+              ? 'row'
+              : `${selectionCounts.rows} rows`}{' '}
+            below
+          </span>
+        </button>
+        <hr />
+        <button
+          type="button"
+          className="item"
+          onClick={() => insertTableColumnAtSelection(false)}>
+          <span className="text">
+            Insert{' '}
+            {selectionCounts.columns === 1
+              ? 'column'
+              : `${selectionCounts.columns} columns`}{' '}
+            left
+          </span>
+        </button>
+        <button
+          type="button"
+          className="item"
+          onClick={() => insertTableColumnAtSelection(true)}>
+          <span className="text">
+            Insert{' '}
+            {selectionCounts.columns === 1
+              ? 'column'
+              : `${selectionCounts.columns} columns`}{' '}
+            right
+          </span>
+        </button>
+        <hr />
+        <button
+          type="button"
+          className="item"
+          onClick={() => deleteTableColumnAtSelection()}>
+          <span className="text">Delete column</span>
+        </button>
+        <button
+          type="button"
+          className="item"
+          onClick={() => deleteTableRowAtSelection()}>
+          <span className="text">Delete row</span>
+        </button>
+        <button
+          type="button"
+          className="item"
+          onClick={() => deleteTableAtSelection()}>
+          <span className="text">Delete table</span>
+        </button>
+        <hr />
+        <button
+          type="button"
+          className="item"
+          onClick={() => toggleTableRowIsHeader()}>
+          <span className="text">
+            {(tableCellNode.__headerState & TableCellHeaderStates.ROW) ===
+            TableCellHeaderStates.ROW
+              ? 'Remove'
+              : 'Add'}{' '}
+            row header
+          </span>
+        </button>
+        <button
+          type="button"
+          className="item"
+          onClick={() => toggleTableColumnIsHeader()}>
+          <span className="text">
+            {(tableCellNode.__headerState & TableCellHeaderStates.COLUMN) ===
+            TableCellHeaderStates.COLUMN
+              ? 'Remove'
+              : 'Add'}{' '}
+            column header
+          </span>
+        </button>
+      </div>
+    </>
+  );
+
   return createPortal(
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
@@ -351,14 +455,20 @@ function TableActionMenu({
       onClick={(e) => {
         e.stopPropagation();
       }}>
-      <button type='button' className="item" onClick={() => insertTableRowAtSelection(false)}>
+      <button
+        type="button"
+        className="item"
+        onClick={() => insertTableRowAtSelection(false)}>
         <span className="text">
           Insert{' '}
           {selectionCounts.rows === 1 ? 'row' : `${selectionCounts.rows} rows`}{' '}
           above
         </span>
       </button>
-      <button type='button' className="item" onClick={() => insertTableRowAtSelection(true)}>
+      <button
+        type="button"
+        className="item"
+        onClick={() => insertTableRowAtSelection(true)}>
         <span className="text">
           Insert{' '}
           {selectionCounts.rows === 1 ? 'row' : `${selectionCounts.rows} rows`}{' '}
@@ -366,8 +476,8 @@ function TableActionMenu({
         </span>
       </button>
       <hr />
-      <button 
-        type='button'
+      <button
+        type="button"
         className="item"
         onClick={() => insertTableColumnAtSelection(false)}>
         <span className="text">
@@ -379,7 +489,7 @@ function TableActionMenu({
         </span>
       </button>
       <button
-       type='button'
+        type="button"
         className="item"
         onClick={() => insertTableColumnAtSelection(true)}>
         <span className="text">
@@ -391,17 +501,29 @@ function TableActionMenu({
         </span>
       </button>
       <hr />
-      <button  type='button' className="item" onClick={() => deleteTableColumnAtSelection()}>
+      <button
+        type="button"
+        className="item"
+        onClick={() => deleteTableColumnAtSelection()}>
         <span className="text">Delete column</span>
       </button>
-      <button type='button' className="item" onClick={() => deleteTableRowAtSelection()}>
+      <button
+        type="button"
+        className="item"
+        onClick={() => deleteTableRowAtSelection()}>
         <span className="text">Delete row</span>
       </button>
-      <button type='button' className="item" onClick={() => deleteTableAtSelection()}>
+      <button
+        type="button"
+        className="item"
+        onClick={() => deleteTableAtSelection()}>
         <span className="text">Delete table</span>
       </button>
       <hr />
-      <button type='button' className="item" onClick={() => toggleTableRowIsHeader()}>
+      <button
+        type="button"
+        className="item"
+        onClick={() => toggleTableRowIsHeader()}>
         <span className="text">
           {(tableCellNode.__headerState & TableCellHeaderStates.ROW) ===
           TableCellHeaderStates.ROW
@@ -410,7 +532,10 @@ function TableActionMenu({
           row header
         </span>
       </button>
-      <button type='button' className="item" onClick={() => toggleTableColumnIsHeader()}>
+      <button
+        type="button"
+        className="item"
+        onClick={() => toggleTableColumnIsHeader()}>
         <span className="text">
           {(tableCellNode.__headerState & TableCellHeaderStates.COLUMN) ===
           TableCellHeaderStates.COLUMN
@@ -529,7 +654,7 @@ function TableCellActionMenuContainer({
       {tableCellNode != null && (
         <>
           <button
-            type='button'
+            type="button"
             className="table-cell-action-button chevron-down"
             onClick={(e) => {
               e.stopPropagation();

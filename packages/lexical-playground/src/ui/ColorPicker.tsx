@@ -24,6 +24,7 @@ interface ColorPickerProps {
   children?: ReactNode;
   onChange?: (color: string) => void;
   title?: string;
+  bit?: boolean
 }
 
 const basicColors = [
@@ -51,6 +52,7 @@ export default function ColorPicker({
   color,
   children,
   onChange,
+  bit ,
   disabled = false,
   ...rest
 }: Readonly<ColorPickerProps>): JSX.Element {
@@ -116,7 +118,7 @@ export default function ColorPicker({
   }, [color]);
 
   return (
-    <DropDown {...rest} disabled={disabled}>
+    <DropDown bit={bit} {...rest} disabled={disabled}>
       <div
         className="color-picker-wrapper"
         style={{width: WIDTH}}

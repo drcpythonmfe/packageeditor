@@ -95,6 +95,27 @@ function validateParagraphs(htmlText: string): boolean {
     return false;
   }
 
+  if (tempDiv.querySelectorAll('table').length > 0) {
+    return false;
+  }
+
+  if (tempDiv.querySelectorAll('h1').length > 0) {
+    return false;
+  }
+
+  if (tempDiv.querySelectorAll('h2').length > 0) {
+    return false;
+  }
+
+  if (tempDiv.querySelectorAll('h3').length > 0) {
+    return false;
+  }
+
+  if (tempDiv.querySelectorAll('li').length > 0) {
+    return false;
+  }
+
+  
   const paragraphs = tempDiv.querySelectorAll('p');
 
   if (paragraphs.length === 0) {
@@ -126,21 +147,19 @@ function validateParagraphs(htmlText: string): boolean {
 
 export default function PlaygroundApp1(): JSX.Element {
  
-  const [html, setHtml] = useState(`<p class="TextEditor__paragraph"><br></p><p><a href="https://media.truflux.drcsystems.com/uploads/project/117/comment/19532/REC-20241209101112.mp4" target="_blank" rel="126548545485465" data-lexical-video-url="https://media.truflux.drcsystems.com/uploads/project/117/comment/19532/REC-20241209101112.mp4" data-lexical-video-id="126548545485465"><span title="126548545485465" alt="126548545485465" style="background-color: rgb(140, 116, 247); border-radius: 8px; color: white; display: inline-block; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; padding: 6px; text-decoration: none; width: 250px; height: 30px;">REC-20241209101112.mp4</span></a><p> </p></p><p class="TextEditor__paragraph"><br></p>`);
+  const [html, setHtml] = useState(``);
   
    React.useEffect(()=>{
-    // button hide show
-    console.log(html)
     validateParagraphs(html)
    },[html])
-  
-  return (
+   
+   return (
     <>
     <EditorComposer>
         <App html={html}  setHtml={setHtml}   userList={dummyMentionsData} />
       </EditorComposer>
       <button disabled={ validateParagraphs(html)}> Button </button>
-    <div dangerouslySetInnerHTML={{__html: html}} />
+      <div dangerouslySetInnerHTML={{__html: html}} />
     </>
   );
 }

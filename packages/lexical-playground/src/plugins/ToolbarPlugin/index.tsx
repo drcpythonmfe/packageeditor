@@ -160,11 +160,13 @@ function dropDownActiveClass(active: boolean) {
 function BlockFormatDropDown({
   editor,
   blockType,
+  bit,
   disabled = false,
 }: {
   blockType: keyof typeof blockTypeToBlockName;
   editor: LexicalEditor;
   disabled?: boolean;
+  bit?:boolean;
 }): JSX.Element {
   const formatParagraph = () => {
     if (blockType !== 'paragraph') {
@@ -259,6 +261,7 @@ function BlockFormatDropDown({
 
   return (
     <DropDown
+      bit={bit}
       disabled={disabled}
       buttonClassName="toolbar-item blocks-controls"
       buttonIconClassName={'icon block-type ' + blockType}
@@ -331,12 +334,14 @@ function FontDropDown({
   editor,
   value,
   style,
+  bit,
   disabled = false,
   options,
 }: {
   editor: LexicalEditor;
   value: string;
   style: string;
+  bit?:boolean
   disabled?: boolean;
   options: [string, string][];
 }): JSX.Element {
@@ -363,6 +368,7 @@ function FontDropDown({
     <>
       {style === 'font-size' ? (
         <DropDown
+          bit={bit}
           disabled={disabled}
           buttonClassName={'toolbar-item ' + style}
           // buttonLabel={value}
@@ -381,6 +387,7 @@ function FontDropDown({
         </DropDown>
       ) : (
         <DropDown
+          bit={bit}
           disabled={disabled}
           buttonClassName={'toolbar-item ' + style}
           // buttonLabel={value}
@@ -659,6 +666,7 @@ export default function ToolbarPlugin({
             <>
               <DropDown 
                 anchorElem={anchorElem}
+                bit={true}
                 disabled={!isEditable}
                 buttonClassName="toolbar-item code-language"
                 buttonLabel={getLanguageFriendlyName(codeLanguage)}
@@ -681,6 +689,7 @@ export default function ToolbarPlugin({
             <>
               {Boolean(config.fontFamilyOptions) && (
                 <FontDropDown
+                  bit={true}
                   disabled={!isEditable}
                   style={'font-family'}
                   value={fontFamily}
@@ -693,6 +702,7 @@ export default function ToolbarPlugin({
                 activeEditor === editor && (
                   <>
                     <BlockFormatDropDown
+                      bit={true}
                       disabled={!isEditable}
                       blockType={blockType}
                       editor={editor}
@@ -784,6 +794,7 @@ export default function ToolbarPlugin({
 
               {config.textColorPicker && (
                 <ColorPicker
+                bit={true}
                   disabled={!isEditable}
                   buttonClassName="toolbar-item color-picker"
                   buttonAriaLabel="Formatting text color"
@@ -795,6 +806,7 @@ export default function ToolbarPlugin({
               )}
               {config.bgColorPicker && (
                 <ColorPicker
+                bit={true}
                   disabled={!isEditable}
                   buttonClassName="toolbar-item color-picker"
                   buttonAriaLabel="Formatting background color"
@@ -809,6 +821,7 @@ export default function ToolbarPlugin({
           {/* <Divider /> */}
           {config.align && (
             <DropDown
+            bit={true}
               disabled={!isEditable}
               anchorElem={anchorElem}
               // buttonLabel="Align"
@@ -899,6 +912,7 @@ export default function ToolbarPlugin({
           )} */}
           {config.fontSizeOptions && (
             <FontDropDown
+              bit={true}
               disabled={!isEditable}
               style={'font-size'}
               value={fontSize}
@@ -909,6 +923,7 @@ export default function ToolbarPlugin({
 
           {config.formatTextOptions && (
             <DropDown
+            bit={true}
             anchorElem={anchorElem}
               disabled={!isEditable}
               buttonClassName="toolbar-item spaced"
