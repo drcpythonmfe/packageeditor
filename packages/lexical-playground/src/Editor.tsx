@@ -175,9 +175,9 @@ export default function Editor({
   };
   const [editor] = useLexicalComposerContext();
   const editorContext = useEditorComposerContext();
-
+  let toolbarConfigdata  =   JSON.parse(JSON.stringify(localStorage.getItem("toolbarConfig"))) || toolbarConfig
   const normToolbarConfig = useMemo(
-    () => ({...defaultToolbarConfig, ...toolbarConfig}),
+    () => ({...defaultToolbarConfig, ...toolbarConfigdata}),
     [toolbarConfig],
   );
 

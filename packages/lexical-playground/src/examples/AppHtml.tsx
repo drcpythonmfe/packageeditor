@@ -22,12 +22,21 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout
 const uploadImg = async (file: File) => {
   await delay(500);
   let data = {
-    url : `https://media.truflux.drcsystems.com/uploads/project/117/comment/19532/REC-20241209101112.mp4`,
+    url : `https://www.drcsystems.com/wp-content/uploads/2023/07/shams-logo.png`,
     id :  126548545485465 
   }
   return data
 };
 
+
+const uploadImgFile = async (file: File) => {
+  await delay(500);
+  let data = {
+    url : `https://media.truflux.drcsystems.com/uploads/project/117/comment/19532/REC-20241209101112.mp4`,
+    id :  126548545485465 
+  }
+  return data
+};
 
 
 const toolbarConfig ={
@@ -79,7 +88,7 @@ function App({
       isRichText={true}
       onChange={setHtml}
       onUpload={uploadImg}
-      onDataSend={uploadImg}
+      onDataSend={uploadImgFile}
       onChangeMode="html"
       toolbarConfig={toolbarConfig}
       dummyMentionsDatas={userList || []}
