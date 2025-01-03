@@ -70,6 +70,9 @@ const toolbarConfig ={
   alignRight: false,
   alignJustify: false,
   editorshow:true,
+  uppercase:true,
+  lowercase:true,
+  capitalize:true,
 }
 
 function App({

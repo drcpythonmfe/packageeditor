@@ -136,6 +136,9 @@ const defaultToolbarConfig: ToolbarConfig = {
   alignRight: true,
   alignJustify: true,
   editorshow: true,
+  uppercase:true,
+  lowercase:true,
+  capitalize:true,
 };
 
 export default function Editor({

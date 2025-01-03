@@ -387,6 +387,18 @@ i.image-filess {
 }
 
 
+i.uppercase {
+  background-image: url(images/icons/type-uppercase.svg);
+}
+
+i.lowercase {
+  background-image: url(images/icons/type-lowercase.svg);
+}
+
+i.capitalize {
+  background-image: url(images/icons/type-capitalize.svg);
+}
+
 
 
 

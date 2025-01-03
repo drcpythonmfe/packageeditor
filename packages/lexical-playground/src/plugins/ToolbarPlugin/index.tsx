@@ -84,7 +84,7 @@ import {INSERT_COLLAPSIBLE_COMMAND} from '../CollapsiblePlugin';
 import {InsertImageDialog} from '../ImagesPlugin';
 import {InsertPollDialog} from '../PollPlugin';
 import {InsertTableDialog} from '../TablePlugin';
-import { INSERT_TABLE_COMMAND } from 'packages/lexical-table/src';
+import {INSERT_TABLE_COMMAND} from 'packages/lexical-table/src';
 
 const SvgIcon: React.FC = () => {
   const bodyElement = document.querySelector('body');
@@ -166,7 +166,7 @@ function BlockFormatDropDown({
   blockType: keyof typeof blockTypeToBlockName;
   editor: LexicalEditor;
   disabled?: boolean;
-  bit?:boolean;
+  bit?: boolean;
 }): JSX.Element {
   const formatParagraph = () => {
     if (blockType !== 'paragraph') {
@@ -341,7 +341,7 @@ function FontDropDown({
   editor: LexicalEditor;
   value: string;
   style: string;
-  bit?:boolean
+  bit?: boolean;
   disabled?: boolean;
   options: [string, string][];
 }): JSX.Element {
@@ -417,7 +417,6 @@ export type ToolbarPluginProps = {
   floatingText?: boolean;
   anchorElem?: HTMLElement;
 };
-
 
 export default function ToolbarPlugin({
   config,
@@ -658,13 +657,57 @@ export default function ToolbarPlugin({
     [activeEditor, selectedElementKey],
   );
 
+  const applyStyleTexts = useCallback(
+    (styles: Record<string, string>, merge: boolean = true) => {
+      activeEditor.update(() => {
+        const selection = $getSelection();
+        if ($isRangeSelection(selection)) {
+          if (merge) {
+            const currentStyles = selection
+              .getNodes()
+              .reduce((styles, node) => {
+                if ($isTextNode(node)) {
+                  const nodeStyles = node.getStyle();
+                  if (nodeStyles) {
+                    return {...styles, ...parseStyles(nodeStyles)};
+                  }
+                }
+                return styles;
+              }, {});
+            $patchStyleText(selection, {...currentStyles, ...styles});
+          } else {
+            $patchStyleText(selection, styles);
+          }
+        }
+      });
+    },
+    [activeEditor],
+  );
+
+  const parseStyles = (styleString: string) => {
+    return styleString
+      .split(';')
+      .filter((style) => style.trim())
+      .reduce((styles, style) => {
+        const [property, value] = style.split(':').map((str) => str.trim());
+        return {...styles, [property]: value};
+      }, {});
+  };
+
+  const handleTextTransform = useCallback(
+    (transform: 'uppercase' | 'lowercase' | 'capitalize' | 'none') => {
+      applyStyleTexts({'text-transform': transform});
+    },
+    [applyStyleText],
+  );
+
   return (
     <div className="toolbar">
       {floatingText ? (
         <>
           {blockType === 'code' ? (
             <>
-              <DropDown 
+              <DropDown
                 anchorElem={anchorElem}
                 bit={true}
                 disabled={!isEditable}
@@ -792,9 +835,51 @@ export default function ToolbarPlugin({
                 </button>
               )}
 
+              {config.uppercase && (
+                <>
+                  <button
+                    disabled={!isEditable}
+                    onClick={() => handleTextTransform('uppercase')}
+                    className={'toolbar-item spaced '}
+                    aria-label="Format text as uppercase"
+                    title="UPPERCASE"
+                    type="button">
+                     <i className="format uppercase" />
+                  </button>
+                </>
+              )}
+
+              {config.lowercase && (
+                <>
+                  <button
+                    disabled={!isEditable}
+                    onClick={() => handleTextTransform('lowercase')}
+                    className={'toolbar-item spaced '}
+                    aria-label="Format text as lowercase"
+                    title="lowercase"
+                    type="button">
+                    <i className="format lowercase" />
+                  </button>
+                </>
+              )}
+
+              {config.capitalize && (
+                <>
+                  <button
+                    disabled={!isEditable}
+                    onClick={() => handleTextTransform('capitalize')}
+                    className={'toolbar-item spaced '}
+                    aria-label="Capitalize text"
+                    title="Capitalize"
+                    type="button">
+                    <i className="format capitalize" />
+                  </button>
+                </>
+              )}
+
               {config.textColorPicker && (
                 <ColorPicker
-                bit={true}
+                  bit={true}
                   disabled={!isEditable}
                   buttonClassName="toolbar-item color-picker"
                   buttonAriaLabel="Formatting text color"
@@ -806,7 +891,7 @@ export default function ToolbarPlugin({
               )}
               {config.bgColorPicker && (
                 <ColorPicker
-                bit={true}
+                  bit={true}
                   disabled={!isEditable}
                   buttonClassName="toolbar-item color-picker"
                   buttonAriaLabel="Formatting background color"
@@ -821,7 +906,7 @@ export default function ToolbarPlugin({
           {/* <Divider /> */}
           {config.align && (
             <DropDown
-            bit={true}
+              bit={true}
               disabled={!isEditable}
               anchorElem={anchorElem}
               // buttonLabel="Align"
@@ -923,8 +1008,8 @@ export default function ToolbarPlugin({
 
           {config.formatTextOptions && (
             <DropDown
-            bit={true}
-            anchorElem={anchorElem}
+              bit={true}
+              anchorElem={anchorElem}
               disabled={!isEditable}
               buttonClassName="toolbar-item spaced"
               buttonLabel=""
@@ -1014,8 +1099,8 @@ export default function ToolbarPlugin({
             <>
               {blockType === 'code' ? (
                 <>
-                  <DropDown 
-                   anchorElem={anchorElem}
+                  <DropDown
+                    anchorElem={anchorElem}
                     disabled={!isEditable}
                     buttonClassName="toolbar-item code-language"
                     buttonLabel={getLanguageFriendlyName(codeLanguage)}
@@ -1178,7 +1263,7 @@ export default function ToolbarPlugin({
               {/* <Divider /> */}
               {config.align && (
                 <DropDown
-                anchorElem={anchorElem}
+                  anchorElem={anchorElem}
                   disabled={!isEditable}
                   // buttonLabel="Align"
                   buttonIconClassName="icon left-align"
@@ -1266,7 +1351,7 @@ export default function ToolbarPlugin({
 
               {config?.insertOptions && (
                 <DropDown
-                anchorElem={anchorElem}
+                  anchorElem={anchorElem}
                   disabled={!isEditable}
                   buttonClassName="toolbar-item spaced"
                   // buttonLabel="Insert"
@@ -1302,7 +1387,6 @@ export default function ToolbarPlugin({
                     </>
                   )}
 
-                 
                   {/* 
                   <DropDownItem
                     onClick={() => {
@@ -1379,7 +1463,7 @@ export default function ToolbarPlugin({
 
               {config.formatTextOptions && (
                 <DropDown
-                anchorElem={anchorElem}
+                  anchorElem={anchorElem}
                   disabled={!isEditable}
                   buttonClassName="toolbar-item spaced"
                   buttonLabel=""
