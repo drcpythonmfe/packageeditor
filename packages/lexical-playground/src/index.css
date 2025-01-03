@@ -43,6 +43,17 @@ i.link {
   background-image: url(images/icons/link.svg);
 }
 
+
+i.rtl{
+  background-image: url(images/icons/right-to-left-text-direction.svg);
+
+}
+
+i.ltr{
+  background-image: url(images/icons/left-to-right-text-direction.svg);
+
+}
+
 i.horizontal-rule {
   background-image: url(images/icons/horizontal-rule.svg);
 }

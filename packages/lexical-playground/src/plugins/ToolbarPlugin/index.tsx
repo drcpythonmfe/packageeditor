@@ -701,6 +701,23 @@ export default function ToolbarPlugin({
     [applyStyleText],
   );
 
+  const onRTLClick = useCallback(() => {
+    applyStyleTexts({
+      direction: 'rtl',
+      'unicode-bidi': 'bidi-override',
+      'text-align': 'right',
+      display: 'flex',
+    });
+  }, [applyStyleText]);
+
+  const onLTRClick = useCallback(() => {
+    applyStyleText({
+      direction: 'ltr',
+      'unicode-bidi': 'bidi-override',
+      'text-align': 'left',
+    });
+  }, [applyStyleText]);
+
   return (
     <div className="toolbar">
       {floatingText ? (
@@ -844,7 +861,7 @@ export default function ToolbarPlugin({
                     aria-label="Format text as uppercase"
                     title="UPPERCASE"
                     type="button">
-                     <i className="format uppercase" />
+                    <i className="format uppercase" />
                   </button>
                 </>
               )}
@@ -877,6 +894,25 @@ export default function ToolbarPlugin({
                 </>
               )}
 
+              {config.RTL && (
+                <button
+                  onClick={onRTLClick}
+                  className="toolbar-item"
+                  title="Right to Left"
+                  aria-label="Switch text direction to right to left">
+                  <i className="format rtl" />
+                </button>
+              )}
+
+              {config.LTR && (
+                <button
+                  onClick={onLTRClick}
+                  className="toolbar-item"
+                  title="Left to Right"
+                  aria-label="Switch text direction to left to right">
+                  <i className="format ltr" />
+                </button>
+              )}
               {config.textColorPicker && (
                 <ColorPicker
                   bit={true}
@@ -1233,6 +1269,68 @@ export default function ToolbarPlugin({
                       title="Insert link"
                       type="button">
                       <i className="format link" />
+                    </button>
+                  )}
+
+                  {config.uppercase && (
+                    <>
+                      <button
+                        disabled={!isEditable}
+                        onClick={() => handleTextTransform('uppercase')}
+                        className={'toolbar-item spaced '}
+                        aria-label="Format text as uppercase"
+                        title="UPPERCASE"
+                        type="button">
+                        <i className="format uppercase" />
+                      </button>
+                    </>
+                  )}
+
+                  {config.lowercase && (
+                    <>
+                      <button
+                        disabled={!isEditable}
+                        onClick={() => handleTextTransform('lowercase')}
+                        className={'toolbar-item spaced '}
+                        aria-label="Format text as lowercase"
+                        title="lowercase"
+                        type="button">
+                        <i className="format lowercase" />
+                      </button>
+                    </>
+                  )}
+
+                  {config.capitalize && (
+                    <>
+                      <button
+                        disabled={!isEditable}
+                        onClick={() => handleTextTransform('capitalize')}
+                        className={'toolbar-item spaced '}
+                        aria-label="Capitalize text"
+                        title="Capitalize"
+                        type="button">
+                        <i className="format capitalize" />
+                      </button>
+                    </>
+                  )}
+
+                  {config.RTL && (
+                    <button
+                      onClick={onRTLClick}
+                      className="toolbar-item"
+                      title="Right to Left"
+                      aria-label="Switch text direction to right to left">
+                      <i className="format rtl" />
+                    </button>
+                  )}
+
+                  {config.LTR && (
+                    <button
+                      onClick={onLTRClick}
+                      className="toolbar-item"
+                      title="Left to Right"
+                      aria-label="Switch text direction to left to right">
+                      <i className="format ltr" />
                     </button>
                   )}
 

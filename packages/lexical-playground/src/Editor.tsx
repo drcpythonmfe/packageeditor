@@ -139,6 +139,8 @@ const defaultToolbarConfig: ToolbarConfig = {
   uppercase:true,
   lowercase:true,
   capitalize:true,
+  RTL:true,
+  LTR:true,
 };
 
 export default function Editor({
@@ -253,10 +255,12 @@ export default function Editor({
 
   return (
     <div className={joinClasses('editor-shell', rootClassName)}>
+
       <div
         className={`editor-container ${containerClassName ?? ''} ${
           showTreeView ? 'tree-view' : ''
         } ${!isRichText ? 'plain-text' : ''}`}>
+
         {isMaxLength && <MaxLengthPlugin maxLength={30} />}
         <DragDropPaste />
         <AutoFocusPlugin />
