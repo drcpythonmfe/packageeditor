@@ -93,7 +93,7 @@ function App({
       onUpload={uploadImg}
       onDataSend={uploadImgFile}
       onChangeMode="html"
-      toolbarConfig={toolbarConfig}
+      // toolbarConfig={toolbarConfig}
       dummyMentionsDatas={userList || []}
     />
   );

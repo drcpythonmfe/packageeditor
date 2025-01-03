@@ -93,6 +93,8 @@ function TableActionMenu({
         const menuButtonRect = menuButtonElement.getBoundingClientRect();
         dropDownElement.style.opacity = '1';
 
+        // hide Data
+
         // dropDownElement.style.left = `${
         //   menuButtonRect.left + menuButtonRect.width + window.pageXOffset + 5
         // }px`;
@@ -100,6 +102,14 @@ function TableActionMenu({
         // dropDownElement.style.top = `${
         //   menuButtonRect.top + window.pageYOffset       
         // }px`;
+
+        dropDownElement.style.left = `${
+          menuButtonRect.left + menuButtonRect.width + window.pageXOffset + 5
+        }px`;
+
+        dropDownElement.style.top = `${
+          menuButtonRect.top + window.pageYOffset       
+        }px`;
       }
     };
 
@@ -341,111 +351,115 @@ function TableActionMenu({
     });
   }, [editor, tableCellNode, clearTableSelection, onClose]);
 
-  return (
-      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    <>
-      <div
-        className="dropdowns dropdown1"
-        ref={dropDownRef}
-        onClick={(e) => {
-          e.stopPropagation();
-        }}>
-        <button
-          type="button"
-          className="item"
-          onClick={() => insertTableRowAtSelection(false)}>
-          <span className="text">
-            Insert{' '}
-            {selectionCounts.rows === 1
-              ? 'row'
-              : `${selectionCounts.rows} rows`}{' '}
-            above
-          </span>
-        </button>
-        <button
-          type="button"
-          className="item"
-          onClick={() => insertTableRowAtSelection(true)}>
-          <span className="text">
-            Insert{' '}
-            {selectionCounts.rows === 1
-              ? 'row'
-              : `${selectionCounts.rows} rows`}{' '}
-            below
-          </span>
-        </button>
-        <hr />
-        <button
-          type="button"
-          className="item"
-          onClick={() => insertTableColumnAtSelection(false)}>
-          <span className="text">
-            Insert{' '}
-            {selectionCounts.columns === 1
-              ? 'column'
-              : `${selectionCounts.columns} columns`}{' '}
-            left
-          </span>
-        </button>
-        <button
-          type="button"
-          className="item"
-          onClick={() => insertTableColumnAtSelection(true)}>
-          <span className="text">
-            Insert{' '}
-            {selectionCounts.columns === 1
-              ? 'column'
-              : `${selectionCounts.columns} columns`}{' '}
-            right
-          </span>
-        </button>
-        <hr />
-        <button
-          type="button"
-          className="item"
-          onClick={() => deleteTableColumnAtSelection()}>
-          <span className="text">Delete column</span>
-        </button>
-        <button
-          type="button"
-          className="item"
-          onClick={() => deleteTableRowAtSelection()}>
-          <span className="text">Delete row</span>
-        </button>
-        <button
-          type="button"
-          className="item"
-          onClick={() => deleteTableAtSelection()}>
-          <span className="text">Delete table</span>
-        </button>
-        <hr />
-        <button
-          type="button"
-          className="item"
-          onClick={() => toggleTableRowIsHeader()}>
-          <span className="text">
-            {(tableCellNode.__headerState & TableCellHeaderStates.ROW) ===
-            TableCellHeaderStates.ROW
-              ? 'Remove'
-              : 'Add'}{' '}
-            row header
-          </span>
-        </button>
-        <button
-          type="button"
-          className="item"
-          onClick={() => toggleTableColumnIsHeader()}>
-          <span className="text">
-            {(tableCellNode.__headerState & TableCellHeaderStates.COLUMN) ===
-            TableCellHeaderStates.COLUMN
-              ? 'Remove'
-              : 'Add'}{' '}
-            column header
-          </span>
-        </button>
-      </div>
-    </>
-  );
+
+  // hide data 
+
+  
+  // return (
+  //     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+  //   <>
+  //     <div
+  //       className="dropdowns dropdown1"
+  //       ref={dropDownRef}
+  //       onClick={(e) => {
+  //         e.stopPropagation();
+  //       }}>
+  //       <button
+  //         type="button"
+  //         className="item"
+  //         onClick={() => insertTableRowAtSelection(false)}>
+  //         <span className="text">
+  //           Insert{' '}
+  //           {selectionCounts.rows === 1
+  //             ? 'row'
+  //             : `${selectionCounts.rows} rows`}{' '}
+  //           above
+  //         </span>
+  //       </button>
+  //       <button
+  //         type="button"
+  //         className="item"
+  //         onClick={() => insertTableRowAtSelection(true)}>
+  //         <span className="text">
+  //           Insert{' '}
+  //           {selectionCounts.rows === 1
+  //             ? 'row'
+  //             : `${selectionCounts.rows} rows`}{' '}
+  //           below
+  //         </span>
+  //       </button>
+  //       <hr />
+  //       <button
+  //         type="button"
+  //         className="item"
+  //         onClick={() => insertTableColumnAtSelection(false)}>
+  //         <span className="text">
+  //           Insert{' '}
+  //           {selectionCounts.columns === 1
+  //             ? 'column'
+  //             : `${selectionCounts.columns} columns`}{' '}
+  //           left
+  //         </span>
+  //       </button>
+  //       <button
+  //         type="button"
+  //         className="item"
+  //         onClick={() => insertTableColumnAtSelection(true)}>
+  //         <span className="text">
+  //           Insert{' '}
+  //           {selectionCounts.columns === 1
+  //             ? 'column'
+  //             : `${selectionCounts.columns} columns`}{' '}
+  //           right
+  //         </span>
+  //       </button>
+  //       <hr />
+  //       <button
+  //         type="button"
+  //         className="item"
+  //         onClick={() => deleteTableColumnAtSelection()}>
+  //         <span className="text">Delete column</span>
+  //       </button>
+  //       <button
+  //         type="button"
+  //         className="item"
+  //         onClick={() => deleteTableRowAtSelection()}>
+  //         <span className="text">Delete row</span>
+  //       </button>
+  //       <button
+  //         type="button"
+  //         className="item"
+  //         onClick={() => deleteTableAtSelection()}>
+  //         <span className="text">Delete table</span>
+  //       </button>
+  //       <hr />
+  //       <button
+  //         type="button"
+  //         className="item"
+  //         onClick={() => toggleTableRowIsHeader()}>
+  //         <span className="text">
+  //           {(tableCellNode.__headerState & TableCellHeaderStates.ROW) ===
+  //           TableCellHeaderStates.ROW
+  //             ? 'Remove'
+  //             : 'Add'}{' '}
+  //           row header
+  //         </span>
+  //       </button>
+  //       <button
+  //         type="button"
+  //         className="item"
+  //         onClick={() => toggleTableColumnIsHeader()}>
+  //         <span className="text">
+  //           {(tableCellNode.__headerState & TableCellHeaderStates.COLUMN) ===
+  //           TableCellHeaderStates.COLUMN
+  //             ? 'Remove'
+  //             : 'Add'}{' '}
+  //           column header
+  //         </span>
+  //       </button>
+  //     </div>
+  //   </>
+  // );
 
   return createPortal(
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions

@@ -176,37 +176,9 @@ export default function DropDown({
     }
   };
 
+
   useEffect(() => {
-    if (bit) {
-      const button = buttonRef.current;
-      const dropDown = dropDownRef.current;
-
-      if (showDropDown && button !== null && dropDown !== null) {
-        const {top, left} = button.getBoundingClientRect();
-        dropDown.style.top = `43px`;
-        // dropDown.style.left = `${Math.min(
-        //   left,
-        //   window.innerWidth - dropDown.offsetWidth,
-        // )}px`;
-      }
-
-      const handleScroll = () => {
-        if (showDropDown && button !== null && dropDown !== null) {
-          const {top, left} = button.getBoundingClientRect();
-          dropDown.style.top = `43px`;
-          // dropDown.style.left = `${Math.min(
-          //   left,
-          //   window.innerWidth - dropDown.offsetWidth,
-          // )}px`;
-        }
-      };
-
-      window.addEventListener('scroll', handleScroll);
-
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    } else {
+   
       const button = buttonRef.current;
       const dropDown = dropDownRef.current;
 
@@ -235,13 +207,80 @@ export default function DropDown({
       return () => {
         window.removeEventListener('scroll', handleScroll);
       };
-    }
+    
   }, [
     dropDownRef,
     buttonRef,
     anchorElem.parentElement?.scrollTop,
     showDropDown,
   ]);
+
+  // useEffect(() => {
+  //   if (bit) {
+  //     const button = buttonRef.current;
+  //     const dropDown = dropDownRef.current;
+
+  //     if (showDropDown && button !== null && dropDown !== null) {
+  //       const {top, left} = button.getBoundingClientRect();
+  //       dropDown.style.top = `43px`;
+  //       // dropDown.style.left = `${Math.min(
+  //       //   left,
+  //       //   window.innerWidth - dropDown.offsetWidth,
+  //       // )}px`;
+  //     }
+
+  //     const handleScroll = () => {
+  //       if (showDropDown && button !== null && dropDown !== null) {
+  //         const {top, left} = button.getBoundingClientRect();
+  //         dropDown.style.top = `43px`;
+  //         // dropDown.style.left = `${Math.min(
+  //         //   left,
+  //         //   window.innerWidth - dropDown.offsetWidth,
+  //         // )}px`;
+  //       }
+  //     };
+
+  //     window.addEventListener('scroll', handleScroll);
+
+  //     return () => {
+  //       window.removeEventListener('scroll', handleScroll);
+  //     };
+  //   } else {
+  //     const button = buttonRef.current;
+  //     const dropDown = dropDownRef.current;
+
+  //     if (showDropDown && button !== null && dropDown !== null) {
+  //       const {top, left} = button.getBoundingClientRect();
+  //       dropDown.style.top = `${top + 40}px`;
+  //       dropDown.style.left = `${Math.min(
+  //         left,
+  //         window.innerWidth - dropDown.offsetWidth - 20,
+  //       )}px`;
+  //     }
+
+  //     const handleScroll = () => {
+  //       if (showDropDown && button !== null && dropDown !== null) {
+  //         const {top, left} = button.getBoundingClientRect();
+  //         dropDown.style.top = `${top + 40}px`;
+  //         dropDown.style.left = `${Math.min(
+  //           left,
+  //           window.innerWidth - dropDown.offsetWidth - 20,
+  //         )}px`;
+  //       }
+  //     };
+
+  //     window.addEventListener('scroll', handleScroll);
+
+  //     return () => {
+  //       window.removeEventListener('scroll', handleScroll);
+  //     };
+  //   }
+  // }, [
+  //   dropDownRef,
+  //   buttonRef,
+  //   anchorElem.parentElement?.scrollTop,
+  //   showDropDown,
+  // ]);
 
   useEffect(() => {
     const button = buttonRef.current;
@@ -318,7 +357,7 @@ export default function DropDown({
         <i className="chevron-down" />
       </button>
 
-      {bit
+      {/* {bit
         ? showDropDown && (
             <DropDownItems
               showDropDown={showDropDown}
@@ -338,7 +377,19 @@ export default function DropDown({
             {children}
           </DropDownItems>,
           document.body,
+        )} */}
+
+        {createPortal(
+          <DropDownItems
+            showDropDown={showDropDown}
+            dropDownRef={dropDownRef}
+            anchorElem={anchorElem}
+            onClose={handleClose}>
+            {children}
+          </DropDownItems>,
+          document.body,
         )}
+
     </>
   );
 }
