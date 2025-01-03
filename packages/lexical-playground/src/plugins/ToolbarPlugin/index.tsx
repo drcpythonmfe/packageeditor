@@ -720,6 +720,8 @@ export default function ToolbarPlugin({
 
   return (
     <div className="toolbar">
+
+      
       {floatingText ? (
         <>
           {blockType === 'code' ? (
@@ -1103,7 +1105,7 @@ export default function ToolbarPlugin({
         </>
       ) : (
         <>
-          {/* {config.undoRedo && (
+          {config.undoRedo && (
             <>
               <button
                 disabled={!canUndo || !isEditable}
@@ -1128,7 +1130,7 @@ export default function ToolbarPlugin({
                 <i className="format redo" />
               </button>
             </>
-          )} */}
+          )}
           {/* <Divider /> */}
 
           {config.editorshow && (
