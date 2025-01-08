@@ -8,6 +8,7 @@
 
 import type {ToolbarConfig} from '../toolbarTypes';
 import type {LexicalEditor, NodeKey} from 'lexical';
+import JsGoogleTranslateFree, { LanguagesCodigoISO639Obj, LanguagesCodigoISO639WhitoutAuto } from "@kreisler/js-google-translate-free";
 import {
   $createCodeNode,
   $isCodeNode,
@@ -460,114 +461,145 @@ export default function ToolbarPlugin({
   const [isEditable, setIsEditable] = useState(() => editor.isEditable());
   const [rows, setRows] = useState('5');
   const [columns, setColumns] = useState('5');
-  const [selectedLang, setSelectedLang] = useState<string>('auto');
+  const [selectedLang, setSelectedLang] = useState<string>('english');
 
   const langs = {
-    auto: 'Automatic',
-    af: 'Afrikaans',
-    sq: 'Albanian',
-    ar: 'Arabic',
-    hy: 'Armenian',
-    az: 'Azerbaijani',
-    eu: 'Basque',
-    be: 'Belarusian',
-    bn: 'Bengali',
-    bs: 'Bosnian',
-    bg: 'Bulgarian',
-    ca: 'Catalan',
-    ceb: 'Cebuano',
-    ny: 'Chichewa',
-    'zh-cn': 'Chinese Simplified',
-    'zh-tw': 'Chinese Traditional',
-    co: 'Corsican',
-    hr: 'Croatian',
-    cs: 'Czech',
-    da: 'Danish',
-    nl: 'Dutch',
-    en: 'English',
-    eo: 'Esperanto',
-    et: 'Estonian',
-    tl: 'Filipino',
-    fi: 'Finnish',
-    fr: 'French',
-    fy: 'Frisian',
-    gl: 'Galician',
-    ka: 'Georgian',
-    de: 'German',
-    el: 'Greek',
-    gu: 'Gujarati',
-    ht: 'Haitian Creole',
-    ha: 'Hausa',
-    haw: 'Hawaiian',
-    iw: 'Hebrew',
-    hi: 'Hindi',
-    hmn: 'Hmong',
-    hu: 'Hungarian',
-    is: 'Icelandic',
-    ig: 'Igbo',
-    id: 'Indonesian',
-    ga: 'Irish',
-    it: 'Italian',
-    ja: 'Japanese',
-    jw: 'Javanese',
-    kn: 'Kannada',
-    kk: 'Kazakh',
-    km: 'Khmer',
-    ko: 'Korean',
-    ku: 'Kurdish (Kurmanji)',
-    ky: 'Kyrgyz',
-    lo: 'Lao',
-    la: 'Latin',
-    lv: 'Latvian',
-    lt: 'Lithuanian',
-    lb: 'Luxembourgish',
-    mk: 'Macedonian',
-    mg: 'Malagasy',
-    ms: 'Malay',
-    ml: 'Malayalam',
-    mt: 'Maltese',
-    mi: 'Maori',
-    mr: 'Marathi',
-    mn: 'Mongolian',
-    my: 'Myanmar (Burmese)',
-    ne: 'Nepali',
-    no: 'Norwegian',
-    ps: 'Pashto',
-    fa: 'Persian',
-    pl: 'Polish',
-    pt: 'Portuguese',
-    ma: 'Punjabi',
-    ro: 'Romanian',
-    ru: 'Russian',
-    sm: 'Samoan',
-    gd: 'Scots Gaelic',
-    sr: 'Serbian',
-    st: 'Sesotho',
-    sn: 'Shona',
-    sd: 'Sindhi',
-    si: 'Sinhala',
-    sk: 'Slovak',
-    sl: 'Slovenian',
-    so: 'Somali',
-    es: 'Spanish',
-    su: 'Sudanese',
-    sw: 'Swahili',
-    sv: 'Swedish',
-    tg: 'Tajik',
-    ta: 'Tamil',
-    te: 'Telugu',
-    th: 'Thai',
-    tr: 'Turkish',
-    uk: 'Ukrainian',
-    ur: 'Urdu',
-    uz: 'Uzbek',
-    vi: 'Vietnamese',
-    cy: 'Welsh',
-    xh: 'Xhosa',
-    yi: 'Yiddish',
-    yo: 'Yoruba',
-    zu: 'Zulu',
-  };
+    afrikaans: "af",
+    albanian: "sq",
+    amharic: "am",
+    arabic: "ar",
+    armenian: "hy",
+    assamese: "as",
+    aymara: "ay",
+    azerbaijani: "az",
+    bambara: "bm",
+    basque: "eu",
+    belarusian: "be",
+    bengali: "bn",
+    bhojpuri: "bho",
+    bosnian: "bs",
+    bulgarian: "bg",
+    catalan: "ca",
+    cebuano: "ceb",
+    chineseSimplified: "zh-CN",
+    chineseTraditional: "zh-TW",
+    corsican: "co",
+    croatian: "hr",
+    czech: "cs",
+    danish: "da",
+    divehi: "dv",
+    dogri: "doi",
+    dutch: "nl",
+    english: "en",
+    esperanto: "eo",
+    estonian: "et",
+    ewe: "ee",
+    filipino: "fil",
+    finnish: "fi",
+    french: "fr",
+    frisian: "fy",
+    galician: "gl",
+    georgian: "ka",
+    german: "de",
+    greek: "el",
+    guarani: "gn",
+    gujarati: "gu",
+    haitianCreole: "ht",
+    hausa: "ha",
+    hawaiian: "haw",
+    hebrew: "he",
+    hindi: "hi",
+    hmong: "hmn",
+    hungarian: "hu",
+    icelandic: "is",
+    igbo: "ig",
+    ilocano: "ilo",
+    indonesian: "id",
+    irish: "ga",
+    italian: "it",
+    japanese: "ja",
+    javanese: "jv",
+    kannada: "kn",
+    kazakh: "kk",
+    khmer: "km",
+    kinyarwanda: "rw",
+    konkani: "gom",
+    korean: "ko",
+    krio: "kri",
+    kurdish: "ku",
+    kurdishSorani: "ckb",
+    kyrgyz: "ky",
+    lao: "lo",
+    latin: "la",
+    latvian: "lv",
+    lingala: "ln",
+    lithuanian: "lt",
+    luganda: "lg",
+    luxembourgish: "lb",
+    macedonian: "mk",
+    maithili: "mai",
+    malagasy: "mg",
+    malay: "ms",
+    malayalam: "ml",
+    maltese: "mt",
+    maori: "mi",
+    marathi: "mr",
+    manipuri: "mni-Mtei",
+    mizo: "lus",
+    mongolian: "mn",
+    myanmar: "my",
+    nepali: "ne",
+    norwegian: "no",
+    nyanja: "ny",
+    odia: "or",
+    oromo: "om",
+    pashto: "ps",
+    persian: "fa",
+    polish: "pl",
+    portuguese: "pt",
+    punjabi: "pa",
+    quechua: "qu",
+    romanian: "ro",
+    russian: "ru",
+    samoan: "sm",
+    sanskrit: "sa",
+    scotsGaelic: "gd",
+    northernSotho: "nso",
+    serbian: "sr",
+    sesotho: "st",
+    shona: "sn",
+    sindhi: "sd",
+    sinhala: "si",
+    slovak: "sk",
+    slovenian: "sl",
+    somali: "so",
+    spanish: "es",
+    sundanese: "su",
+    swahili: "sw",
+    swedish: "sv",
+    tagalog: "tl",
+    tajik: "tg",
+    tamil: "ta",
+    tatar: "tt",
+    telugu: "te",
+    thai: "th",
+    tigrinya: "ti",
+    tsonga: "ts",
+    turkish: "tr",
+    turkmen: "tk",
+    twi: "ak",
+    ukrainian: "uk",
+    urdu: "ur",
+    uyghur: "ug",
+    uzbek: "uz",
+    vietnamese: "vi",
+    welsh: "cy",
+    xhosa: "xh",
+    yiddish: "yi",
+    yoruba: "yo",
+    zulu: "zu",
+}
+
 
   const langOptions: LanguageOption[] = Object.entries(langs).map(
     ([id, name]) => ({
@@ -838,50 +870,34 @@ export default function ToolbarPlugin({
   }, [applyStyleText]);
 
   const handleTextTranslibretranslateform = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    const selectedValue = event.target.value;
-    setSelectedLang(selectedValue);
-    activeEditor.update(() => {
-      const selection = $getSelection();
-      if ($isRangeSelection(selection)) {
-        const textContent = selection.getTextContent();
-        console.log(textContent);
-        handleTranslate(textContent, selectedValue);
-      }
-    });
-  };
-
-  const handleTranslate = async (text: string, targetLang: string) => {
-    try {
-      const response = await fetch('http://localhost:5000/api/translate/text', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          text: text,
-          targetLanguage: targetLang,
-        }),
+      event: React.ChangeEvent<HTMLSelectElement>,
+    ) => {
+      const selectedValue = event.target.value as LanguagesCodigoISO639WhitoutAuto;
+      activeEditor.update(() => {
+        const selection = $getSelection();
+        setSelectedLang(selectedValue)
+        if ($isRangeSelection(selection)) {
+          const textContent = selection.getTextContent();
+          console.log(textContent);
+          handleTranslate(textContent, selectedValue);
+        }
       });
+    };
 
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
+  const handleTranslate = async (text: string, targetLang: LanguagesCodigoISO639WhitoutAuto) => {
+    try {
 
-      const data = await response.json();
-
-      console.log(data.data.translated);
-
-      if (data.data.translated) {
+      const result = await JsGoogleTranslateFree.translate({ from:"auto", to: targetLang, text });
+  
+      if (result) {
         activeEditor.update(() => {
           const selection = $getSelection();
           if ($isRangeSelection(selection)) {
-            selection.insertText(data.data.translated);
+            selection.insertText(result);
           }
         });
       }
 
-      const result = await response.json();
-      console.log(result);
     } catch (error) {
       console.error('Fetch error:', error);
     }
@@ -1090,8 +1106,8 @@ export default function ToolbarPlugin({
                   className="toolbar-item"
                   title="Select Language">
                   {langOptions.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.name}
+                    <option key={option.name} value={option.name}>
+                      {option.id}
                     </option>
                   ))}
                 </select>
