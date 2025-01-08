@@ -73,6 +73,7 @@ const toolbarConfig ={
   uppercase:true,
   lowercase:true,
   capitalize:true,
+  selectLang:true
 }
 
 function App({
@@ -93,7 +94,7 @@ function App({
       onUpload={uploadImg}
       onDataSend={uploadImgFile}
       onChangeMode="html"
-      // toolbarConfig={toolbarConfig}
+      toolbarConfig={toolbarConfig}
       dummyMentionsDatas={userList || []}
     />
   );

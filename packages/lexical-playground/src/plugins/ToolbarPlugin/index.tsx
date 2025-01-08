@@ -8,7 +8,6 @@
 
 import type {ToolbarConfig} from '../toolbarTypes';
 import type {LexicalEditor, NodeKey} from 'lexical';
-
 import {
   $createCodeNode,
   $isCodeNode,
@@ -418,6 +417,11 @@ export type ToolbarPluginProps = {
   anchorElem?: HTMLElement;
 };
 
+type LanguageOption = {
+  id: string;
+  name: string;
+};
+
 export default function ToolbarPlugin({
   config,
   handleClick,
@@ -456,6 +460,121 @@ export default function ToolbarPlugin({
   const [isEditable, setIsEditable] = useState(() => editor.isEditable());
   const [rows, setRows] = useState('5');
   const [columns, setColumns] = useState('5');
+  const [selectedLang, setSelectedLang] = useState<string>('auto');
+
+  const langs = {
+    auto: 'Automatic',
+    af: 'Afrikaans',
+    sq: 'Albanian',
+    ar: 'Arabic',
+    hy: 'Armenian',
+    az: 'Azerbaijani',
+    eu: 'Basque',
+    be: 'Belarusian',
+    bn: 'Bengali',
+    bs: 'Bosnian',
+    bg: 'Bulgarian',
+    ca: 'Catalan',
+    ceb: 'Cebuano',
+    ny: 'Chichewa',
+    'zh-cn': 'Chinese Simplified',
+    'zh-tw': 'Chinese Traditional',
+    co: 'Corsican',
+    hr: 'Croatian',
+    cs: 'Czech',
+    da: 'Danish',
+    nl: 'Dutch',
+    en: 'English',
+    eo: 'Esperanto',
+    et: 'Estonian',
+    tl: 'Filipino',
+    fi: 'Finnish',
+    fr: 'French',
+    fy: 'Frisian',
+    gl: 'Galician',
+    ka: 'Georgian',
+    de: 'German',
+    el: 'Greek',
+    gu: 'Gujarati',
+    ht: 'Haitian Creole',
+    ha: 'Hausa',
+    haw: 'Hawaiian',
+    iw: 'Hebrew',
+    hi: 'Hindi',
+    hmn: 'Hmong',
+    hu: 'Hungarian',
+    is: 'Icelandic',
+    ig: 'Igbo',
+    id: 'Indonesian',
+    ga: 'Irish',
+    it: 'Italian',
+    ja: 'Japanese',
+    jw: 'Javanese',
+    kn: 'Kannada',
+    kk: 'Kazakh',
+    km: 'Khmer',
+    ko: 'Korean',
+    ku: 'Kurdish (Kurmanji)',
+    ky: 'Kyrgyz',
+    lo: 'Lao',
+    la: 'Latin',
+    lv: 'Latvian',
+    lt: 'Lithuanian',
+    lb: 'Luxembourgish',
+    mk: 'Macedonian',
+    mg: 'Malagasy',
+    ms: 'Malay',
+    ml: 'Malayalam',
+    mt: 'Maltese',
+    mi: 'Maori',
+    mr: 'Marathi',
+    mn: 'Mongolian',
+    my: 'Myanmar (Burmese)',
+    ne: 'Nepali',
+    no: 'Norwegian',
+    ps: 'Pashto',
+    fa: 'Persian',
+    pl: 'Polish',
+    pt: 'Portuguese',
+    ma: 'Punjabi',
+    ro: 'Romanian',
+    ru: 'Russian',
+    sm: 'Samoan',
+    gd: 'Scots Gaelic',
+    sr: 'Serbian',
+    st: 'Sesotho',
+    sn: 'Shona',
+    sd: 'Sindhi',
+    si: 'Sinhala',
+    sk: 'Slovak',
+    sl: 'Slovenian',
+    so: 'Somali',
+    es: 'Spanish',
+    su: 'Sudanese',
+    sw: 'Swahili',
+    sv: 'Swedish',
+    tg: 'Tajik',
+    ta: 'Tamil',
+    te: 'Telugu',
+    th: 'Thai',
+    tr: 'Turkish',
+    uk: 'Ukrainian',
+    ur: 'Urdu',
+    uz: 'Uzbek',
+    vi: 'Vietnamese',
+    cy: 'Welsh',
+    xh: 'Xhosa',
+    yi: 'Yiddish',
+    yo: 'Yoruba',
+    zu: 'Zulu',
+  };
+
+  const langOptions: LanguageOption[] = Object.entries(langs).map(
+    ([id, name]) => ({
+      id,
+      name,
+    }),
+  );
 
   const editorContext = useEditorComposerContext();
 
@@ -718,10 +837,58 @@ export default function ToolbarPlugin({
     });
   }, [applyStyleText]);
 
+  const handleTextTranslibretranslateform = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const selectedValue = event.target.value;
+    setSelectedLang(selectedValue);
+    activeEditor.update(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        const textContent = selection.getTextContent();
+        console.log(textContent);
+        handleTranslate(textContent, selectedValue);
+      }
+    });
+  };
+
+  const handleTranslate = async (text: string, targetLang: string) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/translate/text', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          text: text,
+          targetLanguage: targetLang,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      console.log(data.data.translated);
+
+      if (data.data.translated) {
+        activeEditor.update(() => {
+          const selection = $getSelection();
+          if ($isRangeSelection(selection)) {
+            selection.insertText(data.data.translated);
+          }
+        });
+      }
+
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
+  };
+
   return (
     <div className="toolbar">
-
-      
       {floatingText ? (
         <>
           {blockType === 'code' ? (
@@ -915,6 +1082,21 @@ export default function ToolbarPlugin({
                   <i className="format ltr" />
                 </button>
               )}
+
+              {config.selectLang && (
+                <select
+                  value={selectedLang}
+                  onChange={handleTextTranslibretranslateform}
+                  className="toolbar-item"
+                  title="Select Language">
+                  {langOptions.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+
               {config.textColorPicker && (
                 <ColorPicker
                   bit={true}

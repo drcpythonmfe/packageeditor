@@ -38,4 +38,5 @@ export type ToolbarConfig = {
   capitalize?:boolean;
   RTL?:boolean;
   LTR?:boolean;
+  selectLang?:boolean;
 };

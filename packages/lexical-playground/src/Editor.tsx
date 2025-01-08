@@ -141,6 +141,7 @@ const defaultToolbarConfig: ToolbarConfig = {
   capitalize:true,
   RTL:true,
   LTR:true,
+  selectLang:true
 };
 
 export default function Editor({
