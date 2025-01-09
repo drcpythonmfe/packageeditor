@@ -21,7 +21,6 @@
     "publish:npm": "rm -rf dist && mkdir dist &&  babel src -d dist --copy-files"
   },
   "dependencies": {
-    "@kreisler/js-google-translate-free": "^4.0.2",
     "@lexical/clipboard": "0.8.1",
     "@lexical/code": "0.8.1",
     "@lexical/file": "0.8.1",

@@ -8,7 +8,6 @@
 
 import type {ToolbarConfig} from '../toolbarTypes';
 import type {LexicalEditor, NodeKey} from 'lexical';
-import JsGoogleTranslateFree from '@kreisler/js-google-translate-free';
 import {
   $createCodeNode,
   $isCodeNode,
@@ -85,7 +84,8 @@ import {InsertImageDialog} from '../ImagesPlugin';
 import {InsertPollDialog} from '../PollPlugin';
 import {InsertTableDialog} from '../TablePlugin';
 import {INSERT_TABLE_COMMAND} from 'packages/lexical-table/src';
-import {LanguagesCodigoISO639WhitoutAuto} from './filetype';
+import { example, translateText } from './translator';
+
 
 const SvgIcon: React.FC = () => {
   const bodyElement = document.querySelector('body');
@@ -465,9 +465,10 @@ export default function ToolbarPlugin({
   const [selectedLang, setSelectedLang] = useState<string>('');
 
   const langs = {
-    auto: 'Automatic',
+    auto: 'Detect Language',
     af: 'Afrikaans',
     sq: 'Albanian',
+    am: 'Amharic',
     ar: 'Arabic',
     hy: 'Armenian',
     az: 'Azerbaijani',
@@ -479,8 +480,7 @@ export default function ToolbarPlugin({
     ca: 'Catalan',
     ceb: 'Cebuano',
     ny: 'Chichewa',
-    'zh-cn': 'Chinese Simplified',
-    'zh-tw': 'Chinese Traditional',
+    zh: 'Chinese',
     co: 'Corsican',
     hr: 'Croatian',
     cs: 'Czech',
@@ -516,7 +516,7 @@ export default function ToolbarPlugin({
     kk: 'Kazakh',
     km: 'Khmer',
     ko: 'Korean',
-    ku: 'Kurdish (Kurmanji)',
+    ku: 'Kurdish',
     ky: 'Kyrgyz',
     lo: 'Lao',
     la: 'Latin',
@@ -531,14 +531,14 @@ export default function ToolbarPlugin({
     mi: 'Maori',
     mr: 'Marathi',
     mn: 'Mongolian',
-    my: 'Myanmar (Burmese)',
+    my: 'Myanmar',
     ne: 'Nepali',
     no: 'Norwegian',
     ps: 'Pashto',
     fa: 'Persian',
     pl: 'Polish',
     pt: 'Portuguese',
-    ma: 'Punjabi',
+    pa: 'Punjabi',
     ro: 'Romanian',
     ru: 'Russian',
     sm: 'Samoan',
@@ -552,7 +552,7 @@ export default function ToolbarPlugin({
     sl: 'Slovenian',
     so: 'Somali',
     es: 'Spanish',
-    su: 'Sudanese',
+    su: 'Sundanese',
     sw: 'Swahili',
     sv: 'Swedish',
     tg: 'Tajik',
@@ -568,7 +568,7 @@ export default function ToolbarPlugin({
     xh: 'Xhosa',
     yi: 'Yiddish',
     yo: 'Yoruba',
-    zu: 'Zulu',
+    zu: 'Zulu'
   };
 
   const langOptions: LanguageOption[] = Object.entries(langs).map(
@@ -848,7 +848,6 @@ export default function ToolbarPlugin({
       setSelectedLang(selectedValue);
       if ($isRangeSelection(selection)) {
         const textContent = selection.getTextContent();
-        console.log(textContent);
         handleTranslate(textContent, selectedValue);
       }
     });
@@ -856,28 +855,25 @@ export default function ToolbarPlugin({
 
   const handleTranslate = async (text: string, targetLang: string) => {
     try {
-      const response = await fetch('https://translation-w0dz.onrender.com/api/translate/text', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text: text,
-          targetLanguage: targetLang,
-        }),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+
+      if (text.length > 5000) {
+        return alert('Text is too long');
       }
   
-      const data = await response.json();
-  
-      if (data?.data?.translated) {
+      const result = await translateText(text, targetLang, "auto");
+
+      if (result?.translatedText) {
         activeEditor.update(() => {
           const selection = $getSelection();
           if ($isRangeSelection(selection)) {
-            selection.insertText(data.data.translated);
+            selection.insertText(result.translatedText);
+          }
+        });
+      }else{
+        activeEditor.update(() => {
+          const selection = $getSelection();
+          if ($isRangeSelection(selection)) {
+            selection.insertText(text);
           }
         });
       }
@@ -886,7 +882,6 @@ export default function ToolbarPlugin({
     }
   };
 
-  
   return (
     <div className="toolbar">
       {floatingText ? (
