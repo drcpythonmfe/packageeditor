@@ -8,7 +8,7 @@
 
 import type {ToolbarConfig} from '../toolbarTypes';
 import type {LexicalEditor, NodeKey} from 'lexical';
-
+import JsGoogleTranslateFree from "@kreisler/js-google-translate-free";
 import {
   $createCodeNode,
   $isCodeNode,
@@ -85,6 +85,7 @@ import {InsertImageDialog} from '../ImagesPlugin';
 import {InsertPollDialog} from '../PollPlugin';
 import {InsertTableDialog} from '../TablePlugin';
 import {INSERT_TABLE_COMMAND} from 'packages/lexical-table/src';
+import { LanguagesCodigoISO639WhitoutAuto } from './filetype';
 
 const SvgIcon: React.FC = () => {
   const bodyElement = document.querySelector('body');
@@ -418,6 +419,11 @@ export type ToolbarPluginProps = {
   anchorElem?: HTMLElement;
 };
 
+type LanguageOption = {
+  id: string;
+  name: string;
+};
+
 export default function ToolbarPlugin({
   config,
   handleClick,
@@ -456,6 +462,152 @@ export default function ToolbarPlugin({
   const [isEditable, setIsEditable] = useState(() => editor.isEditable());
   const [rows, setRows] = useState('5');
   const [columns, setColumns] = useState('5');
+  const [selectedLang, setSelectedLang] = useState<string>('english');
+
+  const langs = {
+    afrikaans: "af",
+    albanian: "sq",
+    amharic: "am",
+    arabic: "ar",
+    armenian: "hy",
+    assamese: "as",
+    aymara: "ay",
+    azerbaijani: "az",
+    bambara: "bm",
+    basque: "eu",
+    belarusian: "be",
+    bengali: "bn",
+    bhojpuri: "bho",
+    bosnian: "bs",
+    bulgarian: "bg",
+    catalan: "ca",
+    cebuano: "ceb",
+    chineseSimplified: "zh-CN",
+    chineseTraditional: "zh-TW",
+    corsican: "co",
+    croatian: "hr",
+    czech: "cs",
+    danish: "da",
+    divehi: "dv",
+    dogri: "doi",
+    dutch: "nl",
+    english: "en",
+    esperanto: "eo",
+    estonian: "et",
+    ewe: "ee",
+    filipino: "fil",
+    finnish: "fi",
+    french: "fr",
+    frisian: "fy",
+    galician: "gl",
+    georgian: "ka",
+    german: "de",
+    greek: "el",
+    guarani: "gn",
+    gujarati: "gu",
+    haitianCreole: "ht",
+    hausa: "ha",
+    hawaiian: "haw",
+    hebrew: "he",
+    hindi: "hi",
+    hmong: "hmn",
+    hungarian: "hu",
+    icelandic: "is",
+    igbo: "ig",
+    ilocano: "ilo",
+    indonesian: "id",
+    irish: "ga",
+    italian: "it",
+    japanese: "ja",
+    javanese: "jv",
+    kannada: "kn",
+    kazakh: "kk",
+    khmer: "km",
+    kinyarwanda: "rw",
+    konkani: "gom",
+    korean: "ko",
+    krio: "kri",
+    kurdish: "ku",
+    kurdishSorani: "ckb",
+    kyrgyz: "ky",
+    lao: "lo",
+    latin: "la",
+    latvian: "lv",
+    lingala: "ln",
+    lithuanian: "lt",
+    luganda: "lg",
+    luxembourgish: "lb",
+    macedonian: "mk",
+    maithili: "mai",
+    malagasy: "mg",
+    malay: "ms",
+    malayalam: "ml",
+    maltese: "mt",
+    maori: "mi",
+    marathi: "mr",
+    manipuri: "mni-Mtei",
+    mizo: "lus",
+    mongolian: "mn",
+    myanmar: "my",
+    nepali: "ne",
+    norwegian: "no",
+    nyanja: "ny",
+    odia: "or",
+    oromo: "om",
+    pashto: "ps",
+    persian: "fa",
+    polish: "pl",
+    portuguese: "pt",
+    punjabi: "pa",
+    quechua: "qu",
+    romanian: "ro",
+    russian: "ru",
+    samoan: "sm",
+    sanskrit: "sa",
+    scotsGaelic: "gd",
+    northernSotho: "nso",
+    serbian: "sr",
+    sesotho: "st",
+    shona: "sn",
+    sindhi: "sd",
+    sinhala: "si",
+    slovak: "sk",
+    slovenian: "sl",
+    somali: "so",
+    spanish: "es",
+    sundanese: "su",
+    swahili: "sw",
+    swedish: "sv",
+    tagalog: "tl",
+    tajik: "tg",
+    tamil: "ta",
+    tatar: "tt",
+    telugu: "te",
+    thai: "th",
+    tigrinya: "ti",
+    tsonga: "ts",
+    turkish: "tr",
+    turkmen: "tk",
+    twi: "ak",
+    ukrainian: "uk",
+    urdu: "ur",
+    uyghur: "ug",
+    uzbek: "uz",
+    vietnamese: "vi",
+    welsh: "cy",
+    xhosa: "xh",
+    yiddish: "yi",
+    yoruba: "yo",
+    zulu: "zu",
+}
+
+
+  const langOptions: LanguageOption[] = Object.entries(langs).map(
+    ([id, name]) => ({
+      id,
+      name,
+    }),
+  );
 
   const editorContext = useEditorComposerContext();
 
@@ -718,10 +870,42 @@ export default function ToolbarPlugin({
     });
   }, [applyStyleText]);
 
+  const handleTextTranslibretranslateform = (
+      event: React.ChangeEvent<HTMLSelectElement>,
+    ) => {
+      const selectedValue = event.target.value as LanguagesCodigoISO639WhitoutAuto;
+      activeEditor.update(() => {
+        const selection = $getSelection();
+        setSelectedLang(selectedValue)
+        if ($isRangeSelection(selection)) {
+          const textContent = selection.getTextContent();
+          console.log(textContent);
+          handleTranslate(textContent, selectedValue);
+        }
+      });
+    };
+
+  const handleTranslate = async (text: string, targetLang: LanguagesCodigoISO639WhitoutAuto) => {
+    try {
+
+      const result = await JsGoogleTranslateFree.translate({ from:"auto", to: targetLang, text });
+  
+      if (result) {
+        activeEditor.update(() => {
+          const selection = $getSelection();
+          if ($isRangeSelection(selection)) {
+            selection.insertText(result);
+          }
+        });
+      }
+
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
+  };
+
   return (
     <div className="toolbar">
-
-      
       {floatingText ? (
         <>
           {blockType === 'code' ? (
@@ -915,6 +1099,21 @@ export default function ToolbarPlugin({
                   <i className="format ltr" />
                 </button>
               )}
+
+              {config.selectLang && (
+                <select
+                  value={selectedLang}
+                  onChange={handleTextTranslibretranslateform}
+                  className="toolbar-item"
+                  title="Select Language">
+                  {langOptions.map((option) => (
+                    <option key={option.name} value={option.name}>
+                      {option.id}
+                    </option>
+                  ))}
+                </select>
+              )}
+
               {config.textColorPicker && (
                 <ColorPicker
                   bit={true}

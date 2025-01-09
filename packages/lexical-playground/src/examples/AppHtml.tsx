@@ -73,6 +73,7 @@ const toolbarConfig ={
   uppercase:true,
   lowercase:true,
   capitalize:true,
+  selectLang:true
 }
 
 function App({
