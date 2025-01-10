@@ -105,6 +105,11 @@ const LANGUAGES = {
   zu: 'Zulu',
 };
 
+type TranslationResult = {
+  translatedText: string;
+  detectedSourceLang?: string;
+};
+
 async function translateText(
   text: string,
   targetLang: string,
@@ -166,4 +171,42 @@ async function example() {
   }
 }
 
-export {LANGUAGES, translateText, example};
+
+async function translateTexts( text: string,
+  targetLang: string,
+  sourceLang: string = 'auto'
+) {
+  const url = 'http://localhost:5000/translate';
+  
+  const formData = new FormData();
+  formData.append('q', text);
+  formData.append('source', 'auto');
+  formData.append('target', targetLang);
+  formData.append('format', 'text');
+  formData.append('alternatives', '1');
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': '*/*',
+        'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
+        'Connection': 'keep-alive'
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+
+    return result;
+    console.log(result);
+  } catch (error) {
+    console.error('Translation request failed:', error);
+  }
+}
+
+export {LANGUAGES, translateText, example ,translateTexts ,TranslationResult};

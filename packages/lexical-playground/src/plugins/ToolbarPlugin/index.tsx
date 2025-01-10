@@ -84,7 +84,7 @@ import {InsertImageDialog} from '../ImagesPlugin';
 import {InsertPollDialog} from '../PollPlugin';
 import {InsertTableDialog} from '../TablePlugin';
 import {INSERT_TABLE_COMMAND} from 'packages/lexical-table/src';
-import { example, translateText } from './translator';
+import { example, translateText, translateTexts, TranslationResult } from './translator';
 
 
 const SvgIcon: React.FC = () => {
@@ -464,113 +464,60 @@ export default function ToolbarPlugin({
   const [columns, setColumns] = useState('5');
   const [selectedLang, setSelectedLang] = useState<string>('');
 
-  const langs = {
+  
+
+  const langs: { [key: string]: string } = {
     auto: 'Detect Language',
-    af: 'Afrikaans',
-    sq: 'Albanian',
-    am: 'Amharic',
     ar: 'Arabic',
-    hy: 'Armenian',
     az: 'Azerbaijani',
-    eu: 'Basque',
-    be: 'Belarusian',
-    bn: 'Bengali',
-    bs: 'Bosnian',
     bg: 'Bulgarian',
+    bn: 'Bengali',
     ca: 'Catalan',
-    ceb: 'Cebuano',
-    ny: 'Chichewa',
-    zh: 'Chinese',
-    co: 'Corsican',
-    hr: 'Croatian',
     cs: 'Czech',
     da: 'Danish',
-    nl: 'Dutch',
-    en: 'English',
-    eo: 'Esperanto',
-    et: 'Estonian',
-    tl: 'Filipino',
-    fi: 'Finnish',
-    fr: 'French',
-    fy: 'Frisian',
-    gl: 'Galician',
-    ka: 'Georgian',
     de: 'German',
     el: 'Greek',
-    gu: 'Gujarati',
-    ht: 'Haitian Creole',
-    ha: 'Hausa',
-    haw: 'Hawaiian',
-    iw: 'Hebrew',
-    hi: 'Hindi',
-    hmn: 'Hmong',
-    hu: 'Hungarian',
-    is: 'Icelandic',
-    ig: 'Igbo',
-    id: 'Indonesian',
+    en: 'English',
+    eo: 'Esperanto',
+    es: 'Spanish',
+    et: 'Estonian',
+    eu: 'Basque',
+    fa: 'Persian',
+    fi: 'Finnish',
+    fr: 'French',
     ga: 'Irish',
+    gl: 'Galician',
+    he: 'Hebrew',
+    hi: 'Hindi',
+    hu: 'Hungarian',
+    id: 'Indonesian',
     it: 'Italian',
     ja: 'Japanese',
-    jw: 'Javanese',
-    kn: 'Kannada',
-    kk: 'Kazakh',
-    km: 'Khmer',
     ko: 'Korean',
-    ku: 'Kurdish',
-    ky: 'Kyrgyz',
-    lo: 'Lao',
-    la: 'Latin',
-    lv: 'Latvian',
     lt: 'Lithuanian',
-    lb: 'Luxembourgish',
-    mk: 'Macedonian',
-    mg: 'Malagasy',
+    lv: 'Latvian',
     ms: 'Malay',
-    ml: 'Malayalam',
-    mt: 'Maltese',
-    mi: 'Maori',
-    mr: 'Marathi',
-    mn: 'Mongolian',
-    my: 'Myanmar',
-    ne: 'Nepali',
-    no: 'Norwegian',
-    ps: 'Pashto',
-    fa: 'Persian',
+    nb: 'Norwegian Bokmål',
+    nl: 'Dutch',
     pl: 'Polish',
     pt: 'Portuguese',
-    pa: 'Punjabi',
     ro: 'Romanian',
     ru: 'Russian',
-    sm: 'Samoan',
-    gd: 'Scots Gaelic',
-    sr: 'Serbian',
-    st: 'Sesotho',
-    sn: 'Shona',
-    sd: 'Sindhi',
-    si: 'Sinhala',
     sk: 'Slovak',
     sl: 'Slovenian',
-    so: 'Somali',
-    es: 'Spanish',
-    su: 'Sundanese',
-    sw: 'Swahili',
+    sq: 'Albanian',
     sv: 'Swedish',
-    tg: 'Tajik',
-    ta: 'Tamil',
-    te: 'Telugu',
     th: 'Thai',
+    tl: 'Tagalog',
     tr: 'Turkish',
     uk: 'Ukrainian',
     ur: 'Urdu',
-    uz: 'Uzbek',
-    vi: 'Vietnamese',
-    cy: 'Welsh',
-    xh: 'Xhosa',
-    yi: 'Yiddish',
-    yo: 'Yoruba',
-    zu: 'Zulu'
+    zh: 'Chinese (Simplified)',
+    zt: 'Chinese (Traditional)',
+    af: 'Afrikaans',
+    am: 'Amharic',
   };
-
+  
   const langOptions: LanguageOption[] = Object.entries(langs).map(
     ([id, name]) => ({
       id,
@@ -854,15 +801,15 @@ export default function ToolbarPlugin({
   };
 
   const handleTranslate = async (text: string, targetLang: string) => {
-    try {
-
-      if (text.length > 5000) {
-        return alert('Text is too long');
-      }
+      try {
   
-      const result = await translateText(text, targetLang, "auto");
-
-      if (result?.translatedText) {
+        if (text.length > 5000) {
+          return alert('Text is too long');
+        }
+     // const result = await translateText(text, targetLang, "auto");
+           
+        const result = await translateTexts(text, targetLang, "auto");
+        if (result?.translatedText) {
         activeEditor.update(() => {
           const selection = $getSelection();
           if ($isRangeSelection(selection)) {
