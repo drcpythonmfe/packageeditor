@@ -412,6 +412,10 @@ function FontDropDown({
   );
 }
 
+
+
+
+
 export type ToolbarPluginProps = {
   config: ToolbarConfig;
   handleClick?: ((data: any) => void | undefined | any) | undefined;
@@ -884,6 +888,21 @@ export default function ToolbarPlugin({
     }
   };
 
+
+  const handleAIform = () =>{
+ 
+
+
+    activeEditor.update(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        const textContent = selection.getTextContent();
+        console.log(textContent)
+      }
+    });
+
+  }
+
   return (
     <div className="toolbar">
       {floatingText ? (
@@ -1080,7 +1099,16 @@ export default function ToolbarPlugin({
                 </button>
               )}
 
-              {config.selectLang && (
+                <button
+                  onClick={handleAIform}
+                  className="toolbar-item"
+                  title="Left to Right"
+                  aria-label="Switch text direction to left to right">
+                  AI
+                </button>
+              
+
+              {/* {config.selectLang && (
                 <select
                   value={selectedLang}
                   onChange={handleTextTranslibretranslateform}
@@ -1092,7 +1120,7 @@ export default function ToolbarPlugin({
                     </option>
                   ))}
                 </select>
-              )}
+              )} */}
 
               {config.textColorPicker && (
                 <ColorPicker
