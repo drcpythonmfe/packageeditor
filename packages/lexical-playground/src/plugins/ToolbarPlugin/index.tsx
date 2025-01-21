@@ -1124,7 +1124,7 @@ export default function ToolbarPlugin({
                 <button
                   onClick={handleAIform}
                   className="toolbar-item"
-                  title="Left to Right"
+                  title="AI"
                   aria-label="Switch text direction to left to right">
                   AI
                 </button>
