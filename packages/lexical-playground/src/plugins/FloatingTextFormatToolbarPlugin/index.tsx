@@ -44,7 +44,8 @@ function TextFormatFloatingToolbar({
   isSuperscript,
   config,
   handleClick,
-  isRichText
+  isRichText,
+  handleAIData
 }: {
   editor: LexicalEditor;
   anchorElem: HTMLElement;
@@ -59,6 +60,7 @@ function TextFormatFloatingToolbar({
   config: ToolbarConfig;
   isRichText?: boolean;
   handleClick?: ((data: any) => void | undefined | any) | undefined;
+  handleAIData?: (text: string) => Promise<any>;
 }): JSX.Element {
   const popupCharStylesEditorRef = useRef<HTMLDivElement | null>(null);
 
@@ -152,7 +154,6 @@ function TextFormatFloatingToolbar({
           updateTextFormatFloatingToolbar();
         });
       }),
-
       editor.registerCommand(
         SELECTION_CHANGE_COMMAND,
         () => {
@@ -167,7 +168,7 @@ function TextFormatFloatingToolbar({
   return (
     <div>
  <div ref={popupCharStylesEditorRef}  id="floating-text-format-popups" className="floating-text-format-popup">
-            {isRichText && <ToolbarPlugin  config={config} handleClick={handleClick} floatingText={true} />}
+            {isRichText && <ToolbarPlugin  handleAIData={handleAIData} config={config} handleClick={handleClick} floatingText={true} />}
 
       {/* {config.biu && (
         <>
@@ -263,7 +264,8 @@ function useFloatingTextFormatToolbar(
   anchorElem: HTMLElement,
   config: ToolbarConfig,
   isRichText?: boolean,
-  handleClick?: (data: any) => any | void
+  handleClick?: (data: any) => any | void,
+  handleAIData?: (text: string) => Promise<any>
 ): JSX.Element | null {
   const [isText, setIsText] = useState(false);
   const [isLink, setIsLink] = useState(false);
@@ -353,6 +355,8 @@ function useFloatingTextFormatToolbar(
     return null;
   }
 
+
+
   return createPortal(
     <TextFormatFloatingToolbar
       config={config}
@@ -368,6 +372,7 @@ function useFloatingTextFormatToolbar(
       isCode={isCode}
       handleClick={handleClick}
       isRichText={isRichText}
+      handleAIData={handleAIData}
     />,
     anchorElem,
   );
@@ -377,13 +382,15 @@ export default function TextFormatFloatingToolbarPlugin({
   anchorElem = document.body,
   config,
   handleClick,
-  isRichText
+  isRichText,
+  handleAIData
 }: {
   config: ToolbarConfig;
   anchorElem?: HTMLElement;
   isRichText?: boolean;
   handleClick?: ((data: any) => any | void | undefined) | undefined;
+  handleAIData?: (text: string) => Promise<any>;  
 }): JSX.Element | null {
   const [editor] = useLexicalComposerContext();
-  return useFloatingTextFormatToolbar(editor, anchorElem, config , isRichText ,handleClick as any);
+  return useFloatingTextFormatToolbar(editor, anchorElem, config, isRichText, handleClick, handleAIData );
 }

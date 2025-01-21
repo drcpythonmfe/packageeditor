@@ -98,6 +98,7 @@ export type EditorProps = {
   onChangeMode?: 'html' | 'json';
   toolbarConfig?: ToolbarConfig;
   onUpload?: OnImageUpload;
+  handleAIData?: (data: string) => Promise<any>;
   onDataSend?: (img: File) => Promise<{url: string; id: number}> ;
   rootClassName?: string;
   containerClassName?: string;
@@ -141,7 +142,8 @@ const defaultToolbarConfig: ToolbarConfig = {
   capitalize:true,
   RTL:true,
   LTR:true,
-  selectLang:true
+  selectLang:true ,
+  ai:true
 };
 
 export default function Editor({
@@ -161,6 +163,7 @@ export default function Editor({
   rootClassName,
   containerClassName,
   dummyMentionsDatas,
+  handleAIData,
 }: EditorProps): JSX.Element {
   const {historyState} = useSharedHistoryContext();
   const text = isCollab
@@ -253,6 +256,8 @@ export default function Editor({
       console.error('No file provided.');
     }
   };
+
+
 
   return (
     <div className={joinClasses('editor-shell', rootClassName)}>
@@ -349,6 +354,7 @@ export default function Editor({
                   config={normToolbarConfig}
                   isRichText={isRichText}
                   handleClick={handleFileUpload}
+                  handleAIData={handleAIData}
                 />
               </>
             )}
@@ -383,6 +389,7 @@ export default function Editor({
           handleClick={handleFileUpload}
           floatingText={false}
           anchorElem={floatingAnchorElem}
+          handleAIData={handleAIData}
         />
       )}
       {showTreeView && <TreeViewPlugin />}

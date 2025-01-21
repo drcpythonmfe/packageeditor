@@ -39,4 +39,5 @@ export type ToolbarConfig = {
   RTL?:boolean;
   LTR?:boolean;
   selectLang?:boolean;
+  ai?:boolean;
 };

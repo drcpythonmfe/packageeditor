@@ -84,8 +84,12 @@ import {InsertImageDialog} from '../ImagesPlugin';
 import {InsertPollDialog} from '../PollPlugin';
 import {InsertTableDialog} from '../TablePlugin';
 import {INSERT_TABLE_COMMAND} from 'packages/lexical-table/src';
-import { example, translateText, translateTexts, TranslationResult } from './translator';
-
+import {
+  example,
+  translateText,
+  translateTexts,
+  TranslationResult,
+} from './translator';
 
 const SvgIcon: React.FC = () => {
   const bodyElement = document.querySelector('body');
@@ -412,15 +416,12 @@ function FontDropDown({
   );
 }
 
-
-
-
-
 export type ToolbarPluginProps = {
   config: ToolbarConfig;
   handleClick?: ((data: any) => void | undefined | any) | undefined;
   floatingText?: boolean;
   anchorElem?: HTMLElement;
+  handleAIData?: (text: string) => Promise<any>;
 };
 
 type LanguageOption = {
@@ -433,6 +434,7 @@ export default function ToolbarPlugin({
   handleClick,
   anchorElem = document.body,
   floatingText,
+  handleAIData,
 }: ToolbarPluginProps): JSX.Element {
   const normFontFamilyOption = Array.isArray(config.fontFamilyOptions)
     ? config.fontFamilyOptions
@@ -468,9 +470,7 @@ export default function ToolbarPlugin({
   const [columns, setColumns] = useState('5');
   const [selectedLang, setSelectedLang] = useState<string>('');
 
-  
-
-  const langs: { [key: string]: string } = {
+  const langs: {[key: string]: string} = {
     auto: 'Detect Language',
     af: 'Afrikaans',
     sq: 'Albanian',
@@ -576,7 +576,7 @@ export default function ToolbarPlugin({
     yo: 'Yoruba',
     zu: 'Zulu',
   };
-  
+
   const langOptions: LanguageOption[] = Object.entries(langs).map(
     ([id, name]) => ({
       id,
@@ -860,22 +860,24 @@ export default function ToolbarPlugin({
   };
 
   const handleTranslate = async (text: string, targetLang: string) => {
-      try {
-  
-        if (text.length > 5000) {
-          return alert('Text is too long');
-        }
-     const result = await translateText(text, targetLang, "auto");
-           
-        // const result = await translateTexts(text, targetLang, "auto");
-        if (result?.translatedText) {
+    try {
+      if (text.length > 5000) {
+        return alert('Text is too long');
+      }
+      const result = await translateText(text, targetLang, 'auto');
+
+      // const result = await translateTexts(text, targetLang, 'auto')
+
+
+      // const result = await translateTexts(text, targetLang, "auto");
+      if (result) {
         activeEditor.update(() => {
           const selection = $getSelection();
           if ($isRangeSelection(selection)) {
             selection.insertText(result.translatedText);
           }
         });
-      }else{
+      } else {
         activeEditor.update(() => {
           const selection = $getSelection();
           if ($isRangeSelection(selection)) {
@@ -883,25 +885,44 @@ export default function ToolbarPlugin({
           }
         });
       }
+
     } catch (error) {
       console.error('Error during translation:', error);
     }
   };
 
-
-  const handleAIform = () =>{
- 
-
-
+  const handleAIform = () => {
     activeEditor.update(() => {
       const selection = $getSelection();
       if ($isRangeSelection(selection)) {
         const textContent = selection.getTextContent();
-        console.log(textContent)
+        {
+          handleAIData &&
+            handleAIData(textContent)
+              .then((result) => {
+                if (result) {
+                  activeEditor.update(() => {
+                    const selection = $getSelection();
+                    if ($isRangeSelection(selection)) {
+                      selection.insertText(result);
+                    }
+                  });
+                } else {
+                  activeEditor.update(() => {
+                    const selection = $getSelection();
+                    if ($isRangeSelection(selection)) {
+                      selection.insertText(textContent);
+                    }
+                  });
+                }
+              })
+              .catch((error) => {
+                console.error('AI processing failed:', error);
+              });
+        }
       }
     });
-
-  }
+  };
 
   return (
     <div className="toolbar">
@@ -1099,6 +1120,7 @@ export default function ToolbarPlugin({
                 </button>
               )}
 
+              {config.ai && (
                 <button
                   onClick={handleAIform}
                   className="toolbar-item"
@@ -1106,8 +1128,7 @@ export default function ToolbarPlugin({
                   aria-label="Switch text direction to left to right">
                   AI
                 </button>
-              
-
+              )}
               {/* {config.selectLang && (
                 <select
                   value={selectedLang}

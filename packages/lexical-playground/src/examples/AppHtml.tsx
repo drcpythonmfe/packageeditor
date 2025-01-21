@@ -38,6 +38,10 @@ const uploadImgFile = async (file: File) => {
   return data
 };
 
+const handleAIData = async (data: string): Promise<any> => {
+  await delay(500);  // api call
+  return "AI Data";
+};
 
 const toolbarConfig ={
   align: true,
@@ -73,7 +77,8 @@ const toolbarConfig ={
   uppercase:true,
   lowercase:true,
   capitalize:true,
-  selectLang:true
+  selectLang:true,
+  ai:true  // handleAIData
 }
 
 function App({
@@ -94,7 +99,8 @@ function App({
       onUpload={uploadImg}
       onDataSend={uploadImgFile}
       onChangeMode="html"
-      // toolbarConfig={toolbarConfig}
+      handleAIData={handleAIData}
+      toolbarConfig={toolbarConfig}
       dummyMentionsDatas={userList || []}
     />
   );
