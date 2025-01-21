@@ -52,6 +52,10 @@ const onDataSend = async (file: File) => {
   
 };
 
+const handleAIData = async (data: string): Promise<any> => {
+  await delay(500);  // api call
+  return "AI Data";
+};
 
 
 function App({
@@ -69,7 +73,7 @@ function App({
     setJson(editorState.toJSON());
   };
 
-  return <Editor isRichText={true} onChange={handleOnChange} onDataSend={onDataSend} 
+  return <Editor isRichText={true}  handleAIData={handleAIData} onChange={handleOnChange} onDataSend={onDataSend} 
   dummyMentionsDatas={userList || []} onUpload={uploadImg} />;
 }
 
