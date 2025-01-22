@@ -73,7 +73,7 @@ const PlaygroundNodes: Array<Klass<LexicalNode>> = [
   VideoNode,
   PdfNode,
   OfficeNode,
-  ExcalidrawNode
+  // ExcalidrawNode
 ];
 
 export default PlaygroundNodes;
