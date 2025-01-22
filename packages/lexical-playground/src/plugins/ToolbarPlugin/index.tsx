@@ -868,7 +868,6 @@ export default function ToolbarPlugin({
 
       // const result = await translateTexts(text, targetLang, 'auto')
 
-
       // const result = await translateTexts(text, targetLang, "auto");
       if (result) {
         activeEditor.update(() => {
@@ -885,7 +884,6 @@ export default function ToolbarPlugin({
           }
         });
       }
-
     } catch (error) {
       console.error('Error during translation:', error);
     }
@@ -1129,7 +1127,7 @@ export default function ToolbarPlugin({
                   AI
                 </button>
               )}
-              {/* {config.selectLang && (
+              {config.selectLang && (
                 <select
                   value={selectedLang}
                   onChange={handleTextTranslibretranslateform}
@@ -1141,7 +1139,7 @@ export default function ToolbarPlugin({
                     </option>
                   ))}
                 </select>
-              )} */}
+              )}
 
               {config.textColorPicker && (
                 <ColorPicker
@@ -1685,17 +1683,6 @@ export default function ToolbarPlugin({
                   // buttonLabel="Insert"
                   buttonAriaLabel="Insert specialized editor node"
                   buttonIconClassName="icon plus">
-                  {/* <DropDownItem
-                onClick={() => {
-                  activeEditor.dispatchCommand(
-                    INSERT_HORIZONTAL_RULE_COMMAND,
-                    undefined,
-                  );
-                }}
-                className="item">
-                <i className="icon horizontal-rule" />
-                <span className="text">Horizontal Rule</span>
-              </DropDownItem> */}
                   {handleClick && (
                     <>
                       <DropDownItem
@@ -1715,77 +1702,124 @@ export default function ToolbarPlugin({
                     </>
                   )}
 
-                  {/* 
-                  <DropDownItem
-                    onClick={() => {
-                      showModal('Insert Table', (onClose) => (
-                        <InsertTableDialog
-                          activeEditor={activeEditor}
-                          onClose={onClose}
-                        />
-                      ));
-                    }}
-                    className="item">
-                    <i className="icon table" />
-                    <span className="text">Table</span>
-                  </DropDownItem> */}
+                  {config?.Table && (
+                    <>
+                      <DropDownItem
+                        onClick={() => {
+                          showModal('Insert Table', (onClose) => (
+                            <InsertTableDialog
+                              activeEditor={activeEditor}
+                              onClose={onClose}
+                            />
+                          ));
+                        }}
+                        className="item">
+                        <i className="icon table" />
+                        <span className="text">Table</span>
+                      </DropDownItem>
+                    </>
+                  )}
 
-                  {/* <DropDownItem
-                onClick={() => {
-                  showModal('Insert Poll', (onClose) => (
-                    <InsertPollDialog
-                      activeEditor={activeEditor}
-                      onClose={onClose}
-                    />
-                  ));
-                }}
-                className="item">
-                <i className="icon poll" />
-                <span className="text">Poll</span>
-              </DropDownItem> */}
-                  {/* <DropDownItem
-                onClick={() => {
-                  editor.update(() => {
-                    const root = $getRoot();
-                    const stickyNode = $createStickyNode(0, 0);
-                    root.append(stickyNode);
-                  });
-                }}
-                className="item">
-                <i className="icon sticky" />
-                <span className="text">Sticky Note</span>
-              </DropDownItem>
-              <DropDownItem
-                onClick={() => {
-                  editor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, undefined);
-                }}
-                className="item">
-                <i className="icon caret-right" />
-                <span className="text">Collapsible container</span>
-              </DropDownItem>
-              {EmbedConfigs.map((embedConfig) => (
-                <DropDownItem
-                  key={embedConfig.type}
-                  onClick={() => {
-                    activeEditor.dispatchCommand(
-                      INSERT_EMBED_COMMAND,
-                      embedConfig.type,
-                    );
-                  }}
-                  className="item">
-                  {embedConfig.icon}
-                  <span className="text">{embedConfig.contentName}</span>
-                </DropDownItem>
-              ))}
-              {editorContext.extensions.toolbarInsertsAfter.map(
-                ([extName, ExtDropDownItem]) => (
-                  <ExtDropDownItem
-                    key={extName}
-                    showModal={showModal}
-                    activeEditor={activeEditor}
-                  />
-                ),
-              )}*/}
+                  {config?.video && (
+                    <>
+                      {EmbedConfigs.map((embedConfig) => (
+                        <DropDownItem
+                          key={embedConfig.type}
+                          onClick={() => {
+                            activeEditor.dispatchCommand(
+                              INSERT_EMBED_COMMAND,
+                              embedConfig.type,
+                            );
+                          }}
+                          className="item">
+                          {embedConfig.icon}
+                          <span className="text">
+                            {embedConfig.contentName}
+                          </span>
+                        </DropDownItem>
+                      ))}
+                    </>
+                  )}
+
+                  {editorContext.extensions.toolbarInsertsAfter.map(
+                    ([extName, ExtDropDownItem]) => (
+                      <ExtDropDownItem
+                        key={extName}
+                        showModal={showModal}
+                        activeEditor={activeEditor}
+                      />
+                    ),
+                  )}
+
+                  {config?.Collapsible && (
+                    <>
+                      <DropDownItem
+                        onClick={() => {
+                          editor.dispatchCommand(
+                            INSERT_COLLAPSIBLE_COMMAND,
+                            undefined,
+                          );
+                        }}
+                        className="item">
+                        <i className="icon caret-right" />
+                        <span className="text">Collapsible container</span>
+                      </DropDownItem>
+                    </>
+                  )}
+
+                  {config?.Horizontal && (
+                    <>
+                      <DropDownItem
+                        onClick={() => {
+                          activeEditor.dispatchCommand(
+                            INSERT_HORIZONTAL_RULE_COMMAND,
+                            undefined,
+                          );
+                        }}
+                        className="item">
+                        <i className="icon horizontal-rule" />
+                        <span className="text">Horizontal Rule</span>
+                      </DropDownItem>
+                    </>
+                  )}
+
+                  {config?.Poll && (
+                    <>
+                      <DropDownItem
+                        onClick={() => {
+                          showModal('Insert Poll', (onClose) => (
+                            <InsertPollDialog
+                              activeEditor={activeEditor}
+                              onClose={onClose}
+                            />
+                          ));
+                        }}
+                        className="item">
+                        <i className="icon poll" />
+                        <span className="text">Poll</span>
+                      </DropDownItem>
+                    </>
+                  )}
+
+                  {config?.Sticky && (
+                    <>
+                      <DropDownItem
+                        onClick={() => {
+                          editor.update(() => {
+                            const root = $getRoot();
+                            const stickyNode = $createStickyNode(0, 0);
+                            root.append(stickyNode);
+                          });
+                        }}
+                        className="item">
+                        <i className="icon sticky" />
+                        <span className="text">Sticky Note</span>
+                      </DropDownItem>
+                    </>
+                  )}
+
+
+                  
                 </DropDown>
               )}
 

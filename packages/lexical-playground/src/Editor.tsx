@@ -76,6 +76,7 @@ import YouTubePlugin from './plugins/YouTubePlugin';
 import ContentEditable from './ui/ContentEditable';
 import Placeholder from './ui/Placeholder';
 import joinClasses from './utils/joinClasses';
+import ExcalidrawPlugin from './plugins/ExcalidrawPlugin';
 
 const skipCollaborationInit =
   // @ts-ignore
@@ -143,7 +144,13 @@ const defaultToolbarConfig: ToolbarConfig = {
   RTL:true,
   LTR:true,
   selectLang:true ,
-  ai:true
+  ai:true,
+  video:true,
+  Sticky:true,
+  Poll:true,
+  Table:true,
+  Horizontal:true,
+  Collapsible:true,
 };
 
 export default function Editor({
@@ -343,6 +350,7 @@ export default function Editor({
             <TabFocusPlugin />
             <TabIndentationPlugin />
             <CollapsiblePlugin />
+            <ExcalidrawPlugin />
             {floatingAnchorElem && !isSmallWidthViewport && (
               <>
                 <DraggableBlockPlugin anchorElem={floatingAnchorElem} />

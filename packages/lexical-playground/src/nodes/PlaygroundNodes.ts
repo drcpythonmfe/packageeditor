@@ -36,6 +36,7 @@ import {TableNode as NewTableNode} from './TableNode';
 import {TweetNode} from './TweetNode';
 import { VideoNode } from './VideoNode';
 import {YouTubeNode} from './YouTubeNode';
+import { ExcalidrawNode } from './ExcalidrawNode';
 
 
 const PlaygroundNodes: Array<Klass<LexicalNode>> = [
@@ -71,7 +72,8 @@ const PlaygroundNodes: Array<Klass<LexicalNode>> = [
   ExtendedTextNode,
   VideoNode,
   PdfNode,
-  OfficeNode
+  OfficeNode,
+  ExcalidrawNode
 ];
 
 export default PlaygroundNodes;

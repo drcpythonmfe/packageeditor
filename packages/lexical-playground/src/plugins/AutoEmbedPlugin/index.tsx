@@ -284,9 +284,9 @@ export const EmbedConfigs = [
   // TwitterEmbedConfig,
   YoutubeEmbedConfig,
   // FigmaEmbedConfig,
-  VideoEmbedConfig,
-  PdfEmbedConfig,
-  OfficeEmbedConfig
+  // VideoEmbedConfig,
+  // PdfEmbedConfig,
+  // OfficeEmbedConfig
 ];
 
 function AutoEmbedMenuItem({
