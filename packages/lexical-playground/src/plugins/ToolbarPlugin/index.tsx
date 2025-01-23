@@ -1127,7 +1127,7 @@ export default function ToolbarPlugin({
                   AI
                 </button>
               )}
-              {config.selectLang && (
+              {/* {config.selectLang && (
                 <select
                   value={selectedLang}
                   onChange={handleTextTranslibretranslateform}
@@ -1139,7 +1139,7 @@ export default function ToolbarPlugin({
                     </option>
                   ))}
                 </select>
-              )}
+              )} */}
 
               {config.textColorPicker && (
                 <ColorPicker
